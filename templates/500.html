@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}Server Error{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="container-main">
+        <h1>500</h1>
+        <p class="subtitle">Server Error</p>
+    </div>
+</div>
+
+<div class="container-main">
+    <div class="form-section text-center">
+        <h2 class="mb-4">Something went wrong!</h2>
+        <p class="lead mb-4">We're experiencing a temporary issue. Please try again later.</p>
+        
+        {% if error %}
+        <div class="alert alert-danger text-start mb-4">
+            <strong>Error Details:</strong><br>
+            <code>{{ error }}</code>
+        </div>
+        {% endif %}
+        
+        <div class="btn-group" role="group">
+            <a href="{{ url_for('index') }}" class="btn btn-primary">Go to Home</a>
+            <a href="javascript:history.back()" class="btn btn-outline-primary">Go Back</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

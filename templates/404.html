@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}Page Not Found{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="container-main">
+        <h1>404</h1>
+        <p class="subtitle">Page Not Found</p>
+    </div>
+</div>
+
+<div class="container-main">
+    <div class="form-section text-center">
+        <h2 class="mb-4">Oops! We can't find that page.</h2>
+        <p class="lead mb-4">The page you're looking for doesn't exist or has been moved.</p>
+        
+        <div class="btn-group" role="group">
+            <a href="{{ url_for('index') }}" class="btn btn-primary">Go to Home</a>
+            <a href="{{ url_for('pledge_form') }}" class="btn btn-outline-primary">View Form</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

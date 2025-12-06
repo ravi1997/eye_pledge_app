@@ -3,3 +3,4 @@
 /env
 /migrations
 /pledge.db
+.env

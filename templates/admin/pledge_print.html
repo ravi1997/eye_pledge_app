@@ -1,0 +1,217 @@
+{% extends "base.html" %}
+
+{% block title %}Pledge Print - {{ pledge.reference_number }}{% endblock %}
+
+{% block content %}
+<style>
+    @media print {
+        body {
+            background-color: white;
+        }
+        .navbar, footer, .btn-print-hide, .page-header {
+            display: none !important;
+        }
+        .container-main {
+            max-width: 100%;
+        }
+        .form-section {
+            box-shadow: none;
+            page-break-inside: avoid;
+            border: 1px solid #ddd;
+        }
+        .institution-header {
+            border-bottom: 2px solid #000;
+        }
+    }
+    
+    .print-header {
+        text-align: center;
+        margin-bottom: 2rem;
+        border-bottom: 3px solid #0066cc;
+        padding-bottom: 1rem;
+    }
+    
+    .print-section {
+        margin-bottom: 1.5rem;
+        page-break-inside: avoid;
+    }
+    
+    .signature-line {
+        display: flex;
+        justify-content: space-around;
+        margin-top: 3rem;
+        padding-top: 2rem;
+        border-top: 1px solid #ddd;
+    }
+    
+    .signature-box {
+        text-align: center;
+        width: 30%;
+    }
+    
+    .signature-box p {
+        margin-top: 3rem;
+        border-top: 1px solid #000;
+        padding-top: 0.5rem;
+        font-size: 0.9rem;
+    }
+</style>
+
+<div class="container-main mt-4">
+    <div class="btn-print-hide mb-3">
+        <button class="btn btn-primary" onclick="window.print()">
+            <i class="bi bi-printer"></i> Print / Save as PDF
+        </button>
+        <a href="{{ url_for('admin_pledge_detail', pledge_id=pledge.id) }}" class="btn btn-secondary">
+            <i class="bi bi-arrow-left"></i> Back
+        </a>
+    </div>
+
+    <div class="form-section print-header">
+        <h2 style="margin-bottom: 0; color: #0066cc;">NATIONAL EYE BANK</h2>
+        <p style="margin-bottom: 0; font-size: 0.95rem; color: #666;">
+            {{ institution_address }}
+        </p>
+        <p style="margin-top: 0.5rem; font-size: 0.9rem; color: #999;">
+            Email: {{ institution_email }}
+        </p>
+    </div>
+
+    <div class="form-section">
+        <h4 class="text-center mb-4">AUTHORITY BY DONOR OF REMOVAL OF EYES (PLEDGE FORM)</h4>
+
+        <div class="print-section">
+            <p style="text-align: justify; line-height: 1.8;">
+                I hereby give my free and frank consent for the removal of my eyes after my death 
+                by a registered medical practitioner (Ophthalmic) of a recognized Eye Bank / Hospital 
+                for their use as medically suitable. I have been explained and I understand all the aspects 
+                of such a donation. I understand that the decision is completely voluntary and that I can 
+                revoke this pledge at any time.
+            </p>
+        </div>
+    </div>
+
+    <!-- Donor Details Section -->
+    <div class="form-section print-section">
+        <h5 style="color: #0066cc; border-bottom: 1px solid #ddd; padding-bottom: 0.5rem;">DONOR INFORMATION</h5>
+        
+        <div class="row mt-3">
+            <div class="col-md-6">
+                <p><strong>Name:</strong> {{ pledge.donor_name }}</p>
+                <p><strong>Gender:</strong> {{ pledge.gender or '-' }}</p>
+                <p><strong>Age:</strong> {{ pledge.age or '-' }}</p>
+                <p><strong>Blood Group:</strong> {{ pledge.blood_group or '-' }}</p>
+            </div>
+            <div class="col-md-6">
+                <p><strong>Mobile:</strong> {{ pledge.donor_mobile or '-' }}</p>
+                <p><strong>Email:</strong> {{ pledge.donor_email or '-' }}</p>
+                <p><strong>Marital Status:</strong> {{ pledge.marital_status or '-' }}</p>
+            </div>
+        </div>
+
+        <h6 class="mt-3" style="color: #0066cc;">Address:</h6>
+        <p>
+            {{ pledge.address_line1 }}<br>
+            {% if pledge.address_line2 %}{{ pledge.address_line2 }}<br>{% endif %}
+            {{ pledge.city }}, {{ pledge.district }} - {{ pledge.pincode }}<br>
+            {{ pledge.state }}, {{ pledge.country }}
+        </p>
+
+        {% if pledge.id_proof_type %}
+        <p><strong>ID Proof:</strong> {{ pledge.id_proof_type }} - {{ pledge.id_proof_number }}</p>
+        {% endif %}
+    </div>
+
+    <!-- Pledge Details -->
+    <div class="form-section print-section">
+        <h5 style="color: #0066cc; border-bottom: 1px solid #ddd; padding-bottom: 0.5rem;">PLEDGE DETAILS</h5>
+        
+        <div class="row mt-3">
+            <div class="col-md-6">
+                <p><strong>Date of Pledge:</strong> {{ pledge.date_of_pledge.strftime('%d-%m-%Y') }}</p>
+                <p><strong>Time of Pledge:</strong> {{ pledge.time_of_pledge or '-' }}</p>
+                <p><strong>Place of Pledge:</strong> {{ pledge.place or '-' }}</p>
+            </div>
+            <div class="col-md-6">
+                <p><strong>Organs to Donate:</strong> {{ pledge.organs_consented }}</p>
+                <p><strong>Language of Consent:</strong> {{ pledge.language_of_consent }}</p>
+                <p><strong>Preferred Eye Bank:</strong> {{ pledge.preferred_eye_bank or '-' }}</p>
+            </div>
+        </div>
+
+        {% if pledge.additional_notes %}
+        <p class="mt-3"><strong>Additional Notes:</strong></p>
+        <p style="white-space: pre-wrap; font-size: 0.9rem;">{{ pledge.additional_notes }}</p>
+        {% endif %}
+    </div>
+
+    <!-- Witness Information -->
+    <div class="form-section print-section">
+        <h5 style="color: #0066cc; border-bottom: 1px solid #ddd; padding-bottom: 0.5rem;">WITNESS 1 (NEXT OF KIN)</h5>
+        
+        <div class="row mt-3">
+            <div class="col-md-6">
+                <p><strong>Name:</strong> {{ pledge.witness1_name }}</p>
+                <p><strong>Relationship:</strong> {{ pledge.witness1_relationship or '-' }}</p>
+                <p><strong>Mobile:</strong> {{ pledge.witness1_mobile or '-' }}</p>
+            </div>
+            <div class="col-md-6">
+                <p><strong>Email:</strong> {{ pledge.witness1_email or '-' }}</p>
+                <p><strong>Telephone:</strong> {{ pledge.witness1_telephone or '-' }}</p>
+            </div>
+        </div>
+    </div>
+
+    {% if pledge.witness2_name %}
+    <div class="form-section print-section">
+        <h5 style="color: #0066cc; border-bottom: 1px solid #ddd; padding-bottom: 0.5rem;">WITNESS 2</h5>
+        
+        <div class="row mt-3">
+            <div class="col-md-6">
+                <p><strong>Name:</strong> {{ pledge.witness2_name }}</p>
+                <p><strong>Relationship:</strong> {{ pledge.witness2_relationship or '-' }}</p>
+                <p><strong>Mobile:</strong> {{ pledge.witness2_mobile or '-' }}</p>
+            </div>
+            <div class="col-md-6">
+                <p><strong>Email:</strong> {{ pledge.witness2_email or '-' }}</p>
+                <p><strong>Telephone:</strong> {{ pledge.witness2_telephone or '-' }}</p>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Signature Section -->
+    <div class="form-section print-section">
+        <div class="signature-line">
+            <div class="signature-box">
+                <p>Donor's Signature<br><small>(Date & Time)</small></p>
+            </div>
+            <div class="signature-box">
+                <p>Witness 1 Signature<br><small>(Date & Time)</small></p>
+            </div>
+            {% if pledge.witness2_name %}
+            <div class="signature-box">
+                <p>Witness 2 Signature<br><small>(Date & Time)</small></p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Reference and Stamp -->
+    <div class="form-section print-section">
+        <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 2rem;">
+            <div>
+                <p class="small"><strong>Reference Number:</strong></p>
+                <p style="font-size: 1.2rem; font-weight: 700; font-family: monospace;">{{ pledge.reference_number }}</p>
+                <p class="small text-muted">Recorded on: {{ pledge.created_at.strftime('%d-%m-%Y %H:%M') }}</p>
+            </div>
+            <div style="text-align: right;">
+                <p class="small" style="margin-bottom: 3rem;">
+                    <strong>Official Stamp / Seal</strong><br><br><br>
+                </p>
+                <p class="small">{{ institution_name }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

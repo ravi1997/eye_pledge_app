@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Login - Eye Pledge System{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="container-main">
+        <h1>Admin Panel</h1>
+        <p class="subtitle">Secure Login</p>
+    </div>
+</div>
+
+<div class="container-main">
+    <div class="row justify-content-center">
+        <div class="col-md-5">
+            <div class="form-section">
+                <h3 class="text-center mb-4">
+                    <i class="bi bi-shield-lock"></i> Admin Login
+                </h3>
+
+                <form method="POST" action="{{ url_for('admin_login') }}">
+                    <div class="form-group mb-3">
+                        <label for="username" class="form-label">Username</label>
+                        <input type="text" class="form-control form-control-lg" id="username" 
+                               name="username" required autofocus>
+                    </div>
+
+                    <div class="form-group mb-4">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" class="form-control form-control-lg" id="password" 
+                               name="password" required>
+                    </div>
+
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="bi bi-lock-fill"></i> Login
+                        </button>
+                    </div>
+                </form>
+
+                <hr class="my-4">
+
+                <p class="text-center small text-muted">
+                    <i class="bi bi-info-circle"></i> 
+                    Only authorized personnel can access the admin panel.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

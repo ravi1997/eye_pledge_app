@@ -1,0 +1,189 @@
+{% extends "base.html" %}
+
+{% block title %}Pledge Details - Admin{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="container-main">
+        <h1>Pledge Details</h1>
+        <p class="subtitle">Reference: {{ pledge.reference_number }}</p>
+    </div>
+</div>
+
+<div class="container-main">
+    <!-- Actions Bar -->
+    <div class="form-section mb-4">
+        <div class="row">
+            <div class="col-md-8">
+                {% if pledge.is_verified %}
+                    <span class="badge bg-success" style="font-size: 1.1rem;">Verified</span>
+                    <span class="small text-muted ms-2">
+                        by {{ pledge.verified_by }} on {{ pledge.verified_at.strftime('%d-%m-%Y %H:%M') }}
+                    </span>
+                {% else %}
+                    <span class="badge bg-warning" style="font-size: 1.1rem;">Pending Verification</span>
+                {% endif %}
+            </div>
+            <div class="col-md-4 text-end">
+                <a href="{{ url_for('admin_print_pledge', pledge_id=pledge.id) }}" 
+                   class="btn btn-sm btn-outline-primary" target="_blank">
+                    <i class="bi bi-printer"></i> Print/PDF
+                </a>
+                <a href="{{ url_for('admin_pledges') }}" class="btn btn-sm btn-outline-secondary">
+                    <i class="bi bi-arrow-left"></i> Back
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Donor Information -->
+    <div class="form-section">
+        <h3><i class="bi bi-person-circle"></i> Donor Information</h3>
+        <div class="row">
+            <div class="col-md-6">
+                <p><strong>Name:</strong> {{ pledge.donor_name }}</p>
+                <p><strong>Gender:</strong> {{ pledge.gender or 'N/A' }}</p>
+                <p><strong>Date of Birth:</strong> {{ pledge.date_of_birth or 'N/A' }}</p>
+                <p><strong>Age:</strong> {{ pledge.age or 'N/A' }}</p>
+                <p><strong>Blood Group:</strong> {{ pledge.blood_group or 'N/A' }}</p>
+            </div>
+            <div class="col-md-6">
+                <p><strong>Mobile:</strong> {{ pledge.donor_mobile or 'N/A' }}</p>
+                <p><strong>Email:</strong> {{ pledge.donor_email or 'N/A' }}</p>
+                <p><strong>Occupation:</strong> {{ pledge.occupation or 'N/A' }}</p>
+                <p><strong>Marital Status:</strong> {{ pledge.marital_status or 'N/A' }}</p>
+            </div>
+        </div>
+        {% if pledge.id_proof_type %}
+        <hr>
+        <div class="row">
+            <div class="col-md-6">
+                <p><strong>ID Proof Type:</strong> {{ pledge.id_proof_type }}</p>
+            </div>
+            <div class="col-md-6">
+                <p><strong>ID Proof Number:</strong> {{ pledge.id_proof_number }}</p>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Address Information -->
+    <div class="form-section">
+        <h3><i class="bi bi-geo-alt-fill"></i> Address Information</h3>
+        <p>{{ pledge.address_line1 }}</p>
+        {% if pledge.address_line2 %}<p>{{ pledge.address_line2 }}</p>{% endif %}
+        <p>{{ pledge.city }}, {{ pledge.district }} - {{ pledge.pincode }}</p>
+        <p>{{ pledge.state }}, {{ pledge.country }}</p>
+    </div>
+
+    <!-- Pledge Information -->
+    <div class="form-section">
+        <h3><i class="bi bi-check-circle"></i> Pledge Information</h3>
+        <div class="row">
+            <div class="col-md-6">
+                <p><strong>Date of Pledge:</strong> {{ pledge.date_of_pledge.strftime('%d-%m-%Y') }}</p>
+                <p><strong>Time of Pledge:</strong> {{ pledge.time_of_pledge or 'N/A' }}</p>
+                <p><strong>Organs Consented:</strong> {{ pledge.organs_consented }}</p>
+            </div>
+            <div class="col-md-6">
+                <p><strong>Language of Consent:</strong> {{ pledge.language_of_consent }}</p>
+                <p><strong>Place of Pledge:</strong> {{ pledge.place or 'N/A' }}</p>
+                <p><strong>Preferred Eye Bank:</strong> {{ pledge.preferred_eye_bank or 'N/A' }}</p>
+            </div>
+        </div>
+        {% if pledge.additional_notes %}
+        <hr>
+        <p><strong>Additional Notes:</strong></p>
+        <p class="text-muted" style="white-space: pre-wrap;">{{ pledge.additional_notes }}</p>
+        {% endif %}
+    </div>
+
+    <!-- Witness 1 Information -->
+    <div class="form-section">
+        <h3><i class="bi bi-person-check"></i> Witness 1 (Next of Kin)</h3>
+        <div class="row">
+            <div class="col-md-6">
+                <p><strong>Name:</strong> {{ pledge.witness1_name }}</p>
+                <p><strong>Relationship:</strong> {{ pledge.witness1_relationship or 'N/A' }}</p>
+                <p><strong>Mobile:</strong> {{ pledge.witness1_mobile or 'N/A' }}</p>
+            </div>
+            <div class="col-md-6">
+                <p><strong>Email:</strong> {{ pledge.witness1_email or 'N/A' }}</p>
+                <p><strong>Telephone:</strong> {{ pledge.witness1_telephone or 'N/A' }}</p>
+                <p><strong>Address:</strong> {{ pledge.witness1_address or 'Same as Donor' }}</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Witness 2 Information (if provided) -->
+    {% if pledge.witness2_name %}
+    <div class="form-section">
+        <h3><i class="bi bi-person"></i> Witness 2</h3>
+        <div class="row">
+            <div class="col-md-6">
+                <p><strong>Name:</strong> {{ pledge.witness2_name }}</p>
+                <p><strong>Relationship:</strong> {{ pledge.witness2_relationship or 'N/A' }}</p>
+                <p><strong>Mobile:</strong> {{ pledge.witness2_mobile or 'N/A' }}</p>
+            </div>
+            <div class="col-md-6">
+                <p><strong>Email:</strong> {{ pledge.witness2_email or 'N/A' }}</p>
+                <p><strong>Telephone:</strong> {{ pledge.witness2_telephone or 'N/A' }}</p>
+                <p><strong>Address:</strong> {{ pledge.witness2_address or 'N/A' }}</p>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- System Information -->
+    <div class="form-section">
+        <h3><i class="bi bi-info-circle"></i> System Information</h3>
+        <div class="row">
+            <div class="col-md-6">
+                <p><strong>Created At:</strong> {{ pledge.created_at.strftime('%d-%m-%Y %H:%M:%S') }}</p>
+                <p><strong>Source:</strong> {{ pledge.source }}</p>
+            </div>
+            <div class="col-md-6">
+                <p><strong>Status:</strong> {% if pledge.is_active %}Active{% else %}<span class="badge bg-danger">Deactivated</span>{% endif %}</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Actions -->
+    <div class="form-section">
+        <h5 class="mb-3"><i class="bi bi-tools"></i> Admin Actions</h5>
+        <div class="row">
+            <div class="col-md-6">
+                {% if not pledge.is_verified %}
+                <form method="POST" action="{{ url_for('admin_verify_pledge', pledge_id=pledge.id) }}" class="d-inline">
+                    <button type="submit" class="btn btn-success" onclick="return confirm('Mark as verified?')">
+                        <i class="bi bi-check-circle"></i> Mark as Verified
+                    </button>
+                </form>
+                {% else %}
+                <form method="POST" action="{{ url_for('admin_unverify_pledge', pledge_id=pledge.id) }}" class="d-inline">
+                    <button type="submit" class="btn btn-warning" onclick="return confirm('Mark as unverified?')">
+                        <i class="bi bi-arrow-counterclockwise"></i> Mark as Unverified
+                    </button>
+                </form>
+                {% endif %}
+            </div>
+            <div class="col-md-6">
+                {% if pledge.is_active %}
+                <form method="POST" action="{{ url_for('admin_deactivate_pledge', pledge_id=pledge.id) }}" class="d-inline">
+                    <button type="submit" class="btn btn-danger" onclick="return confirm('Deactivate this pledge? (Data will not be deleted)')">
+                        <i class="bi bi-trash"></i> Deactivate
+                    </button>
+                </form>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="form-section text-center">
+        <a href="{{ url_for('admin_pledges') }}" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left"></i> Back to List
+        </a>
+    </div>
+</div>
+{% endblock %}

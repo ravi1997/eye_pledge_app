@@ -100,8 +100,8 @@ test.describe('Eye Donation Pledge System - Test Suite', () => {
     test('should auto-calculate age from date of birth', async ({ page }) => {
       await page.goto(`${BASE_URL}/pledge`);
       
-      const dobInput = page.locator('input[name="donor_dob"]');
-      const ageInput = page.locator('input[name="donor_age"]');
+      const dobInput = page.locator('input[name="date_of_birth"]');
+      const ageInput = page.locator('input[name="age"]');
       
       // Set DOB to 30 years ago
       const dob = new Date();
@@ -130,8 +130,8 @@ test.describe('Eye Donation Pledge System - Test Suite', () => {
       
       // Fill donor details
       await page.locator('input[name="donor_name"]').fill('Test Donor');
-      await page.locator('combobox:has-text("Gender")').selectOption('Male');
-      await page.locator('combobox:has-text("Blood Group")').selectOption('O+');
+      await page.locator('select[name="gender"]').selectOption('Male');
+      await page.locator('select[name="blood_group"]').selectOption('O+');
       await page.locator('input[name="donor_mobile"]').fill('9876543210');
       await page.locator('input[name="donor_email"]').fill('donor@test.com');
       
@@ -142,15 +142,15 @@ test.describe('Eye Donation Pledge System - Test Suite', () => {
       await page.locator('input[name="pincode"]').fill('123456');
       
       // Fill pledge details
-      await page.locator('combobox:has-text("Organs to Donate")').selectOption('Both eyes');
+      await page.locator('select[name="organs_consented"]').selectOption('Both eyes');
       
       // Fill witness 1
       await page.locator('input[name="witness1_name"]').fill('Witness One');
-      await page.locator('combobox').nth(6).selectOption('Other');
+      await page.locator('select[name="witness1_relationship"]').selectOption('Father');
       await page.locator('input[name="witness1_mobile"]').fill('9876543211');
       
       // Accept consent
-      await page.locator('input[id="consent"]').check();
+      await page.locator('input[name="donor_consent"]').check();
       
       // Submit form
       await page.click('button:has-text("Submit Pledge")');
@@ -175,7 +175,7 @@ test.describe('Eye Donation Pledge System - Test Suite', () => {
       await page.locator('input[name="state"]').fill('Test State');
       await page.locator('input[name="pincode"]').fill('111111');
       await page.locator('input[name="witness1_name"]').fill('Witness');
-      await page.locator('input[id="consent"]').check();
+      await page.locator('input[name="donor_consent"]').check();
       
       // First submission
       await page.click('button:has-text("Submit Pledge")');
@@ -205,7 +205,7 @@ test.describe('Eye Donation Pledge System - Test Suite', () => {
       await page.locator('input[name="state"]').fill('State');
       await page.locator('input[name="pincode"]').fill('555555');
       await page.locator('input[name="witness1_name"]').fill('Witness');
-      await page.locator('input[id="consent"]').check();
+      await page.locator('input[name="donor_consent"]').check();
       
       await page.click('button:has-text("Submit Pledge")');
       await page.waitForURL(`${BASE_URL}/success/**`);
@@ -228,7 +228,7 @@ test.describe('Eye Donation Pledge System - Test Suite', () => {
       await page.locator('input[name="state"]').fill('State');
       await page.locator('input[name="pincode"]').fill('666666');
       await page.locator('input[name="witness1_name"]').fill('Witness');
-      await page.locator('input[id="consent"]').check();
+      await page.locator('input[name="donor_consent"]').check();
       
       await page.click('button:has-text("Submit Pledge")');
       await page.waitForURL(`${BASE_URL}/success/**`);
@@ -452,16 +452,16 @@ test.describe('Eye Donation Pledge System - Test Suite', () => {
       
       const fields = [
         'donor_name',
-        'donor_gender',
-        'donor_dob',
-        'donor_age',
-        'donor_blood_group',
+        'gender',
+        'date_of_birth',
+        'age',
+        'blood_group',
         'donor_mobile',
         'donor_email',
-        'donor_marital_status',
-        'donor_occupation',
-        'donor_id_proof_type',
-        'donor_id_proof_number'
+        'marital_status',
+        'occupation',
+        'id_proof_type',
+        'id_proof_number'
       ];
       
       for (const field of fields) {
@@ -496,10 +496,10 @@ test.describe('Eye Donation Pledge System - Test Suite', () => {
         'date_of_pledge',
         'time_of_pledge',
         'organs_consented',
-        'language_preference',
-        'place_of_pledge',
-        'pledge_additional_notes',
-        'consent'
+        'language_of_consent',
+        'place',
+        'additional_notes',
+        'donor_consent'
       ];
       
       for (const field of fields) {

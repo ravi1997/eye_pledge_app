@@ -31,21 +31,21 @@ export async function fillPledgeFormWithValidData(page) {
 
   // Donor Details
   await page.locator('input[name="donor_name"]').fill('Test Donor User');
-  await page.locator('combobox:has-text("Gender")').selectOption('Male');
+  await page.locator('select[name="gender"]').selectOption('Male');
   
   // Set DOB to 30 years ago
   const dob = new Date();
   dob.setFullYear(dob.getFullYear() - 30);
   const dobString = dob.toISOString().split('T')[0];
-  await page.locator('input[name="donor_dob"]').fill(dobString);
+  await page.locator('input[name="date_of_birth"]').fill(dobString);
   
-  await page.locator('combobox:has-text("Blood Group")').selectOption('O+');
+  await page.locator('select[name="blood_group"]').selectOption('O+');
   await page.locator('input[name="donor_mobile"]').fill(mobileNumber);
   await page.locator('input[name="donor_email"]').fill(email);
-  await page.locator('combobox:has-text("Marital Status")').selectOption('Single');
-  await page.locator('input[name="donor_occupation"]').fill('Engineer');
-  await page.locator('combobox:has-text("ID Proof Type")').selectOption('Aadhaar');
-  await page.locator('input[name="donor_id_proof_number"]').fill('123456789012');
+  await page.locator('select[name="marital_status"]').selectOption('Single');
+  await page.locator('input[name="occupation"]').fill('Engineer');
+  await page.locator('select[name="id_proof_type"]').selectOption('Aadhaar');
+  await page.locator('input[name="id_proof_number"]').fill('123456789012');
 
   // Address
   await page.locator('input[name="address_line1"]').fill('123 Test Street');
@@ -57,20 +57,20 @@ export async function fillPledgeFormWithValidData(page) {
   await page.locator('input[name="country"]').fill('India');
 
   // Pledge & Consent
-  await page.locator('combobox:has-text("Organs to Donate")').selectOption('Both eyes');
-  await page.locator('combobox:has-text("Language of Consent")').selectOption('English');
-  await page.locator('input[name="place_of_pledge"]').fill('Test Location');
-  await page.locator('textarea[name="pledge_additional_notes"]').fill('Test pledge notes');
+  await page.locator('select[name="organs_consented"]').selectOption('Both eyes');
+  await page.locator('select[name="language_of_consent"]').selectOption('English');
+  await page.locator('input[name="place"]').fill('Test Location');
+  await page.locator('textarea[name="additional_notes"]').fill('Test pledge notes');
 
   // Witness 1 (Mandatory)
   await page.locator('input[name="witness1_name"]').fill('Witness One Person');
-  await page.locator('combobox').nth(6).selectOption('Father');
+  await page.locator('select[name="witness1_relationship"]').selectOption('Father');
   await page.locator('input[name="witness1_mobile"]').fill(generateMobileNumber());
   await page.locator('input[name="witness1_email"]').fill(generateEmail());
   await page.locator('input[name="witness1_address"]').fill('Witness Address 1');
 
   // Consent
-  await page.locator('input[name="consent"]').check();
+  await page.locator('input[name="donor_consent"]').check();
 
   return {
     mobileNumber,
@@ -95,7 +95,7 @@ export async function fillPledgeFormMinimal(page) {
   await page.locator('input[name="state"]').fill('State');
   await page.locator('input[name="pincode"]').fill('123456');
   await page.locator('input[name="witness1_name"]').fill('Witness');
-  await page.locator('input[name="consent"]').check();
+  await page.locator('input[name="donor_consent"]').check();
 
   return {
     mobileNumber,

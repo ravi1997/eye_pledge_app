@@ -107,13 +107,21 @@ def create_app(config_name='development'):
         # Required fields
         if not form_data.get('donor_name'):
             errors.append('Donor name is required')
+        if not form_data.get('address_line1'):
+            errors.append('Address is required')
+        if not form_data.get('city'):
+            errors.append('City is required')
+        if not form_data.get('state'):
+            errors.append('State is required')
+        if not form_data.get('pincode'):
+            errors.append('Pincode is required')
         if not form_data.get('donor_mobile'):
             errors.append('Mobile number is required')
         if not form_data.get('donor_email'):
             errors.append('Email is required')
         if not form_data.get('witness1_name'):
             errors.append('Witness 1 name is required')
-        if not form_data.get('consent'):
+        if not form_data.get('donor_consent'):
             errors.append('Consent must be given')
         
         # Email validation
@@ -153,16 +161,16 @@ def create_app(config_name='development'):
                 pledge = EyeDonationPledge(
                     reference_number=ref_num,
                     donor_name=request.form.get('donor_name'),
-                    donor_gender=request.form.get('donor_gender'),
-                    donor_dob=parse_date(request.form.get('donor_dob')),
-                    donor_age=int(request.form.get('donor_age') or 0),
-                    donor_blood_group=request.form.get('donor_blood_group'),
+                    donor_gender=request.form.get('gender'),
+                    donor_dob=parse_date(request.form.get('date_of_birth')),
+                    donor_age=int(request.form.get('age') or 0),
+                    donor_blood_group=request.form.get('blood_group'),
                     donor_mobile=request.form.get('donor_mobile'),
                     donor_email=request.form.get('donor_email'),
-                    donor_marital_status=request.form.get('donor_marital_status'),
-                    donor_occupation=request.form.get('donor_occupation'),
-                    donor_id_proof_type=request.form.get('donor_id_proof_type'),
-                    donor_id_proof_number=request.form.get('donor_id_proof_number'),
+                    donor_marital_status=request.form.get('marital_status'),
+                    donor_occupation=request.form.get('occupation'),
+                    donor_id_proof_type=request.form.get('id_proof_type'),
+                    donor_id_proof_number=request.form.get('id_proof_number'),
                     
                     # Address
                     address_line1=request.form.get('address_line1'),
@@ -177,9 +185,9 @@ def create_app(config_name='development'):
                     date_of_pledge=parse_date(request.form.get('date_of_pledge')),
                     time_of_pledge=parse_time(request.form.get('time_of_pledge')),
                     organs_consented=request.form.get('organs_consented'),
-                    language_preference=request.form.get('language_preference'),
-                    place_of_pledge=request.form.get('place_of_pledge'),
-                    pledge_additional_notes=request.form.get('pledge_additional_notes'),
+                    language_preference=request.form.get('language_of_consent'),
+                    place_of_pledge=request.form.get('place'),
+                    pledge_additional_notes=request.form.get('additional_notes'),
                     
                     # Witness 1
                     witness1_name=request.form.get('witness1_name'),

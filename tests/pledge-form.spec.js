@@ -21,7 +21,7 @@ test.describe('Pledge Form - Complete Workflow Tests', () => {
     
     await page.click('button:has-text("Submit Pledge")');
     
-    await page.waitForURL(`${BASE_URL}/success/**`, { timeout: 10000 });
+    await page.waitForURL(new RegExp(`${BASE_URL}/success/.*`), { timeout: 10000 });
     
     await expect(page.locator('h1')).toContainText(/Success|Confirmation/i);
     
@@ -38,7 +38,7 @@ test.describe('Pledge Form - Complete Workflow Tests', () => {
     
     await page.click('button:has-text("Submit Pledge")');
     
-    await page.waitForURL(`${BASE_URL}/success/**`, { timeout: 10000 });
+    await page.waitForURL(new RegExp(`${BASE_URL}/success/.*`), { timeout: 10000 });
     
     await expect(page.locator('h1')).toContainText(/Success|Confirmation/i);
   });
@@ -69,7 +69,7 @@ test.describe('Pledge Form - Complete Workflow Tests', () => {
     
     await page.click('button:has-text("Submit Pledge")');
     
-    await page.waitForURL(`${BASE_URL}/success/**`, { timeout: 10000 });
+    await page.waitForURL(new RegExp(`${BASE_URL}/success/.*`), { timeout: 10000 });
   });
 
   test('Field: Date of Pledge auto-fills with today', async ({ page }) => {
@@ -86,8 +86,8 @@ test.describe('Pledge Form - Complete Workflow Tests', () => {
   test('Field: Age auto-calculates from DOB', async ({ page }) => {
     await page.goto(`${BASE_URL}/pledge`, { waitUntil: 'networkidle' });
     
-    const dobInput = page.locator('input[name="donor_dob"]');
-    const ageInput = page.locator('input[name="donor_age"]');
+    const dobInput = page.locator('input[name="date_of_birth"]');
+    const ageInput = page.locator('input[name="age"]');
     
     const dob = new Date();
     dob.setFullYear(dob.getFullYear() - 25);
@@ -139,7 +139,7 @@ test.describe('Pledge Form - Complete Workflow Tests', () => {
   test('Field: ID Proof Number validation', async ({ page }) => {
     await page.goto(`${BASE_URL}/pledge`, { waitUntil: 'networkidle' });
     
-    const idProofInput = page.locator('input[name="donor_id_proof_number"]');
+    const idProofInput = page.locator('input[name="id_proof_number"]');
     
     await idProofInput.fill('123456789012');
     expect(await idProofInput.inputValue()).toBe('123456789012');
@@ -148,7 +148,7 @@ test.describe('Pledge Form - Complete Workflow Tests', () => {
   test('Consent: User must check consent checkbox', async ({ page }) => {
     await page.goto(`${BASE_URL}/pledge`, { waitUntil: 'networkidle' });
     
-    const consentCheckbox = page.locator('input[name="consent"]');
+    const consentCheckbox = page.locator('input[name="donor_consent"]');
     
     expect(await consentCheckbox.isChecked()).toBeFalsy();
     
@@ -171,47 +171,47 @@ test.describe('Pledge Form - Complete Workflow Tests', () => {
     
     await page.click('button:has-text("Submit Pledge")');
     
-    await page.waitForURL(`${BASE_URL}/success/**`, { timeout: 10000 });
+    await page.waitForURL(new RegExp(`${BASE_URL}/success/.*`), { timeout: 10000 });
   });
 
-  test('Organs: Multiple organ consent types should be available', async ({ page }) => {
+  test('Field: Gender: All gender options should be available', async ({ page }) => {
     await page.goto(`${BASE_URL}/pledge`, { waitUntil: 'networkidle' });
     
-    const organsCombo = page.locator('combobox:has-text("Organs to Donate")');
+    const genderSelect = page.locator('select[name="gender"]');
     
-    await expect(organsCombo).toBeVisible();
+    await expect(genderSelect).toBeVisible();
   });
 
-  test('Gender: All gender options should be available', async ({ page }) => {
+  test('Field: Blood Group: All blood groups should be available', async ({ page }) => {
     await page.goto(`${BASE_URL}/pledge`, { waitUntil: 'networkidle' });
     
-    const genderCombo = page.locator('combobox:has-text("Gender")');
+    const bgSelect = page.locator('select[name="blood_group"]');
     
-    await expect(genderCombo).toBeVisible();
+    await expect(bgSelect).toBeVisible();
   });
 
-  test('Blood Group: All blood groups should be available', async ({ page }) => {
+  test('Field: Marital Status: All options should be available', async ({ page }) => {
     await page.goto(`${BASE_URL}/pledge`, { waitUntil: 'networkidle' });
     
-    const bgCombo = page.locator('combobox:has-text("Blood Group")');
+    const msSelect = page.locator('select[name="marital_status"]');
     
-    await expect(bgCombo).toBeVisible();
+    await expect(msSelect).toBeVisible();
   });
 
-  test('Marital Status: All options should be available', async ({ page }) => {
+  test('Field: ID Proof: All ID proof types should be available', async ({ page }) => {
     await page.goto(`${BASE_URL}/pledge`, { waitUntil: 'networkidle' });
     
-    const msCombo = page.locator('combobox:has-text("Marital Status")');
+    const idSelect = page.locator('select[name="id_proof_type"]');
     
-    await expect(msCombo).toBeVisible();
+    await expect(idSelect).toBeVisible();
   });
 
-  test('ID Proof: All ID proof types should be available', async ({ page }) => {
+  test('Field: Organs: Organ consent options should be available', async ({ page }) => {
     await page.goto(`${BASE_URL}/pledge`, { waitUntil: 'networkidle' });
     
-    const idCombo = page.locator('combobox:has-text("ID Proof Type")');
+    const organsSelect = page.locator('select[name="organs_consented"]');
     
-    await expect(idCombo).toBeVisible();
+    await expect(organsSelect).toBeVisible();
   });
 
   test('Form: Keyboard navigation works', async ({ page }) => {

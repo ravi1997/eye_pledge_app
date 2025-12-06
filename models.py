@@ -6,7 +6,6 @@ Designed to work with SQLite locally and PostgreSQL in production.
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from enum import Enum
-import uuid
 
 db = SQLAlchemy()
 
@@ -44,13 +43,15 @@ class OrgansConsentsEnum(Enum):
 
 
 class SourceEnum(Enum):
-    SELF = "self"
-    CAMP = "camp"
-    HOSPITAL_DESK = "hospital desk"
-    WEBSITE = "website"
-    PHONE = "phone"
-    MAIL = "mail"
-    OTHER = "other"
+    ONLINE = "Online Form"
+    OFFLINE = "Offline Form"
+    HOSPITAL = "Hospital"
+    CAMP = "Community Camp"
+    PHONE = "Phone"
+    MAIL = "Mail"
+    OTHER = "Other"
+
+
 
 
 class EyeDonationPledge(db.Model):
@@ -67,71 +68,63 @@ class EyeDonationPledge(db.Model):
     reference_number = db.Column(db.String(50), unique=True, nullable=False, index=True)
     
     # System fields
-    created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False, index=True)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
-    created_by = db.Column(db.String(100), nullable=True)
-    source = db.Column(db.String(20), default=SourceEnum.WEBSITE.value, nullable=False)
-    is_active = db.Column(db.Boolean, default=True, nullable=False)
+    source = db.Column(db.String(50), default='Online Form', nullable=False)
+    is_active = db.Column(db.Boolean, default=True, nullable=False, index=True)
     is_verified = db.Column(db.Boolean, default=False, nullable=False)
     verified_at = db.Column(db.DateTime, nullable=True)
-    verified_by = db.Column(db.String(100), nullable=True)
+    verified_by = db.Column(db.Integer, db.ForeignKey('admin_users.id'), nullable=True)
 
     # ===== A. DONOR DETAILS =====
     donor_name = db.Column(db.String(150), nullable=False, index=True)
-    gender = db.Column(db.String(20), nullable=True)
-    date_of_birth = db.Column(db.Date, nullable=True)
-    age = db.Column(db.Integer, nullable=True)  # Can be calculated or provided
-    blood_group = db.Column(db.String(5), nullable=True)  # A, B, O, AB with +/-
+    donor_gender = db.Column(db.String(20), nullable=True)
+    donor_dob = db.Column(db.Date, nullable=True)
+    donor_age = db.Column(db.Integer, nullable=True)
+    donor_blood_group = db.Column(db.String(5), nullable=True)
     donor_mobile = db.Column(db.String(20), nullable=True, index=True)
-    donor_email = db.Column(db.String(100), nullable=True)
-    relation = db.Column(db.String(50), nullable=True)  # "son of", "daughter of", etc.
-    relative_name = db.Column(db.String(150), nullable=True)
-    marital_status = db.Column(db.String(20), nullable=True)
-    occupation = db.Column(db.String(100), nullable=True)
-    id_proof_type = db.Column(db.String(30), nullable=True)
-    id_proof_number = db.Column(db.String(50), nullable=True)
+    donor_email = db.Column(db.String(100), nullable=True, index=True)
+    donor_marital_status = db.Column(db.String(20), nullable=True)
+    donor_occupation = db.Column(db.String(100), nullable=True)
+    donor_id_proof_type = db.Column(db.String(30), nullable=True)
+    donor_id_proof_number = db.Column(db.String(50), nullable=True)
 
     # ===== B. ADDRESS DETAILS =====
-    address_line1 = db.Column(db.String(255), nullable=False)
+    address_line1 = db.Column(db.String(255), nullable=True)
     address_line2 = db.Column(db.String(255), nullable=True)
-    city = db.Column(db.String(100), nullable=False, index=True)
+    city = db.Column(db.String(100), nullable=True, index=True)
     district = db.Column(db.String(100), nullable=True)
-    state = db.Column(db.String(100), nullable=False, index=True)
-    pincode = db.Column(db.String(10), nullable=False)
+    state = db.Column(db.String(100), nullable=True, index=True)
+    pincode = db.Column(db.String(10), nullable=True)
     country = db.Column(db.String(100), default="India", nullable=False)
 
     # ===== C. PLEDGE / CONSENT DETAILS =====
-    place = db.Column(db.String(255), nullable=True)
-    date_of_pledge = db.Column(db.Date, nullable=False, index=True)
+    place_of_pledge = db.Column(db.String(255), nullable=True)
+    date_of_pledge = db.Column(db.Date, nullable=True, index=True)
     time_of_pledge = db.Column(db.Time, nullable=True)
     
-    # Consent text - stores the specific version this donor consented to
-    consent_text = db.Column(db.Text, nullable=True)
-    
-    # Organs consented - can store comma-separated or JSON in future
+    # Organs consented
     organs_consented = db.Column(db.String(255), default="Both eyes", nullable=False)
     
     # Language of consent
-    language_of_consent = db.Column(db.String(50), default="English", nullable=False)
-    
-    # Consent acknowledgment
-    is_consent_revocable = db.Column(db.Boolean, default=True, nullable=False)
-    donor_acknowledged_revocability = db.Column(db.Boolean, default=False, nullable=True)
+    language_preference = db.Column(db.String(50), default="English", nullable=False)
     
     # Preferred eye bank
     preferred_eye_bank = db.Column(db.String(255), nullable=True)
     
     # Additional notes
-    additional_notes = db.Column(db.Text, nullable=True)
+    pledge_additional_notes = db.Column(db.Text, nullable=True)
+    
+    # Consent acknowledgment
+    consent_given = db.Column(db.Boolean, default=False, nullable=False)
 
     # ===== D. WITNESS 1 (Next of Kin - Mandatory) =====
-    witness1_name = db.Column(db.String(150), nullable=False, index=True)
+    witness1_name = db.Column(db.String(150), nullable=True, index=True)
     witness1_relationship = db.Column(db.String(50), nullable=True)
     witness1_address = db.Column(db.Text, nullable=True)
     witness1_mobile = db.Column(db.String(20), nullable=True)
     witness1_telephone = db.Column(db.String(20), nullable=True)
     witness1_email = db.Column(db.String(100), nullable=True)
-    witness1_is_next_of_kin = db.Column(db.Boolean, default=True, nullable=False)
 
     # ===== E. WITNESS 2 (Optional) =====
     witness2_name = db.Column(db.String(150), nullable=True)
@@ -141,8 +134,7 @@ class EyeDonationPledge(db.Model):
     witness2_telephone = db.Column(db.String(20), nullable=True)
     witness2_email = db.Column(db.String(100), nullable=True)
 
-    # ===== DIGITAL CONSENT (Future: Digital Signature) =====
-    # Placeholder for digital signature / consent capture
+    # ===== DIGITAL CONSENT (Future Enhancements) =====
     donor_consent_checkbox = db.Column(db.Boolean, default=False, nullable=False)
     donor_consent_datetime = db.Column(db.DateTime, nullable=True)
     witness1_consent_checkbox = db.Column(db.Boolean, default=False, nullable=True)
@@ -156,6 +148,9 @@ class EyeDonationPledge(db.Model):
     donor_email_confirmed = db.Column(db.Boolean, default=False, nullable=False)
     donor_email_confirmed_at = db.Column(db.DateTime, nullable=True)
 
+    # Relationships
+    audit_logs = db.relationship('AuditLog', backref='pledge', lazy=True, cascade='all, delete-orphan')
+
     def __repr__(self):
         return f"<EyeDonationPledge {self.reference_number} - {self.donor_name}>"
 
@@ -166,11 +161,11 @@ class EyeDonationPledge(db.Model):
             'donor_name': self.donor_name,
             'donor_email': self.donor_email,
             'donor_mobile': self.donor_mobile,
-            'date_of_birth': self.date_of_birth.isoformat() if self.date_of_birth else None,
-            'blood_group': self.blood_group,
-            'gender': self.gender,
-            'marital_status': self.marital_status,
-            'occupation': self.occupation,
+            'donor_dob': self.donor_dob.isoformat() if self.donor_dob else None,
+            'donor_blood_group': self.donor_blood_group,
+            'donor_gender': self.donor_gender,
+            'donor_marital_status': self.donor_marital_status,
+            'donor_occupation': self.donor_occupation,
             'address_line1': self.address_line1,
             'address_line2': self.address_line2,
             'city': self.city,
@@ -178,11 +173,11 @@ class EyeDonationPledge(db.Model):
             'state': self.state,
             'pincode': self.pincode,
             'country': self.country,
-            'place': self.place,
+            'place_of_pledge': self.place_of_pledge,
             'date_of_pledge': self.date_of_pledge.isoformat() if self.date_of_pledge else None,
             'time_of_pledge': self.time_of_pledge.isoformat() if self.time_of_pledge else None,
             'organs_consented': self.organs_consented,
-            'language_of_consent': self.language_of_consent,
+            'language_preference': self.language_preference,
             'preferred_eye_bank': self.preferred_eye_bank,
             'witness1_name': self.witness1_name,
             'witness1_relationship': self.witness1_relationship,
@@ -196,9 +191,12 @@ class EyeDonationPledge(db.Model):
         }
 
 
+
+
+
 class AdminUser(db.Model):
     """
-    Simple admin user model for authentication.
+    Admin user model for authentication.
     In production, consider using Flask-Login or an auth service.
     """
     __tablename__ = 'admin_users'
@@ -206,11 +204,19 @@ class AdminUser(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True, nullable=False, index=True)
     password_hash = db.Column(db.String(255), nullable=False)
-    email = db.Column(db.String(120), unique=True, nullable=False)
+    email = db.Column(db.String(120), unique=True, nullable=False, index=True)
     full_name = db.Column(db.String(150), nullable=True)
     is_active = db.Column(db.Boolean, default=True, nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     last_login = db.Column(db.DateTime, nullable=True)
+
+    # Relationships
+    pledges_verified = db.relationship(
+        'EyeDonationPledge',
+        foreign_keys='EyeDonationPledge.verified_by',
+        backref='verifier'
+    )
+    audit_logs = db.relationship('AuditLog', backref='admin_user', lazy=True)
 
     def __repr__(self):
         return f"<AdminUser {self.username}>"
@@ -226,9 +232,10 @@ class AuditLog(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     admin_user_id = db.Column(db.Integer, db.ForeignKey('admin_users.id'), nullable=True)
     pledge_id = db.Column(db.Integer, db.ForeignKey('eye_donation_pledges.id'), nullable=True)
-    action = db.Column(db.String(100), nullable=False)  # e.g., "verified", "exported", "edited"
+    action = db.Column(db.String(100), nullable=False)
     details = db.Column(db.Text, nullable=True)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False, index=True)
 
     def __repr__(self):
         return f"<AuditLog {self.action} by user_id={self.admin_user_id}>"
+

@@ -4,3 +4,4 @@
 /migrations
 /pledge.db
 .env
+/instance

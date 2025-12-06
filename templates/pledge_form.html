@@ -1,0 +1,602 @@
+{% extends "base.html" %}
+
+{% block title %}Eye Donation Pledge Form{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="container-main">
+        <h1>Eye Donation Pledge Form</h1>
+        <p class="subtitle">Please fill all required fields carefully</p>
+    </div>
+</div>
+
+<div class="container-main">
+    <form method="POST" action="{{ url_for('pledge_form') }}" id="pledgeForm" novalidate>
+        
+        <!-- A. DONOR DETAILS SECTION -->
+        <div class="form-section">
+            <h3><i class="bi bi-person-circle"></i> Donor Details</h3>
+            
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <div class="form-group required">
+                        <label for="donor_name" class="form-label">Full Name</label>
+                        <input type="text" class="form-control" id="donor_name" name="donor_name" 
+                               value="{{ form_data.get('donor_name', '') }}" required>
+                        <div class="invalid-feedback">Please provide a valid name.</div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <div class="form-group">
+                        <label for="gender" class="form-label">Gender</label>
+                        <select class="form-select" id="gender" name="gender">
+                            <option value="">Select Gender</option>
+                            <option value="Male" {% if form_data.get('gender') == 'Male' %}selected{% endif %}>Male</option>
+                            <option value="Female" {% if form_data.get('gender') == 'Female' %}selected{% endif %}>Female</option>
+                            <option value="Other" {% if form_data.get('gender') == 'Other' %}selected{% endif %}>Other</option>
+                            <option value="Prefer not to say" {% if form_data.get('gender') == 'Prefer not to say' %}selected{% endif %}>Prefer not to say</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <div class="form-group">
+                        <label for="date_of_birth" class="form-label">Date of Birth</label>
+                        <input type="date" class="form-control" id="date_of_birth" name="date_of_birth" 
+                               value="{{ form_data.get('date_of_birth', '') }}">
+                    </div>
+                </div>
+
+                <div class="col-md-4 mb-3">
+                    <div class="form-group">
+                        <label for="age" class="form-label">Age</label>
+                        <input type="number" class="form-control" id="age" name="age" min="0" max="120" 
+                               value="{{ form_data.get('age', '') }}">
+                    </div>
+                </div>
+
+                <div class="col-md-4 mb-3">
+                    <div class="form-group">
+                        <label for="blood_group" class="form-label">Blood Group</label>
+                        <select class="form-select" id="blood_group" name="blood_group">
+                            <option value="">Select Blood Group</option>
+                            <option value="O+" {% if form_data.get('blood_group') == 'O+' %}selected{% endif %}>O+</option>
+                            <option value="O-" {% if form_data.get('blood_group') == 'O-' %}selected{% endif %}>O-</option>
+                            <option value="A+" {% if form_data.get('blood_group') == 'A+' %}selected{% endif %}>A+</option>
+                            <option value="A-" {% if form_data.get('blood_group') == 'A-' %}selected{% endif %}>A-</option>
+                            <option value="B+" {% if form_data.get('blood_group') == 'B+' %}selected{% endif %}>B+</option>
+                            <option value="B-" {% if form_data.get('blood_group') == 'B-' %}selected{% endif %}>B-</option>
+                            <option value="AB+" {% if form_data.get('blood_group') == 'AB+' %}selected{% endif %}>AB+</option>
+                            <option value="AB-" {% if form_data.get('blood_group') == 'AB-' %}selected{% endif %}>AB-</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <div class="form-group">
+                        <label for="donor_mobile" class="form-label">Mobile Number (10 digits)</label>
+                        <input type="tel" class="form-control" id="donor_mobile" name="donor_mobile" 
+                               pattern="\d{10}" value="{{ form_data.get('donor_mobile', '') }}"
+                               placeholder="e.g., 9876543210">
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <div class="form-group">
+                        <label for="donor_email" class="form-label">Email Address</label>
+                        <input type="email" class="form-control" id="donor_email" name="donor_email" 
+                               value="{{ form_data.get('donor_email', '') }}">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <div class="form-group">
+                        <label for="marital_status" class="form-label">Marital Status</label>
+                        <select class="form-select" id="marital_status" name="marital_status">
+                            <option value="">Select Status</option>
+                            <option value="Single" {% if form_data.get('marital_status') == 'Single' %}selected{% endif %}>Single</option>
+                            <option value="Married" {% if form_data.get('marital_status') == 'Married' %}selected{% endif %}>Married</option>
+                            <option value="Divorced" {% if form_data.get('marital_status') == 'Divorced' %}selected{% endif %}>Divorced</option>
+                            <option value="Widowed" {% if form_data.get('marital_status') == 'Widowed' %}selected{% endif %}>Widowed</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <div class="form-group">
+                        <label for="occupation" class="form-label">Occupation</label>
+                        <input type="text" class="form-control" id="occupation" name="occupation" 
+                               value="{{ form_data.get('occupation', '') }}">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <div class="form-group">
+                        <label for="id_proof_type" class="form-label">ID Proof Type</label>
+                        <select class="form-select" id="id_proof_type" name="id_proof_type">
+                            <option value="">Select ID Type</option>
+                            <option value="Aadhaar" {% if form_data.get('id_proof_type') == 'Aadhaar' %}selected{% endif %}>Aadhaar</option>
+                            <option value="PAN" {% if form_data.get('id_proof_type') == 'PAN' %}selected{% endif %}>PAN</option>
+                            <option value="Voter ID" {% if form_data.get('id_proof_type') == 'Voter ID' %}selected{% endif %}>Voter ID</option>
+                            <option value="Passport" {% if form_data.get('id_proof_type') == 'Passport' %}selected{% endif %}>Passport</option>
+                            <option value="Driving License" {% if form_data.get('id_proof_type') == 'Driving License' %}selected{% endif %}>Driving License</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-md-8 mb-3">
+                    <div class="form-group">
+                        <label for="id_proof_number" class="form-label">ID Proof Number</label>
+                        <input type="text" class="form-control" id="id_proof_number" name="id_proof_number" 
+                               value="{{ form_data.get('id_proof_number', '') }}">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <div class="form-group">
+                        <label for="relation" class="form-label">Relation</label>
+                        <input type="text" class="form-control" id="relation" name="relation" 
+                               value="{{ form_data.get('relation', '') }}" placeholder="e.g., Son of, Daughter of">
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <div class="form-group">
+                        <label for="relative_name" class="form-label">Relative's Name</label>
+                        <input type="text" class="form-control" id="relative_name" name="relative_name" 
+                               value="{{ form_data.get('relative_name', '') }}">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- B. ADDRESS DETAILS SECTION -->
+        <div class="form-section">
+            <h3><i class="bi bi-geo-alt-fill"></i> Address Details</h3>
+
+            <div class="form-group required mb-3">
+                <label for="address_line1" class="form-label">Address Line 1</label>
+                <input type="text" class="form-control" id="address_line1" name="address_line1" 
+                       value="{{ form_data.get('address_line1', '') }}" required>
+            </div>
+
+            <div class="form-group mb-3">
+                <label for="address_line2" class="form-label">Address Line 2 (Optional)</label>
+                <input type="text" class="form-control" id="address_line2" name="address_line2" 
+                       value="{{ form_data.get('address_line2', '') }}">
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <div class="form-group required">
+                        <label for="city" class="form-label">City</label>
+                        <input type="text" class="form-control" id="city" name="city" 
+                               value="{{ form_data.get('city', '') }}" required>
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <div class="form-group">
+                        <label for="district" class="form-label">District</label>
+                        <input type="text" class="form-control" id="district" name="district" 
+                               value="{{ form_data.get('district', '') }}">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <div class="form-group required">
+                        <label for="state" class="form-label">State</label>
+                        <input type="text" class="form-control" id="state" name="state" 
+                               value="{{ form_data.get('state', '') }}" required>
+                    </div>
+                </div>
+
+                <div class="col-md-3 mb-3">
+                    <div class="form-group required">
+                        <label for="pincode" class="form-label">Pincode</label>
+                        <input type="text" class="form-control" id="pincode" name="pincode" 
+                               value="{{ form_data.get('pincode', '') }}" pattern="\d{5,10}" required>
+                    </div>
+                </div>
+
+                <div class="col-md-3 mb-3">
+                    <div class="form-group">
+                        <label for="country" class="form-label">Country</label>
+                        <input type="text" class="form-control" id="country" name="country" 
+                               value="{{ form_data.get('country', 'India') }}">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- C. PLEDGE / CONSENT SECTION -->
+        <div class="form-section">
+            <h3><i class="bi bi-check-circle"></i> Pledge & Consent</h3>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <div class="form-group required">
+                        <label for="date_of_pledge" class="form-label">Date of Pledge</label>
+                        <input type="date" class="form-control" id="date_of_pledge" name="date_of_pledge" 
+                               required>
+                        <small class="form-text text-muted">Will default to today if not specified</small>
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <div class="form-group">
+                        <label for="time_of_pledge" class="form-label">Time of Pledge</label>
+                        <input type="time" class="form-control" id="time_of_pledge" name="time_of_pledge">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <div class="form-group">
+                        <label for="organs_consented" class="form-label">Organs to Donate</label>
+                        <select class="form-select" id="organs_consented" name="organs_consented">
+                            <option value="Cornea only" {% if form_data.get('organs_consented') == 'Cornea only' %}selected{% endif %}>Cornea only</option>
+                            <option value="Whole eye" {% if form_data.get('organs_consented') == 'Whole eye' %}selected{% endif %}>Whole eye</option>
+                            <option value="Both eyes" {% if form_data.get('organs_consented') == 'Both eyes' %}selected{% endif %} selected>Both eyes</option>
+                            <option value="Sclera" {% if form_data.get('organs_consented') == 'Sclera' %}selected{% endif %}>Sclera</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <div class="form-group">
+                        <label for="language_of_consent" class="form-label">Language of Consent</label>
+                        <select class="form-select" id="language_of_consent" name="language_of_consent">
+                            <option value="English" {% if form_data.get('language_of_consent', 'English') == 'English' %}selected{% endif %} selected>English</option>
+                            <option value="Hindi" {% if form_data.get('language_of_consent') == 'Hindi' %}selected{% endif %}>Hindi</option>
+                            <option value="Regional" {% if form_data.get('language_of_consent') == 'Regional' %}selected{% endif %}>Regional</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <div class="form-group">
+                    <label for="preferred_eye_bank" class="form-label">Preferred Eye Bank (Optional)</label>
+                    <input type="text" class="form-control" id="preferred_eye_bank" name="preferred_eye_bank" 
+                           value="{{ form_data.get('preferred_eye_bank', '') }}">
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <div class="form-group">
+                    <label for="place" class="form-label">Place of Pledge</label>
+                    <input type="text" class="form-control" id="place" name="place" 
+                           value="{{ form_data.get('place', '') }}"
+                           placeholder="e.g., AIIMS, Delhi">
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <div class="form-group">
+                    <label for="additional_notes" class="form-label">Additional Notes / Comments</label>
+                    <textarea class="form-control" id="additional_notes" name="additional_notes" rows="3">{{ form_data.get('additional_notes', '') }}</textarea>
+                </div>
+            </div>
+
+            <!-- Consent Text -->
+            <div class="consent-box">
+                <h5 class="mb-3"><i class="bi bi-exclamation-circle"></i> Consent Statement</h5>
+                <p class="mb-3" style="line-height: 1.8;">
+                    I hereby declare that I wish to donate my eyes after my death to help the blind and restore sight. 
+                    I understand that this is a voluntary and irrevocable decision. I authorize the eye bank to use my eyes 
+                    for corneal transplant and other therapeutic and research purposes as deemed fit by the medical professionals.
+                </p>
+
+                <div class="form-check mb-3">
+                    <input class="form-check-input" type="checkbox" id="acknowledged_revocability" 
+                           name="acknowledged_revocability" {% if 'acknowledged_revocability' in form_data %}checked{% endif %}>
+                    <label class="form-check-label" for="acknowledged_revocability">
+                        I acknowledge that my pledge is revocable at any time
+                    </label>
+                </div>
+
+                <div class="form-check required">
+                    <input class="form-check-input" type="checkbox" id="donor_consent" 
+                           name="donor_consent" required {% if 'donor_consent' in form_data %}checked{% endif %}>
+                    <label class="form-check-label" for="donor_consent">
+                        <strong>I agree and understand the above statement and voluntarily pledge my eyes</strong>
+                    </label>
+                    <div class="invalid-feedback" style="display: block;">
+                        You must agree to the consent statement
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- D. WITNESS 1 (Next of Kin) -->
+        <div class="form-section">
+            <h3><i class="bi bi-person-check"></i> Witness 1 (Next of Kin) - Mandatory</h3>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <div class="form-group required">
+                        <label for="witness1_name" class="form-label">Name</label>
+                        <input type="text" class="form-control" id="witness1_name" name="witness1_name" 
+                               value="{{ form_data.get('witness1_name', '') }}" required>
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <div class="form-group">
+                        <label for="witness1_relationship" class="form-label">Relationship to Donor</label>
+                        <select class="form-select" id="witness1_relationship" name="witness1_relationship">
+                            <option value="">Select Relationship</option>
+                            <option value="Father" {% if form_data.get('witness1_relationship') == 'Father' %}selected{% endif %}>Father</option>
+                            <option value="Mother" {% if form_data.get('witness1_relationship') == 'Mother' %}selected{% endif %}>Mother</option>
+                            <option value="Spouse" {% if form_data.get('witness1_relationship') == 'Spouse' %}selected{% endif %}>Spouse</option>
+                            <option value="Child" {% if form_data.get('witness1_relationship') == 'Child' %}selected{% endif %}>Child</option>
+                            <option value="Sibling" {% if form_data.get('witness1_relationship') == 'Sibling' %}selected{% endif %}>Sibling</option>
+                            <option value="Other" {% if form_data.get('witness1_relationship') == 'Other' %}selected{% endif %}>Other</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <div class="form-group">
+                        <label for="witness1_mobile" class="form-label">Mobile Number</label>
+                        <input type="tel" class="form-control" id="witness1_mobile" name="witness1_mobile" 
+                               value="{{ form_data.get('witness1_mobile', '') }}" pattern="\d{10}">
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <div class="form-group">
+                        <label for="witness1_email" class="form-label">Email Address</label>
+                        <input type="email" class="form-control" id="witness1_email" name="witness1_email" 
+                               value="{{ form_data.get('witness1_email', '') }}">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <div class="form-group">
+                        <label for="witness1_telephone" class="form-label">Telephone (Landline)</label>
+                        <input type="tel" class="form-control" id="witness1_telephone" name="witness1_telephone" 
+                               value="{{ form_data.get('witness1_telephone', '') }}">
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <div class="form-group">
+                        <label for="witness1_address" class="form-label">Address</label>
+                        <input type="text" class="form-control" id="witness1_address" name="witness1_address" 
+                               value="{{ form_data.get('witness1_address', '') }}"
+                               placeholder="Leave blank if same as donor address">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- E. WITNESS 2 (Optional) -->
+        <div class="form-section">
+            <h3><i class="bi bi-person"></i> Witness 2 (Optional)</h3>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <div class="form-group">
+                        <label for="witness2_name" class="form-label">Name</label>
+                        <input type="text" class="form-control" id="witness2_name" name="witness2_name" 
+                               value="{{ form_data.get('witness2_name', '') }}">
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <div class="form-group">
+                        <label for="witness2_relationship" class="form-label">Relationship</label>
+                        <select class="form-select" id="witness2_relationship" name="witness2_relationship">
+                            <option value="">Select Relationship</option>
+                            <option value="Friend" {% if form_data.get('witness2_relationship') == 'Friend' %}selected{% endif %}>Friend</option>
+                            <option value="Colleague" {% if form_data.get('witness2_relationship') == 'Colleague' %}selected{% endif %}>Colleague</option>
+                            <option value="Neighbor" {% if form_data.get('witness2_relationship') == 'Neighbor' %}selected{% endif %}>Neighbor</option>
+                            <option value="Other" {% if form_data.get('witness2_relationship') == 'Other' %}selected{% endif %}>Other</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <div class="form-group">
+                        <label for="witness2_mobile" class="form-label">Mobile Number</label>
+                        <input type="tel" class="form-control" id="witness2_mobile" name="witness2_mobile" 
+                               value="{{ form_data.get('witness2_mobile', '') }}" pattern="\d{10}">
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <div class="form-group">
+                        <label for="witness2_email" class="form-label">Email Address</label>
+                        <input type="email" class="form-control" id="witness2_email" name="witness2_email" 
+                               value="{{ form_data.get('witness2_email', '') }}">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <div class="form-group">
+                        <label for="witness2_telephone" class="form-label">Telephone (Landline)</label>
+                        <input type="tel" class="form-control" id="witness2_telephone" name="witness2_telephone" 
+                               value="{{ form_data.get('witness2_telephone', '') }}">
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <div class="form-group">
+                        <label for="witness2_address" class="form-label">Address</label>
+                        <input type="text" class="form-control" id="witness2_address" name="witness2_address" 
+                               value="{{ form_data.get('witness2_address', '') }}">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- FORM ACTIONS -->
+        <div class="form-section">
+            <div class="d-grid gap-2 d-sm-flex justify-content-sm-end">
+                <a href="{{ url_for('index') }}" class="btn btn-secondary me-sm-2">Cancel</a>
+                <button type="submit" class="btn btn-primary btn-lg">
+                    <i class="bi bi-check-lg"></i> Submit Pledge
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script>
+    // Auto-fill date of pledge with today's date if not provided
+    document.addEventListener('DOMContentLoaded', function() {
+        const dateInput = document.getElementById('date_of_pledge');
+        if (!dateInput.value) {
+            const today = new Date().toISOString().split('T')[0];
+            dateInput.value = today;
+        }
+    });
+
+    // Form validation
+    document.getElementById('pledgeForm').addEventListener('submit', function(event) {
+        if (!this.checkValidity() === false) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
+        this.classList.add('was-validated');
+    }, false);
+</script>
+{% endblock %}
+            <!-- Donor Details -->
+            <h5 class="mt-4">Donor Details</h5>
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label class="form-label">Name of Donor</label>
+                    <input type="text" class="form-control" name="donor_name" required />
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Relation (son/daughter/wife of)</label>
+                    <input type="text" class="form-control" name="relation" />
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Name of relative</label>
+                    <input type="text" class="form-control" name="relative_name" />
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-2">
+                    <label class="form-label">Age (years)</label>
+                    <input type="number" class="form-control" name="age" min="0" />
+                </div>
+                <div class="col-md-10">
+                    <label class="form-label">Full Address</label>
+                    <textarea class="form-control" name="address" rows="2" required></textarea>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <label class="form-label">Place</label>
+                    <input type="text" class="form-control" name="place" />
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Date</label>
+                    <input type="date" class="form-control" name="date_of_pledge" />
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Time (AM/PM)</label>
+                    <input type="time" class="form-control" name="time_of_pledge" />
+                </div>
+            </div>
+
+            <hr />
+
+            <!-- Witness 1 (Next of Kin) -->
+            <h5 class="mt-3">Witness 1 (Next of Kin)</h5>
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <label class="form-label">Name</label>
+                    <input type="text" class="form-control" name="witness1_name" />
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Relationship with Donor</label>
+                    <input type="text" class="form-control" name="witness1_relationship" />
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-12">
+                    <label class="form-label">Address</label>
+                    <textarea class="form-control" name="witness1_address" rows="2"></textarea>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-3">
+                    <label class="form-label">Telephone No.</label>
+                    <input type="text" class="form-control" name="witness1_telephone" />
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Mobile No.</label>
+                    <input type="text" class="form-control" name="witness1_mobile" />
+                </div>
+            </div>
+
+            <hr />
+
+            <!-- Witness 2 -->
+            <h5 class="mt-3">Witness 2</h5>
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <label class="form-label">Name</label>
+                    <input type="text" class="form-control" name="witness2_name" />
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-12">
+                    <label class="form-label">Address</label>
+                    <textarea class="form-control" name="witness2_address" rows="2"></textarea>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-3">
+                    <label class="form-label">Telephone No.</label>
+                    <input type="text" class="form-control" name="witness2_telephone" />
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Mobile No.</label>
+                    <input type="text" class="form-control" name="witness2_mobile" />
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <button type="submit" class="btn btn-primary">
+                    Submit Pledge
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

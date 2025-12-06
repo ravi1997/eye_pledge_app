@@ -130,8 +130,8 @@ test.describe('Eye Donation Pledge System - Test Suite', () => {
       
       // Fill donor details
       await page.locator('input[name="donor_name"]').fill('Test Donor');
-      await page.locator('select[name="donor_gender"]').selectOption('Male');
-      await page.locator('select[name="donor_blood_group"]').selectOption('O+');
+      await page.locator('combobox:has-text("Gender")').selectOption('Male');
+      await page.locator('combobox:has-text("Blood Group")').selectOption('O+');
       await page.locator('input[name="donor_mobile"]').fill('9876543210');
       await page.locator('input[name="donor_email"]').fill('donor@test.com');
       
@@ -142,11 +142,11 @@ test.describe('Eye Donation Pledge System - Test Suite', () => {
       await page.locator('input[name="pincode"]').fill('123456');
       
       // Fill pledge details
-      await page.locator('select[name="organs_consented"]').selectOption('Both Eyes');
+      await page.locator('combobox:has-text("Organs to Donate")').selectOption('Both eyes');
       
       // Fill witness 1
       await page.locator('input[name="witness1_name"]').fill('Witness One');
-      await page.locator('select[name="witness1_relationship"]').selectOption('Other');
+      await page.locator('combobox').nth(6).selectOption('Other');
       await page.locator('input[name="witness1_mobile"]').fill('9876543211');
       
       // Accept consent

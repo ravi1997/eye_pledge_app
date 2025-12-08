@@ -478,7 +478,7 @@
 
     // Form validation
     document.getElementById('pledgeForm').addEventListener('submit', function(event) {
-        if (!this.checkValidity() === false) {
+        if (!this.checkValidity()) {
             event.preventDefault();
             event.stopPropagation();
         }

@@ -62,12 +62,12 @@ def create_app(config_name='development'):
     # ========================
     @app.errorhandler(404)
     def page_not_found(e):
-        return render_template('404.html'), 404
+        return safe_render('404.html'), 404
 
     @app.errorhandler(500)
     def internal_error(e):
         db.session.rollback()
-        return render_template('500.html'), 500
+        return safe_render('500.html'), 500
 
     # ========================
     # Utility Functions
@@ -134,13 +134,25 @@ def create_app(config_name='development'):
         
         return errors
 
+    def safe_render(template_name, **context):
+        """Render a template and catch rendering exceptions to avoid crashing routes."""
+        try:
+            return render_template(template_name, **context)
+        except Exception as e:
+            app.logger.exception(f"Template render error for {template_name}: {e}")
+            try:
+                return render_template('500.html'), 500
+            except Exception:
+                # If even the 500 page fails, return a minimal response
+                return ("An internal error occurred while rendering the page.", 500)
+
     # ========================
     # PUBLIC ROUTES
     # ========================
     @app.route("/")
     def index():
         """Home page"""
-        return render_template('index.html')
+        return safe_render('index.html', active_page='home', current_year=datetime.now().year)
 
     @app.route("/pledge", methods=["GET", "POST"])
     def pledge_form():
@@ -151,7 +163,7 @@ def create_app(config_name='development'):
             if errors:
                 for error in errors:
                     flash(error, 'danger')
-                return render_template('pledge_form.html', form_data=request.form)
+                return safe_render('pledge_form.html', form_data=request.form)
             
             try:
                 # Generate reference number
@@ -220,21 +232,21 @@ def create_app(config_name='development'):
             except Exception as e:
                 db.session.rollback()
                 flash(f'Error saving pledge: {str(e)}', 'danger')
-                return render_template('pledge_form.html', form_data=request.form)
+                return safe_render('pledge_form.html', form_data=request.form)
         
-        return render_template('pledge_form.html', form_data={})
+        return safe_render('pledge_form.html', form_data={})
 
     @app.route("/success/<ref_num>")
     def success(ref_num):
         """Success page after pledge submission"""
         pledge = EyeDonationPledge.query.filter_by(reference_number=ref_num).first()
-        return render_template('success.html', pledge=pledge, ref_num=ref_num)
+        return safe_render('success.html', pledge=pledge, ref_num=ref_num)
 
     @app.route("/pledge/<ref_num>/view")
     def view_pledge(ref_num):
         """View submitted pledge (public)"""
         pledge = EyeDonationPledge.query.filter_by(reference_number=ref_num).first_or_404()
-        return render_template('pledge_view.html', pledge=pledge)
+        return safe_render('pledge_view.html', pledge=pledge)
 
     # ========================
     # ADMIN ROUTES
@@ -258,7 +270,7 @@ def create_app(config_name='development'):
             else:
                 flash('Invalid username or password', 'danger')
         
-        return render_template('admin/login.html')
+        return safe_render('admin/login.html')
 
     @app.route("/admin/logout")
     def admin_logout():
@@ -293,7 +305,7 @@ def create_app(config_name='development'):
             EyeDonationPledge.created_at >= datetime.now() - timedelta(days=365)
         ).group_by('month').all()
         
-        return render_template('admin/dashboard.html',
+        return safe_render('admin/dashboard.html',
                              total_pledges=total_pledges,
                              verified_pledges=verified_pledges,
                              pending_pledges=pending_pledges,
@@ -336,11 +348,11 @@ def create_app(config_name='development'):
             per_page=app.config.get('PLEDGES_PER_PAGE', 20)
         )
         
-        return render_template('admin/pledges_list.html',
-                             pledges=pledges,
-                             search=search,
-                             status=status,
-                             state=state)
+        return safe_render('admin/pledges_list.html',
+                     pledges=pledges,
+                     search=search,
+                     status=status,
+                     state=state)
 
     @app.route("/admin/pledge/<int:pledge_id>")
     @login_required
@@ -350,7 +362,7 @@ def create_app(config_name='development'):
         audit_logs = AuditLog.query.filter_by(pledge_id=pledge_id).order_by(
             AuditLog.created_at.desc()
         ).all()
-        return render_template('admin/pledge_detail.html', pledge=pledge, audit_logs=audit_logs)
+        return safe_render('admin/pledge_detail.html', pledge=pledge, audit_logs=audit_logs)
 
     @app.route("/admin/pledge/<int:pledge_id>/verify", methods=["POST"])
     @login_required
@@ -494,7 +506,7 @@ def create_app(config_name='development'):
     def admin_print_pledge(pledge_id):
         """Print/PDF view of pledge"""
         pledge = EyeDonationPledge.query.get_or_404(pledge_id)
-        return render_template('admin/pledge_print.html', pledge=pledge)
+        return safe_render('admin/pledge_print.html', pledge=pledge)
 
     # ========================
     # CLI Commands

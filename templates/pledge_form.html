@@ -474,6 +474,47 @@
             const today = new Date().toISOString().split('T')[0];
             dateInput.value = today;
         }
+        
+        // Set up age calculation from date of birth
+        const dobInput = document.getElementById('date_of_birth');
+        const ageInput = document.getElementById('age');
+        
+        if (dobInput && ageInput) {
+            // Calculate age when date of birth changes
+            dobInput.addEventListener('change', function() {
+                calculateAge();
+            });
+            
+            // Also calculate age on page load if DOB is already set
+            if (dobInput.value) {
+                calculateAge();
+            }
+            
+            // Function to calculate age
+            function calculateAge() {
+                const dobValue = dobInput.value;
+                if (dobValue) {
+                    const dob = new Date(dobValue);
+                    const today = new Date();
+                    let age = today.getFullYear() - dob.getFullYear();
+                    const monthDiff = today.getMonth() - dob.getMonth();
+                    
+                    // Adjust if birthday hasn't occurred this year yet
+                    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dob.getDate())) {
+                        age--;
+                    }
+                    
+                    // Set the calculated age
+                    ageInput.value = age;
+                    // Disable the age input field to prevent manual editing
+                    ageInput.disabled = true;
+                } else {
+                    // If no DOB, enable the age field and clear it
+                    ageInput.value = '';
+                    ageInput.disabled = false;
+                }
+            }
+        }
     });
 
     // Form validation

@@ -4,99 +4,176 @@
 
 {% block content %}
 <section class="container-main">
-    <div class="card-surface mb-4 animate-in">
-        <div class="d-flex flex-column flex-md-row align-items-start gap-3">
-            <div class="brand-mark" aria-hidden="true" style="width:84px;height:84px;flex:0 0 84px">EP</div>
-            <div class="flex-grow-1">
-                <h2 class="h3 mb-2">Welcome to Eye Donation</h2>
-                <p class="muted-small mb-3">Eye donation is a noble deed that helps restore sight to the blind and contributes to medical research. By pledging your eyes, you give the gift of vision to those in need.</p>
-
+    <div class="card-surface mb-4 animate-in tilt-lift">
+        <div class="row align-items-center g-4">
+            <div class="col-lg-7 d-flex flex-column gap-3">
+                <div class="pill"><i class="bi bi-stars" aria-hidden="true"></i> Pledge with confidence</div>
+                <h2 class="mb-2" style="letter-spacing:-0.02em;">A modern path to gifting the promise of sight.</h2>
+                <p class="muted-small mb-1">Join a community of donors who believe in restoring vision. Share your pledge in minutes with a streamlined, secure experience built for clarity.</p>
                 <div class="d-flex flex-wrap gap-2">
                     <a href="{{ url_for('pledge_form') }}" class="btn btn-primary btn-lg" aria-label="Start pledging">
                         <i class="bi bi-heart-fill me-2" aria-hidden="true"></i> Start Pledging
                     </a>
                     <a href="#learn" class="btn btn-outline-secondary" aria-label="Learn more">Learn More</a>
                 </div>
+                <div class="d-flex flex-wrap gap-3">
+                    <div class="stat-card">
+                        <h5 class="mb-1">Trusted & Secure</h5>
+                        <p>Guided, compliant flow with clear consent steps.</p>
+                    </div>
+                    <div class="stat-card">
+                        <h5 class="mb-1">Minutes to Register</h5>
+                        <p>Concise form designed to keep you moving.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-5">
+                <div class="form-section h-100 d-flex flex-column justify-content-between">
+                    <div>
+                        <div class="d-flex align-items-center gap-3 mb-3">
+                            <span class="icon-circle" aria-hidden="true"><i class="bi bi-eye-fill"></i></span>
+                            <div>
+                                <div class="eyebrow mb-1">Eye Pledge</div>
+                                <h4 class="mb-0">Purpose-built for eye donation</h4>
+                            </div>
+                        </div>
+                        <p class="muted-small mb-3">Your pledge connects trained teams and your family to deliver sight-saving corneal tissue to patients and researchers in need.</p>
+                        <ul class="list-unstyled mb-0">
+                            <li class="d-flex gap-2 align-items-center mb-2">
+                                <i class="bi bi-check-circle-fill text-accent" aria-hidden="true"></i>
+                                <span class="muted-small">Verified workflow with clear instructions</span>
+                            </li>
+                            <li class="d-flex gap-2 align-items-center mb-2">
+                                <i class="bi bi-check-circle-fill text-accent" aria-hidden="true"></i>
+                                <span class="muted-small">Support from the institution at every step</span>
+                            </li>
+                            <li class="d-flex gap-2 align-items-center">
+                                <i class="bi bi-check-circle-fill text-accent" aria-hidden="true"></i>
+                                <span class="muted-small">Downloadable confirmation after submission</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="mt-3 d-flex align-items-center justify-content-between">
+                        <div class="muted-small">Built in partnership with {{ institution_name }}</div>
+                        <i class="bi bi-arrow-right-circle text-accent fs-5" aria-hidden="true"></i>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
     <div class="row g-4">
-        <div class="col-lg-7">
-            <article class="form-section animate-in">
-                <h3 class="mb-3">Why Donate Your Eyes?</h3>
-                <ul class="list-unstyled">
-                    <li class="d-flex gap-3 align-items-start mb-3">
-                        <i class="bi bi-check-circle-fill text-accent fs-4 mt-1" aria-hidden="true"></i>
-                        <div>
-                            <strong>Restore Sight</strong>
-                            <div class="muted-small">Corneal transplants can help blind people see again.</div>
+        <div class="col-lg-7 d-flex flex-column gap-4">
+            <article class="card-surface animate-in tilt-lift">
+                <div class="eyebrow mb-2">Impact</div>
+                <h3 class="mb-3">Why donate your eyes?</h3>
+                <div class="grid-auto">
+                    <div class="feature-tile">
+                        <div class="d-flex align-items-center gap-2 mb-2">
+                            <span class="icon-circle" aria-hidden="true"><i class="bi bi-heart-pulse"></i></span>
+                            <h6 class="mb-0">Restore sight</h6>
                         </div>
-                    </li>
-                    <li class="d-flex gap-3 align-items-start mb-3">
-                        <i class="bi bi-check-circle-fill text-accent fs-4 mt-1" aria-hidden="true"></i>
-                        <div>
-                            <strong>Medical Research</strong>
-                            <div class="muted-small">Eye tissue helps advance vision science and treatment options.</div>
+                        <p class="muted-small">Corneal transplants allow people with corneal blindness to regain vision and independence.</p>
+                    </div>
+                    <div class="feature-tile">
+                        <div class="d-flex align-items-center gap-2 mb-2">
+                            <span class="icon-circle" aria-hidden="true"><i class="bi bi-flask"></i></span>
+                            <h6 class="mb-0">Advance research</h6>
                         </div>
-                    </li>
-                    <li class="d-flex gap-3 align-items-start mb-3">
-                        <i class="bi bi-check-circle-fill text-accent fs-4 mt-1" aria-hidden="true"></i>
-                        <div>
-                            <strong>No Age Barrier</strong>
-                            <div class="muted-small">Eyes can be used regardless of age or corrective lens use.</div>
+                        <p class="muted-small">Eye tissue fuels breakthroughs in vision science and better treatment options.</p>
+                    </div>
+                    <div class="feature-tile">
+                        <div class="d-flex align-items-center gap-2 mb-2">
+                            <span class="icon-circle" aria-hidden="true"><i class="bi bi-infinity"></i></span>
+                            <h6 class="mb-0">No age barrier</h6>
                         </div>
-                    </li>
-                    <li class="d-flex gap-3 align-items-start">
-                        <i class="bi bi-check-circle-fill text-accent fs-4 mt-1" aria-hidden="true"></i>
-                        <div>
-                            <strong>Revocable Decision</strong>
-                            <div class="muted-small">You can revoke your pledge at any time.</div>
+                        <p class="muted-small">Pledges are accepted at any age and regardless of corrective lenses.</p>
+                    </div>
+                    <div class="feature-tile">
+                        <div class="d-flex align-items-center gap-2 mb-2">
+                            <span class="icon-circle" aria-hidden="true"><i class="bi bi-arrow-repeat"></i></span>
+                            <h6 class="mb-0">Fully revocable</h6>
                         </div>
-                    </li>
-                </ul>
-
-                <div class="alert alert-info mt-3 animate-in" role="status">
+                        <p class="muted-small">Change your mind at any time—your pledge respects your latest decision.</p>
+                    </div>
+                </div>
+                <div class="callout mt-3" role="status">
                     <div class="d-flex gap-3 align-items-start">
                         <i class="bi bi-info-circle-fill fs-4 text-info" aria-hidden="true"></i>
                         <div>
-                            <h5 class="mb-1">Important Information</h5>
-                            <p class="muted-small mb-0">Eye donation can be done only after death. Your family will be contacted at the time of death if you have pledged your eyes.</p>
+                            <h5 class="mb-1">Important to know</h5>
+                            <p class="muted-small mb-0">Eye donation takes place only after death. Your family will be contacted when needed if you have pledged your eyes.</p>
                         </div>
                     </div>
                 </div>
+            </article>
 
-                <h4 id="learn" class="mt-4">How to Pledge</h4>
-                <ol class="mb-3">
-                    <li>Fill out the Eye Donation Pledge Form with your details.</li>
-                    <li>Provide information about your family and witnesses.</li>
-                    <li>Declare your consent and understanding.</li>
-                    <li>You will receive a unique reference number for your pledge.</li>
-                </ol>
+            <article class="card-surface animate-in tilt-lift">
+                <div class="eyebrow mb-2">Process</div>
+                <h3 id="learn" class="mb-3">How to pledge</h3>
+                <div class="timeline">
+                    <div class="timeline-step">
+                        <div class="timeline-dot" aria-hidden="true"></div>
+                        <div class="timeline-body">
+                            <h6>Share your details</h6>
+                            <p class="muted-small mb-0">Complete the Eye Donation Pledge Form with your personal and medical information.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-step">
+                        <div class="timeline-dot" aria-hidden="true"></div>
+                        <div class="timeline-body">
+                            <h6>Add family and witnesses</h6>
+                            <p class="muted-small mb-0">Include the people to be informed and confirmers for transparency.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-step">
+                        <div class="timeline-dot" aria-hidden="true"></div>
+                        <div class="timeline-body">
+                            <h6>Declare consent</h6>
+                            <p class="muted-small mb-0">Affirm your understanding, terms, and withdrawal rights.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-step">
+                        <div class="timeline-dot" aria-hidden="true"></div>
+                        <div class="timeline-body">
+                            <h6>Receive your reference</h6>
+                            <p class="muted-small mb-0">You will receive a unique reference number to keep and share.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-3 d-flex flex-wrap gap-2">
+                    <a href="{{ url_for('pledge_form') }}" class="btn btn-primary">
+                        <i class="bi bi-pencil-square me-2" aria-hidden="true"></i> Begin the pledge
+                    </a>
+                    <a href="#site-title" class="btn btn-outline-secondary">
+                        <i class="bi bi-arrow-up-right" aria-hidden="true"></i> Back to top
+                    </a>
+                </div>
             </article>
         </div>
 
-        <aside class="col-lg-5">
-            <div class="card-surface sticky-top animate-in" style="top:1rem">
-                <h5 class="mb-2">Need Help?</h5>
-                <p class="muted-small mb-3">If you have any questions about eye donation or need assistance, please contact us.</p>
+        <aside class="col-lg-5 d-flex flex-column gap-4">
+            <div class="card-surface sticky-top animate-in tilt-lift" style="top:1.25rem">
+                <div class="eyebrow mb-2">Support</div>
+                <h4 class="mb-2">Need help?</h4>
+                <p class="muted-small mb-3">If you have questions or need assistance with your pledge, reach out anytime.</p>
                 <p class="mb-1"><strong>Email:</strong> <a href="mailto:{{ institution_email }}">{{ institution_email }}</a></p>
-                <p class="mb-2"><strong>Address:</strong> <span class="muted-small">{{ institution_address }}</span></p>
+                <p class="mb-3"><strong>Address:</strong> <span class="muted-small">{{ institution_address }}</span></p>
 
-                <hr>
+                <div class="divider-soft"></div>
 
                 <div class="row g-3">
                     <div class="col-6">
-                        <div class="form-section text-center h-100 p-3 animate-in">
-                            <i class="bi bi-book-half fs-2 text-accent" aria-hidden="true"></i>
+                        <div class="feature-tile text-center h-100">
+                            <i class="bi bi-book-half fs-3 text-accent" aria-hidden="true"></i>
                             <h6 class="mt-2 mb-1">Resources</h6>
-                            <p class="muted-small mb-2">Guides and FAQs about the donation process.</p>
+                            <p class="muted-small mb-2">Guides and FAQs about the donation journey.</p>
                             <a href="#" class="btn btn-outline-secondary btn-sm">View</a>
                         </div>
                     </div>
                     <div class="col-6">
-                        <div class="form-section text-center h-100 p-3 animate-in">
-                            <i class="bi bi-pencil-square fs-2 text-accent" aria-hidden="true"></i>
+                        <div class="feature-tile text-center h-100">
+                            <i class="bi bi-pencil-square fs-3 text-accent" aria-hidden="true"></i>
                             <h6 class="mt-2 mb-1">Register</h6>
                             <p class="muted-small mb-2">Ready to pledge? Complete the form now.</p>
                             <a href="{{ url_for('pledge_form') }}" class="btn btn-outline-primary btn-sm">Start</a>

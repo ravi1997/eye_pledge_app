@@ -17,6 +17,11 @@
             --primary: #0b63b7; /* accessible blue */
             --primary-600: #0957a0;
             --accent: #0ea5a4;
+            --easing: cubic-bezier(.2,.9,.2,1);
+            --fast: 160ms;
+            --medium: 320ms;
+            --shadow-sm: 0 6px 20px rgba(15,23,42,0.06);
+            --shadow-md: 0 12px 36px rgba(15,23,42,0.08);
             --success: #16a34a;
             --danger: #dc2626;
             --card-radius: 12px;
@@ -80,6 +85,7 @@
         }
         .brand-mark{
             width:72px;height:72px;background:linear-gradient(135deg,var(--primary),var(--primary-600));border-radius:14px;display:flex;align-items:center;justify-content:center;color:white;font-weight:800;font-size:1.4rem;box-shadow:0 6px 18px rgba(11,99,183,0.15);
+            transition: transform var(--medium) var(--easing), box-shadow var(--medium) var(--easing);
         }
         .hero-title{flex:1;min-width:220px}
         .hero-title h1{margin:0;font-size:1.5rem;font-weight:800;color:var(--text)}
@@ -89,11 +95,15 @@
         .container-main{max-width:var(--max-width);margin:1.25rem auto;padding:0 1rem}
 
         .card-surface{
-            background:var(--surface);border-radius:var(--card-radius);padding:1.5rem;box-shadow:0 6px 20px rgba(15,23,42,0.06);border:1px solid rgba(15,23,42,0.03);
+            background:var(--surface);border-radius:var(--card-radius);padding:1.5rem;box-shadow:var(--shadow-sm);border:1px solid rgba(15,23,42,0.03);transition:transform var(--medium) var(--easing),box-shadow var(--medium) var(--easing);
         }
+
+        .card-surface:hover{transform:translateY(-6px);box-shadow:var(--shadow-md)}
 
         .form-section{padding:1.25rem;border-radius:10px;background:linear-gradient(180deg,rgba(255,255,255,0.98),#fbfdff);box-shadow:0 6px 18px rgba(2,6,23,0.04);border:1px solid rgba(11,99,183,0.06)}
         .form-section h3{color:var(--primary);font-weight:700;margin-bottom:.75rem}
+        .form-section{transition:transform var(--medium) var(--easing),box-shadow var(--medium) var(--easing)}
+        .form-section:hover{transform:translateY(-4px);box-shadow:var(--shadow-md)}
 
         label{font-weight:600;color:var(--text)}
         .form-group.required label::after{content:" *";color:var(--danger)}
@@ -101,9 +111,18 @@
         .form-control:focus,.form-select:focus{box-shadow:0 6px 20px rgba(11,99,183,0.08);border-color:var(--primary)}
 
         .btn-primary{background:var(--primary);border:0;padding:.65rem 1.2rem;border-radius:10px;font-weight:700}
-        .btn-primary:hover{background:var(--primary-600)}
+        .btn-primary{transition:transform var(--fast) var(--easing),box-shadow var(--fast) var(--easing),background-color var(--fast) var(--easing)}
+        .btn-primary:hover{background:var(--primary-600);transform:translateY(-2px);box-shadow:0 8px 20px rgba(11,99,183,0.12)}
+
+        .btn-outline-primary, .btn-outline-secondary{transition:transform var(--fast) var(--easing),color var(--fast) var(--easing),background-color var(--fast) var(--easing)}
+        .btn-outline-primary:hover, .btn-outline-secondary:hover{transform:translateY(-2px)}
 
         .muted-small{color:var(--muted);font-size:.95rem}
+
+        /* Link underline micro-interaction */
+        a.text-decoration-none{position:relative}
+        a.text-decoration-none::after{content:'';position:absolute;left:0;bottom:-2px;height:2px;width:0;background:var(--primary);transition:width var(--medium) var(--easing)}
+        a.text-decoration-none:hover::after{width:100%}
 
         /* Alerts */
         .alert{border-radius:10px}
@@ -120,6 +139,18 @@
         /* Responsive tweaks */
         @media (min-width:768px){
             .hero-title h1{font-size:1.75rem}
+        }
+
+        /* Entrance animation */
+        @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+        .animate-in{animation:fadeUp .48s var(--easing) both}
+
+        /* Focus visible for accessibility */
+        :focus-visible{outline:3px solid rgba(11,99,183,0.18);outline-offset:3px;border-radius:8px}
+
+        /* Respect user motion preferences */
+        @media (prefers-reduced-motion: reduce){
+            .card-surface,.form-section,.btn-primary,.brand-mark{transition:none;animation:none}
         }
 
         @media print{

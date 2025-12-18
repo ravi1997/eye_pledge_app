@@ -32,65 +32,81 @@
             min-height: 100vh;
         } */
 
-:root{
-  /* tweak these to match your exact brand */
-  --bg-0: #f8fbff;     /* near-white */
-  --bg-1: #eef4ff;     /* pale blue */
-  --bg-2: #e7efff;     /* slightly deeper pale */
-    --blob-a: rgba(46, 98, 238, 0.28);  /* brand blue glow (reduced transparency) */
-    --blob-b: rgba(120, 180, 255, 0.36);
-    --blob-c: rgba(255, 255, 255, 0.95);
-    --noise-opacity: 0.03;
+        :root {
+            /* tweak these to match your exact brand */
+            --bg-0: #f8fbff;
+            /* near-white */
+            --bg-1: #eef4ff;
+            /* pale blue */
+            --bg-2: #e7efff;
+            /* slightly deeper pale */
+            --blob-a: rgba(46, 98, 238, 0.28);
+            /* brand blue glow (reduced transparency) */
+            --blob-b: rgba(120, 180, 255, 0.36);
+            --blob-c: rgba(255, 255, 255, 0.95);
+            --noise-opacity: 0.03;
+
+
+            /* RESTORED VARIABLES */
+            --brand: #2563eb;
+            --brand-2: #60a5fa;
+            --muted: #475569;
+            /* Darkened from #64748b for better contrast */
+            --text: #0f172a;
+            --stroke: rgba(30, 41, 59, .08);
+            --card: #ffffffcc;
             --card-solid: #fff;
-}
+            --shadow: 0 18px 60px rgba(15, 23, 42, .08);
+        }
 
-/* Main background */
-.app-bg{
-    min-height: 100vh;
-    /* place a PNG hero illustration on the right, then keep the existing gradient layers */
-    /* full-bleed hero PNG stretched to cover the viewport (first layer), with gradients layered beneath */
-    background:
-    url("{{ url_for('static', filename='image/background.png') }}") center right / cover no-repeat,
-        radial-gradient(900px 650px at 78% 12%, var(--blob-a), transparent 65%),
-        radial-gradient(800px 600px at 18% 10%, var(--blob-b), transparent 62%),
-        radial-gradient(1100px 900px at 78% 22%, rgba(80,140,255,0.20), transparent 70%),
-        radial-gradient(900px 750px at 20% 78%, rgba(80,140,255,0.16), transparent 72%),
-        linear-gradient(180deg, var(--bg-0) 0%, var(--bg-1) 45%, var(--bg-2) 100%);
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-size: cover, auto;
-    overflow-x: hidden;
-    position: relative;
-}
+        /* Main background */
+        .app-bg {
+            min-height: 100vh;
+            /* place a PNG hero illustration on the right, then keep the existing gradient layers */
+            /* full-bleed hero PNG stretched to cover the viewport (first layer), with gradients layered beneath */
+            background: url("{{ url_for('static', filename='image/background.png') }}") center right / cover no-repeat,
+            radial-gradient(900px 650px at 78% 12%, var(--blob-a), transparent 65%),
+            radial-gradient(800px 600px at 18% 10%, var(--blob-b), transparent 62%),
+            radial-gradient(1100px 900px at 78% 22%, rgba(80, 140, 255, 0.20), transparent 70%),
+            radial-gradient(900px 750px at 20% 78%, rgba(80, 140, 255, 0.16), transparent 72%),
+            linear-gradient(180deg, var(--bg-0) 0%, var(--bg-1) 45%, var(--bg-2) 100%);
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: cover, auto;
+            overflow-x: hidden;
+            position: relative;
+            color: var(--text);
+            /* Ensure default text color is applied */
+        }
 
-/* Add subtle floating “bokeh” blobs like the design */
-.app-bg::before{
-  content:"";
-  position:absolute;
-  inset:-120px;
-  pointer-events:none;
-  background:
-    radial-gradient(28px 28px at 12% 18%, rgba(255,255,255,0.95), transparent 30%),
-    radial-gradient(18px 18px at 22% 12%, rgba(255,255,255,0.85), transparent 30%),
-    radial-gradient(22px 22px at 88% 16%, rgba(255,255,255,0.85), transparent 30%),
-    radial-gradient(34px 34px at 78% 10%, rgba(255,255,255,0.90), transparent 30%),
-    radial-gradient(26px 26px at 70% 28%, rgba(255,255,255,0.70), transparent 30%),
-    radial-gradient(30px 30px at 10% 70%, rgba(255,255,255,0.70), transparent 30%),
-    radial-gradient(22px 22px at 30% 85%, rgba(255,255,255,0.60), transparent 30%);
-  filter: blur(0.2px);
-  opacity: 0.9;
-}
+        /* Add subtle floating “bokeh” blobs like the design */
+        .app-bg::before {
+            content: "";
+            position: absolute;
+            inset: -120px;
+            pointer-events: none;
+            background:
+                radial-gradient(28px 28px at 12% 18%, rgba(255, 255, 255, 0.95), transparent 30%),
+                radial-gradient(18px 18px at 22% 12%, rgba(255, 255, 255, 0.85), transparent 30%),
+                radial-gradient(22px 22px at 88% 16%, rgba(255, 255, 255, 0.85), transparent 30%),
+                radial-gradient(34px 34px at 78% 10%, rgba(255, 255, 255, 0.90), transparent 30%),
+                radial-gradient(26px 26px at 70% 28%, rgba(255, 255, 255, 0.70), transparent 30%),
+                radial-gradient(30px 30px at 10% 70%, rgba(255, 255, 255, 0.70), transparent 30%),
+                radial-gradient(22px 22px at 30% 85%, rgba(255, 255, 255, 0.60), transparent 30%);
+            filter: blur(0.2px);
+            opacity: 0.9;
+        }
 
-/* Tiny noise layer to avoid banding (very important for this look) */
-.app-bg::after{
-  content:"";
-  position:absolute;
-  inset:0;
-  pointer-events:none;
-  opacity: var(--noise-opacity);
-  mix-blend-mode: multiply;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='.35'/%3E%3C/svg%3E");
-}
+        /* Tiny noise layer to avoid banding (very important for this look) */
+        .app-bg::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            opacity: var(--noise-opacity);
+            mix-blend-mode: multiply;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='.35'/%3E%3C/svg%3E");
+        }
 
 
 
@@ -167,6 +183,8 @@
             background: linear-gradient(135deg, var(--brand), #3b82f6);
             border: 0;
             box-shadow: 0 12px 28px rgba(37, 99, 235, .48);
+            color: #fff;
+            /* Ensure text is white */
         }
 
         .cta-outline {
@@ -257,13 +275,14 @@
         <header class="px-3 py-2 mb-4">
             <div class="d-flex align-items-center justify-content-between gap-3 flex-wrap">
                 <div class="d-flex align-items-center gap-2">
-                    <img src="{{ url_for('static', filename='image/logo.jpeg') }}" alt="Eye Pledge Logo" class="brand-mark" style="width: 34px; height: 34px; border-radius: 10px; object-fit: cover;">
+                    <img src="{{ url_for('static', filename='image/logo.jpeg') }}" alt="Eye Pledge Logo"
+                        class="brand-mark" style="width: 34px; height: 34px; border-radius: 10px; object-fit: cover;">
                     <div class="lh-sm">
                         <div class="fw-bold">Eye Donation Pledge</div>
                     </div>
                 </div>
 
-                <nav class="nav nav-pills">
+                <nav class="nav nav-pills gap-2">
                     <a class="nav-link {% if active_page=='home' %}active{% endif %}"
                         href="{{ url_for('index') }}">Home</a>
                     <a class="nav-link {% if active_page=='pledge' %}active{% endif %}"

@@ -163,7 +163,7 @@ def create_app(config_name='development'):
     def favicon():
         """Favicon"""
         return send_from_directory(os.path.join(app.root_path, 'static', 'image'),
-                                 'logo.png', mimetype='image/png')
+                                 'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
     @app.route("/pledge", methods=["GET", "POST"])
     def pledge_form():

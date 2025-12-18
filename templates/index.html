@@ -348,7 +348,8 @@
             </p>
 
             <div class="small mb-3">
-                <div><span class="fw-semibold">Helpline:</span> {{ institution_phone }}</div>
+                <div><span class="fw-semibold">Helpline:</span> <a href="tel:{{ institution_phone }}"
+                        class="text-reset text-decoration-none">{{ institution_phone }}</a></div>
                 <div class="mt-1"><span class="fw-semibold">Email:</span> <a href="mailto:{{ institution_email }}">{{
                         institution_email }}</a></div>
                 <div class="text-secondary mt-1"><span class="fw-semibold text-dark">Address:</span> Available on

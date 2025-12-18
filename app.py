@@ -152,7 +152,10 @@ def create_app(config_name='development'):
     @app.route("/")
     def index():
         """Home page"""
-        return safe_render('index.html', active_page='home', current_year=datetime.now().year)
+        return safe_render('index.html', 
+                address = app.config.get('INSTITUTION_ADDRESS', 'Eye Bank'),    
+                active_page='home', 
+                current_year=datetime.now().year)
 
     @app.route("/pledge", methods=["GET", "POST"])
     def pledge_form():

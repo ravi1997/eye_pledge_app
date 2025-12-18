@@ -257,10 +257,121 @@
             text-decoration: underline;
         }
 
-        @media (max-width: 991.98px) {
-            .app-shell {
-                padding-top: 16px;
+        /* Responsive & Fluid Typography */
+        html {
+            font-size: 16px;
+        }
+
+        h1,
+        .h1 {
+            font-size: clamp(2rem, 5vw + 1rem, 3.5rem);
+        }
+
+        h2,
+        .h2 {
+            font-size: clamp(1.75rem, 3vw + 1rem, 2.5rem);
+        }
+
+        h3,
+        .h3 {
+            font-size: clamp(1.5rem, 2vw + 1rem, 2rem);
+        }
+
+        /* Modern Utilities */
+        .glass-panel {
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
             }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-enter {
+            animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
+            /* Start hidden */
+        }
+
+        .delay-1 {
+            animation-delay: 0.1s;
+        }
+
+        .delay-2 {
+            animation-delay: 0.2s;
+        }
+
+        .delay-3 {
+            animation-delay: 0.3s;
+        }
+
+        .delay-4 {
+            animation-delay: 0.4s;
+        }
+
+        /* Interactive Elements */
+        .soft-card,
+        .card-solid,
+        .btn,
+        .cta,
+        .nav-link {
+            transition: all 0.2s ease-out;
+        }
+
+        .soft-card:hover,
+        .card-solid:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 20px 40px rgba(15, 23, 42, .12);
+        }
+
+        .cta-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 16px 32px rgba(37, 99, 235, .60);
+        }
+
+        /* Component Overrides */
+        .soft-card {
+            background: rgba(255, 255, 255, 0.85);
+            /* Slightly more transparent for glass effect */
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--stroke);
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+        }
+
+        /* Responsive Nav */
+        @media (max-width: 768px) {
+            .nav-pills {
+                flex-wrap: nowrap;
+                overflow-x: auto;
+                padding-bottom: 4px;
+                -webkit-overflow-scrolling: touch;
+                mask-image: linear-gradient(to right, black 90%, transparent 100%);
+            }
+
+            .nav-pills .nav-link {
+                white-space: nowrap;
+            }
+
+            /* Better padding for mobile */
+            .app-shell {
+                padding-top: 20px;
+                padding-bottom: 80px;
+            }
+        }
+
+        @media (max-width: 991.98px) {
+            /* Adjustments already present */
         }
     </style>
 
@@ -275,7 +386,7 @@
         <header class="px-3 py-2 mb-4">
             <div class="d-flex align-items-center justify-content-between gap-3 flex-wrap">
                 <div class="d-flex align-items-center gap-2">
-                    <img src="{{ url_for('static', filename='image/logo.jpeg') }}" alt="Eye Pledge Logo"
+                    <img src="{{ url_for('static', filename='image/logo.png') }}" alt="Eye Pledge Logo"
                         class="brand-mark" style="width: 34px; height: 34px; border-radius: 10px; object-fit: cover;">
                     <div class="lh-sm">
                         <div class="fw-bold">Eye Donation Pledge</div>
@@ -304,7 +415,7 @@
             <div class="row g-3 align-items-start">
                 <div class="col-md-4">
                     <div class="fw-bold text-dark">National Eye Bank</div>
-                    <div class="small">Address: Available on request</div>
+                    <div class="small">Address: {{ address }}</div>
                 </div>
                 <div class="col-md-4">
                     <div class="fw-bold text-dark">Contact</div>

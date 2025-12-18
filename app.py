@@ -11,6 +11,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 from config import Config
 from models import EyeDonationPledge, AdminUser, AuditLog, SystemLog, db
+from translations import get_translation
 
 import logging
 import sys
@@ -101,6 +102,13 @@ def create_app(config_name='development'):
             'institution_email': app.config.get('INSTITUTION_EMAIL', 'info@eyebank.org'),
             'institution_phone': app.config.get('INSTITUTION_PHONE', '+91-1234567890'),
         }
+
+    @app.context_processor
+    def inject_language_helper():
+        def translate(text):
+            lang = session.get('lang', 'English')
+            return get_translation(text, lang)
+        return dict(_=translate)
 
     # ========================
     # Error Handlers
@@ -303,6 +311,15 @@ def create_app(config_name='development'):
         return send_from_directory(os.path.join(app.root_path, 'static', 'image'),
                                  'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
+    @app.route("/set-language/<lang>")
+    def set_language(lang):
+        """Set the language preference in session"""
+        if lang in ['English', 'Hindi']:
+            session['lang'] = lang
+        
+        # Redirect back to the page the user came from, or home
+        return redirect(request.referrer or url_for('index'))
+
     @app.route("/pledge", methods=["GET", "POST"])
     def pledge_form():
         """Pledge form - display and submit"""
@@ -326,6 +343,9 @@ def create_app(config_name='development'):
                 # Generate reference number
                 ref_num = generate_reference_number()
                 
+                # Get preferred language from session or default to English
+                selected_lang = session.get('lang', 'English')
+
                 # Create pledge
                 pledge = EyeDonationPledge(
                     reference_number=ref_num,
@@ -354,7 +374,7 @@ def create_app(config_name='development'):
                     date_of_pledge=parse_date(request.form.get('date_of_pledge')),
                     time_of_pledge=parse_time(request.form.get('time_of_pledge')),
                     organs_consented=request.form.get('organs_consented'),
-                    language_preference=request.form.get('language_of_consent'),
+                    language_preference=selected_lang,
                     place_of_pledge=request.form.get('place'),
                     pledge_additional_notes=request.form.get('additional_notes'),
                     
@@ -518,22 +538,7 @@ def create_app(config_name='development'):
 
 
 
-    @app.route("/admin/pledge/<int:pledge_id>/deactivate", methods=["POST"])
-    @login_required
-    def admin_deactivate_pledge(pledge_id):
-        """Deactivate pledge (soft delete)"""
-        pledge = EyeDonationPledge.query.get_or_404(pledge_id)
-        admin_id = session.get('admin_user_id')
-        
-        pledge.is_active = False
-        
-        # Log security event
-        log_security_event('PLEDGE_DEACTIVATED', f"Pledge {pledge.reference_number} deactivated", user_id=admin_id, pledge_id=pledge.id, level='warning')
-        
-        db.session.commit()
-        
-        flash('Pledge deactivated', 'warning')
-        return redirect(url_for('admin_pledges'))
+
 
     @app.route("/admin/export", methods=["GET"])
     @login_required

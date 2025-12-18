@@ -7,7 +7,7 @@
     <meta name="description"
         content="Pledge your eyes with the National Eye Bank. Your decision can restore sight to two people. Join thousands of donors today." />
     <meta name="keywords" content="eye donation, organ donation, AIIMS, National Eye Bank, pledge eyes, donate eyes" />
-    <title>{% block title %}EyePledge{% endblock %}</title>
+    <title>{% block title %}{{ _('EyePledge') }}{% endblock %}</title>
 
     <!-- Bootstrap + Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -392,22 +392,38 @@
                     <img src="{{ url_for('static', filename='image/logo.png') }}" alt="Eye Pledge Logo" height="42"
                         class="me-1">
                     <div class="lh-sm">
-                        <div class="fw-bold">Eye Donation Pledge</div>
+                        <div class="fw-bold">{{ _('Eye Donation Pledge') }}</div>
                     </div>
                 </div>
 
-                <nav class="nav nav-pills gap-2">
-                    <a class="nav-link {% if active_page=='home' %}active{% endif %}"
-                        href="{{ url_for('index') }}">Home</a>
+                <nav class="nav nav-pills gap-2 align-items-center">
+                    <a class="nav-link {% if active_page=='home' %}active{% endif %}" href="{{ url_for('index') }}">{{
+                        _('Home') }}</a>
                     <a class="nav-link {% if active_page=='pledge' %}active{% endif %}"
-                        href="{{ url_for('pledge_form') }}">Pledge Form</a>
+                        href="{{ url_for('pledge_form') }}">{{ _('Pledge Form') }}</a>
                     {% if session.get('admin_user_id') %}
                     <a class="nav-link {% if active_page=='admin' %}active{% endif %}"
-                        href="{{ url_for('admin_dashboard') }}">Dashboard</a>
+                        href="{{ url_for('admin_dashboard') }}">{{ _('Dashboard') }}</a>
                     {% else %}
                     <a class="nav-link {% if active_page=='admin' %}active{% endif %}"
-                        href="{{ url_for('admin_login') }}">Admin</a>
+                        href="{{ url_for('admin_login') }}">{{ _('Admin') }}</a>
                     {% endif %}
+
+                    <div class="vr bg-secondary opacity-25 mx-1" style="height: 1.5rem;"></div>
+
+                    <div class="dropdown">
+                        <button class="nav-link dropdown-toggle d-flex align-items-center gap-1" type="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-translate"></i> <span class="d-none d-md-inline">{{ session.get('lang',
+                                'English') }}</span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0">
+                            <li><a class="dropdown-item {% if session.get('lang') == 'English' or not session.get('lang') %}active{% endif %}"
+                                    href="{{ url_for('set_language', lang='English') }}">{{ _('English') }}</a></li>
+                            <li><a class="dropdown-item {% if session.get('lang') == 'Hindi' %}active{% endif %}"
+                                    href="{{ url_for('set_language', lang='Hindi') }}">{{ _('Hindi (हिंदी)') }}</a></li>
+                        </ul>
+                    </div>
                 </nav>
             </div>
         </header>
@@ -436,27 +452,27 @@
             <div class="row g-3 align-items-start">
                 <div class="col-md-4">
                     <div class="fw-bold text-dark">{{ institution_name }}</div>
-                    <div class="small">Address: {{ address }}</div>
+                    <div class="small">{{ _('Address') }}: {{ address }}</div>
                 </div>
                 <div class="col-md-4">
-                    <div class="fw-bold text-dark">Contact</div>
+                    <div class="fw-bold text-dark">{{ _('Contact') }}</div>
                     <div class="small"><i class="bi bi-envelope me-1"></i> <a href="mailto:{{ institution_email }}"
                             class="text-reset text-decoration-none">{{ institution_email }}</a></div>
                     <div class="small mt-1"><i class="bi bi-telephone me-1"></i> <a href="tel:{{ institution_phone }}"
                             class="text-reset text-decoration-none">{{ institution_phone }}</a></div>
                 </div>
                 <div class="col-md-4">
-                    <div class="fw-bold text-dark">Quick Links</div>
+                    <div class="fw-bold text-dark">{{ _('Quick Links') }}</div>
                     <div class="d-flex flex-column gap-1 small">
-                        <a href="{{ url_for('index') }}">Home</a>
-                        <a href="{{ url_for('pledge_form') }}">Pledge Form</a>
-                        <a href="{{ url_for('admin_login') }}">Admin Login</a>
+                        <a href="{{ url_for('index') }}">{{ _('Home') }}</a>
+                        <a href="{{ url_for('pledge_form') }}">{{ _('Pledge Form') }}</a>
+                        <a href="{{ url_for('admin_login') }}">{{ _('Admin Login') }}</a>
                     </div>
                 </div>
             </div>
 
             <div class="text-center small mt-4">
-                © {{ current_year|default(2025) }} {{ institution_name }}. All rights reserved.
+                © {{ current_year|default(2025) }} {{ institution_name }}. {{ _('All rights reserved') }}.
             </div>
             {% endblock %}
         </footer>

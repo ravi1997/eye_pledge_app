@@ -12,19 +12,14 @@
 
 <div class="container-main">
     <!-- Actions Bar -->
-    <div class="form-section mb-4">
-        <div class="row">
-
-            <div class="col-md-4 text-end">
-                <a href="{{ url_for('admin_print_pledge', pledge_id=pledge.id) }}"
-                    class="btn btn-sm btn-outline-primary" target="_blank">
-                    <i class="bi bi-printer"></i> Print/PDF
-                </a>
-                <a href="{{ url_for('admin_pledges') }}" class="btn btn-sm btn-outline-secondary">
-                    <i class="bi bi-arrow-left"></i> Back
-                </a>
-            </div>
-        </div>
+    <div class="form-section mb-4 text-end">
+        <a href="{{ url_for('admin_print_pledge', pledge_id=pledge.id) }}" class="btn btn-sm btn-outline-primary"
+            target="_blank">
+            <i class="bi bi-printer"></i> Print/PDF
+        </a>
+        <a href="{{ url_for('admin_pledges') }}" class="btn btn-sm btn-outline-secondary">
+            <i class="bi bi-arrow-left"></i> Back
+        </a>
     </div>
 
     <!-- Donor Information -->
@@ -77,15 +72,15 @@
                 <p><strong>Organs Consented:</strong> {{ pledge.organs_consented }}</p>
             </div>
             <div class="col-md-6">
-                <p><strong>Language of Consent:</strong> {{ pledge.language_of_consent }}</p>
-                <p><strong>Place of Pledge:</strong> {{ pledge.place or 'N/A' }}</p>
+                <p><strong>Language of Consent:</strong> {{ pledge.language_preference }}</p>
+                <p><strong>Place of Pledge:</strong> {{ pledge.place_of_pledge or 'N/A' }}</p>
                 <p><strong>Preferred Eye Bank:</strong> {{ pledge.preferred_eye_bank or 'N/A' }}</p>
             </div>
         </div>
-        {% if pledge.additional_notes %}
+        {% if pledge.pledge_additional_notes %}
         <hr>
         <p><strong>Additional Notes:</strong></p>
-        <p class="text-muted" style="white-space: pre-wrap;">{{ pledge.additional_notes }}</p>
+        <p class="text-muted" style="white-space: pre-wrap;">{{ pledge.pledge_additional_notes }}</p>
         {% endif %}
     </div>
 
@@ -128,38 +123,11 @@
     <!-- System Information -->
     <div class="form-section">
         <h3><i class="bi bi-info-circle"></i> System Information</h3>
-        <div class="row">
-            <div class="col-md-6">
-                <p><strong>Created At:</strong> {{ pledge.created_at.strftime('%d-%m-%Y %H:%M:%S') }}</p>
-                <p><strong>Source:</strong> {{ pledge.source }}</p>
-            </div>
-            <div class="col-md-6">
-                <p><strong>Status:</strong> {% if pledge.is_active %}Active{% else %}<span
-                        class="badge bg-danger">Deactivated</span>{% endif %}</p>
-            </div>
-        </div>
+        <p><strong>Created At:</strong> {{ pledge.created_at.strftime('%d-%m-%Y %H:%M:%S') }}</p>
+        <p><strong>Source:</strong> {{ pledge.source }}</p>
     </div>
 
-    <!-- Admin Actions -->
-    <div class="form-section">
-        <h5 class="mb-3"><i class="bi bi-tools"></i> Admin Actions</h5>
-        <div class="row">
-            <div class="col-md-6">
 
-            </div>
-            <div class="col-md-6">
-                {% if pledge.is_active %}
-                <form method="POST" action="{{ url_for('admin_deactivate_pledge', pledge_id=pledge.id) }}"
-                    class="d-inline">
-                    <button type="submit" class="btn btn-danger"
-                        onclick="return confirm('Deactivate this pledge? (Data will not be deleted)')">
-                        <i class="bi bi-trash"></i> Deactivate
-                    </button>
-                </form>
-                {% endif %}
-            </div>
-        </div>
-    </div>
 
     <!-- Navigation -->
     <div class="form-section text-center">

@@ -165,7 +165,7 @@
 </style>
 {% endblock %}
 
-{% block title %}Eye Donation Pledge - Home{% endblock %}
+{% block title %}{{ _('Eye Donation Pledge') }} - {{ _('Home') }}{% endblock %}
 
 {% block hero_content %}
 <section class="row g-4 align-items-stretch">
@@ -175,32 +175,34 @@
             <div class="d-flex flex-column gap-3">
                 <div class="pill">
                     <i class="bi bi-stars" aria-hidden="true"></i>
-                    Pledge with confidence
+                    {{ _('Pledge with confidence') }}
                 </div>
 
                 <h1 class="mb-1" style="letter-spacing:-0.02em;">
-                    A modern path to gifting the promise of sight.
+                    {{ _('A modern path to gifting the promise of sight.') }}
                 </h1>
 
                 <p class="muted-small mb-0" style="max-width: 56ch;">
-                    Join <strong class="text-primary">{{ pledge_count }}</strong> people who have pledged to restore
-                    vision.
-                    Pledge in minutes through a guided, clear, and secure experience.
+                    {{ _('Join') }} <strong class="text-primary">{{ pledge_count }}</strong> {{ _('people who have
+                    pledged to restore vision.') }}
+                    {{ _('Pledge in minutes through a guided, clear, and secure experience.') }}
                 </p>
 
                 <div class="d-flex gap-2 flex-wrap mt-2">
                     <a class="btn btn-primary cta cta-primary" href="{{ url_for('pledge_form') }}">
-                        <i class="bi bi-heart-fill me-2"></i>Start Pledging
+                        <i class="bi bi-heart-fill me-2"></i>{{ _('Start Pledging') }}
                     </a>
                     <a class="btn cta cta-outline" href="#learn-more">
-                        Learn More
+                        {{ _('Learn More') }}
                     </a>
                 </div>
 
                 <div class="d-flex gap-2 flex-wrap mt-1">
-                    <span class="badge-soft"><i class="bi bi-building-check"></i>Managed by National Eye Bank</span>
-                    <span class="badge-soft"><i class="bi bi-shield-check"></i>Secure, consent-based workflow</span>
-                    <span class="badge-soft"><i class="bi bi-stopwatch"></i>Takes ~3–5 minutes</span>
+                    <span class="badge-soft"><i class="bi bi-building-check"></i>{{ _('Managed by National Eye Bank')
+                        }}</span>
+                    <span class="badge-soft"><i class="bi bi-shield-check"></i>{{ _('Secure, consent-based workflow')
+                        }}</span>
+                    <span class="badge-soft"><i class="bi bi-stopwatch"></i>{{ _('Takes ~3–5 minutes') }}</span>
                 </div>
             </div>
         </div>
@@ -209,15 +211,15 @@
     <!-- HERO RIGHT CARD -->
     <div class="col-lg-5">
         <div class="card-solid p-4 h-100 animate-enter delay-2">
-            <div class="section-label mb-2">Eye pledge</div>
+            <div class="section-label mb-2">{{ _('Eye pledge') }}</div>
 
             <div class="d-flex align-items-start gap-3">
                 <div class="icon-dot"><i class="bi bi-eye"></i></div>
                 <div>
-                    <div class="fw-bold fs-5">Purpose-built for eye donation</div>
+                    <div class="fw-bold fs-5">{{ _('Purpose-built for eye donation') }}</div>
                     <div class="small text-secondary mt-1">
-                        Your pledge connects trained teams and your family to deliver sight-saving corneal tissue to
-                        patients and researchers in need.
+                        {{ _('Your pledge connects trained teams and your family to deliver sight-saving corneal tissue
+                        to patients and researchers in need.') }}
                     </div>
                 </div>
             </div>
@@ -226,30 +228,30 @@
                 <div class="d-flex gap-2 align-items-start">
                     <i class="bi bi-check-circle-fill text-primary mt-1"></i>
                     <div class="small">
-                        <div class="fw-semibold">Verified workflow</div>
-                        <div class="text-secondary">Clear instructions with transparency.</div>
+                        <div class="fw-semibold">{{ _('Verified workflow') }}</div>
+                        <div class="text-secondary">{{ _('Clear instructions with transparency.') }}</div>
                     </div>
                 </div>
 
                 <div class="d-flex gap-2 align-items-start">
                     <i class="bi bi-check-circle-fill text-primary mt-1"></i>
                     <div class="small">
-                        <div class="fw-semibold">Support at every step</div>
-                        <div class="text-secondary">Help is available when needed.</div>
+                        <div class="fw-semibold">{{ _('Support at every step') }}</div>
+                        <div class="text-secondary">{{ _('Help is available when needed.') }}</div>
                     </div>
                 </div>
 
                 <div class="d-flex gap-2 align-items-start">
                     <i class="bi bi-check-circle-fill text-primary mt-1"></i>
                     <div class="small">
-                        <div class="fw-semibold">Downloadable confirmation</div>
-                        <div class="text-secondary">Get a reference after submission.</div>
+                        <div class="fw-semibold">{{ _('Downloadable confirmation') }}</div>
+                        <div class="text-secondary">{{ _('Get a reference after submission.') }}</div>
                     </div>
                 </div>
             </div>
 
             <div class="mt-3 small text-secondary d-flex justify-content-between align-items-center">
-                <span>Built in partnership with {{ institution_name }}</span>
+                <span>{{ _('Built in partnership with') }} {{ institution_name }}</span>
                 <span class="icon-dot" style="width:28px;height:28px;border-radius:10px;">
                     <i class="bi bi-arrow-right"></i>
                 </span>
@@ -266,8 +268,8 @@
     <!-- IMPACT -->
     <div class="col-lg-7">
         <div class="soft-card p-4 animate-enter delay-3">
-            <div class="section-label">Impact</div>
-            <h2 class="h4 fw-bold mt-2">Why donate your eyes?</h2>
+            <div class="section-label">{{ _('Impact') }}</div>
+            <h2 class="h4 fw-bold mt-2">{{ _('Why donate your eyes?') }}</h2>
 
             <div class="row g-3 mt-1">
                 <div class="col-md-6">
@@ -275,9 +277,9 @@
                         <div class="d-flex gap-2 align-items-start">
                             <span class="icon-dot"><i class="bi bi-brightness-high"></i></span>
                             <div>
-                                <div class="fw-semibold">Restore sight</div>
-                                <div class="small text-secondary">Corneal transplants help people regain vision and
-                                    independence.</div>
+                                <div class="fw-semibold">{{ _('Restore sight') }}</div>
+                                <div class="small text-secondary">{{ _('Corneal transplants help people regain vision
+                                    and independence.') }}</div>
                             </div>
                         </div>
                     </div>
@@ -288,9 +290,9 @@
                         <div class="d-flex gap-2 align-items-start">
                             <span class="icon-dot"><i class="bi bi-journal-medical"></i></span>
                             <div>
-                                <div class="fw-semibold">Advance research</div>
-                                <div class="small text-secondary">Eye tissue supports breakthroughs in vision science
-                                    and treatments.</div>
+                                <div class="fw-semibold">{{ _('Advance research') }}</div>
+                                <div class="small text-secondary">{{ _('Eye tissue supports breakthroughs in vision
+                                    science and treatments.') }}</div>
                             </div>
                         </div>
                     </div>
@@ -301,9 +303,9 @@
                         <div class="d-flex gap-2 align-items-start">
                             <span class="icon-dot"><i class="bi bi-person-check"></i></span>
                             <div>
-                                <div class="fw-semibold">No age barrier</div>
-                                <div class="small text-secondary">Pledges are accepted at any age and with most
-                                    conditions.</div>
+                                <div class="fw-semibold">{{ _('No age barrier') }}</div>
+                                <div class="small text-secondary">{{ _('Pledges are accepted at any age and with most
+                                    conditions.') }}</div>
                             </div>
                         </div>
                     </div>
@@ -314,9 +316,9 @@
                         <div class="d-flex gap-2 align-items-start">
                             <span class="icon-dot"><i class="bi bi-arrow-repeat"></i></span>
                             <div>
-                                <div class="fw-semibold">Fully revocable</div>
-                                <div class="small text-secondary">You can change your decision anytime—your latest
-                                    choice is respected.</div>
+                                <div class="fw-semibold">{{ _('Fully revocable') }}</div>
+                                <div class="small text-secondary">{{ _('You can change your decision anytime—your latest
+                                    choice is respected.') }}</div>
                             </div>
                         </div>
                     </div>
@@ -328,9 +330,9 @@
                 <div class="d-flex gap-2 align-items-start">
                     <i class="bi bi-info-circle-fill text-primary mt-1"></i>
                     <div class="small">
-                        <div class="fw-semibold">Important to know</div>
-                        <div class="text-secondary">Eye donation takes place after death. Your family may be contacted
-                            when needed if you have pledged.</div>
+                        <div class="fw-semibold">{{ _('Important to know') }}</div>
+                        <div class="text-secondary">{{ _('Eye donation takes place after death. Your family may be
+                            contacted when needed if you have pledged.') }}</div>
                     </div>
                 </div>
             </div>
@@ -341,29 +343,30 @@
     <!-- SUPPORT -->
     <div class="col-lg-5">
         <div class="soft-card p-4 h-100 animate-enter delay-4">
-            <div class="section-label">Support</div>
-            <h2 class="h5 fw-bold mt-2">Need help?</h2>
+            <div class="section-label">{{ _('Support') }}</div>
+            <h2 class="h5 fw-bold mt-2">{{ _('Need help?') }}</h2>
             <p class="small text-secondary mb-3">
-                If you have questions or need assistance with your pledge, reach out anytime.
+                {{ _('If you have questions or need assistance with your pledge, reach out anytime.') }}
             </p>
 
             <div class="small mb-3">
-                <div><span class="fw-semibold">Helpline:</span> <a href="tel:{{ institution_phone }}"
+                <div><span class="fw-semibold">{{ _('Helpline') }}:</span> <a href="tel:{{ institution_phone }}"
                         class="text-reset text-decoration-none">{{ institution_phone }}</a></div>
-                <div class="mt-1"><span class="fw-semibold">Email:</span> <a href="mailto:{{ institution_email }}">{{
+                <div class="mt-1"><span class="fw-semibold">{{ _('Email') }}:</span> <a
+                        href="mailto:{{ institution_email }}">{{
                         institution_email }}</a></div>
-                <div class="text-secondary mt-1"><span class="fw-semibold text-dark">Address:</span> Available on
-                    request</div>
+                <div class="text-secondary mt-1"><span class="fw-semibold text-dark">{{ _('Address') }}:</span> {{
+                    _('Available on request') }}</div>
             </div>
 
             <div class="row g-3">
                 <div class="col-6">
                     <div class="card-solid p-3 h-100 text-center">
                         <div class="icon-dot mx-auto mb-2"><i class="bi bi-book"></i></div>
-                        <div class="fw-semibold">Resources</div>
-                        <div class="small text-secondary">Guides and FAQs about the donation journey.</div>
+                        <div class="fw-semibold">{{ _('Resources') }}</div>
+                        <div class="small text-secondary">{{ _('Guides and FAQs about the donation journey.') }}</div>
                         <button class="btn btn-sm mt-2 cta-outline" type="button" disabled>
-                            Coming soon
+                            {{ _('Coming soon') }}
                         </button>
                     </div>
                 </div>
@@ -371,10 +374,10 @@
                 <div class="col-6">
                     <div class="card-solid p-3 h-100 text-center">
                         <div class="icon-dot mx-auto mb-2"><i class="bi bi-pencil-square"></i></div>
-                        <div class="fw-semibold">Register</div>
-                        <div class="small text-secondary">Ready to pledge? Complete the form now.</div>
+                        <div class="fw-semibold">{{ _('Register') }}</div>
+                        <div class="small text-secondary">{{ _('Ready to pledge? Complete the form now.') }}</div>
                         <a class="btn btn-sm btn-primary mt-2 cta-primary" href="{{ url_for('pledge_form') }}">
-                            Start
+                            {{ _('Start') }}
                         </a>
                     </div>
                 </div>
@@ -389,7 +392,7 @@
     <div class="col-12">
         <div class="soft-card p-4 animate-enter delay-4">
             <!-- <div class="section-label">Process</div> -->
-            <h2 class="h2 fw-bold mt-2">How to pledge</h2>
+            <h2 class="h2 fw-bold mt-2">{{ _('How to pledge') }}</h2>
 
             <!-- horizontal timeline (numbers) -->
             <div class="mt-3">
@@ -397,31 +400,32 @@
                     <li class="timeline-item">
                         <div class="timeline-circle">1</div>
                         <div class="timeline-content">
-                            <div class="timeline-label">Share details</div>
-                            <div class="timeline-sub">Complete the Eye Donation Pledge Form with your personal
-                                details.</div>
+                            <div class="timeline-label">{{ _('Share details') }}</div>
+                            <div class="timeline-sub">{{ _('Complete the Eye Donation Pledge Form with your personal
+                                details.') }}</div>
                         </div>
                     </li>
                     <li class="timeline-item">
                         <div class="timeline-circle">2</div>
                         <div class="timeline-content">
-                            <div class="timeline-label">Add witnesses</div>
-                            <div class="timeline-sub">Include people to be informed and confirmers for transparency.
-                            </div>
+                            <div class="timeline-label">{{ _('Add witnesses') }}</div>
+                            <div class="timeline-sub">{{ _('Include people to be informed and confirmers for
+                                transparency.') }}</div>
                         </div>
                     </li>
                     <li class="timeline-item">
                         <div class="timeline-circle">3</div>
                         <div class="timeline-content">
-                            <div class="timeline-label">Declare consent</div>
-                            <div class="timeline-sub">Affirm your understanding of terms and withdrawal rights.</div>
+                            <div class="timeline-label">{{ _('Declare consent') }}</div>
+                            <div class="timeline-sub">{{ _('Affirm your understanding of terms and withdrawal rights.')
+                                }}</div>
                         </div>
                     </li>
                     <li class="timeline-item">
                         <div class="timeline-circle">4</div>
                         <div class="timeline-content">
-                            <div class="timeline-label">Receive reference</div>
-                            <div class="timeline-sub">Get a unique reference number to keep and share.</div>
+                            <div class="timeline-label">{{ _('Receive reference') }}</div>
+                            <div class="timeline-sub">{{ _('Get a unique reference number to keep and share.') }}</div>
                         </div>
                     </li>
                 </ul>

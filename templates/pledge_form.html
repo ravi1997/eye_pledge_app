@@ -144,6 +144,22 @@
                             <option value="Other">Other</option>
                         </select>
                     </div>
+                    <div class="col-md-6">
+                        <label for="marital_status" class="form-label">Marital Status</label>
+                        <select class="form-select" id="marital_status" name="marital_status">
+                            <option value="">Select Status</option>
+                            <option value="Single">Single</option>
+                            <option value="Married">Married</option>
+                            <option value="Divorced">Divorced</option>
+                            <option value="Widowed">Widowed</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="occupation" class="form-label">Occupation</label>
+                        <input type="text" class="form-control" id="occupation" name="occupation"
+                            placeholder="e.g. Engineer, Student">
+                    </div>
                     <div class="col-md-4">
                         <label for="date_of_birth" class="form-label">Date of Birth</label>
                         <input type="date" class="form-control" id="date_of_birth" name="date_of_birth">
@@ -211,6 +227,11 @@
                         <label class="form-label">Address Line 1 <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" name="address_line1" required>
                     </div>
+                    <div class="col-12">
+                        <label class="form-label">Address Line 2</label>
+                        <input type="text" class="form-control" name="address_line2"
+                            placeholder="Apartment, Studio, or Floor">
+                    </div>
                     <div class="col-md-6">
                         <label class="form-label">State / UT <span class="text-danger">*</span></label>
                         <select class="form-select" id="state" name="state" required>
@@ -248,8 +269,12 @@
                         </select>
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label">City / District <span class="text-danger">*</span></label>
+                        <label class="form-label">City <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" name="city" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">District</label>
+                        <input type="text" class="form-control" name="district">
                     </div>
                     <div class="col-md-4">
                         <label class="form-label">Pincode <span class="text-danger">*</span></label>
@@ -297,6 +322,51 @@
                             <input type="tel" class="form-control" name="witness1_mobile" pattern="[0-9]{10}" required>
                         </div>
                     </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Witness Email</label>
+                        <input type="email" class="form-control" name="witness1_email">
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label">Witness Address</label>
+                        <textarea class="form-control" name="witness1_address" rows="2"></textarea>
+                    </div>
+                </div>
+
+                <hr class="my-4">
+                <h5 class="text-muted mb-3">Second Witness (Optional)</h5>
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <label class="form-label">Witness Name</label>
+                        <input type="text" class="form-control" name="witness2_name">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Relationship</label>
+                        <select class="form-select" name="witness2_relationship">
+                            <option value="">Select Relationship</option>
+                            <option value="Father">Father</option>
+                            <option value="Mother">Mother</option>
+                            <option value="Spouse">Spouse</option>
+                            <option value="Child">Child</option>
+                            <option value="Sibling">Sibling</option>
+                            <option value="Friend">Friend</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Witness Mobile</label>
+                        <div class="input-group">
+                            <span class="input-group-text">+91</span>
+                            <input type="tel" class="form-control" name="witness2_mobile" pattern="[0-9]{10}">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Witness Email</label>
+                        <input type="email" class="form-control" name="witness2_email">
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label">Witness Address</label>
+                        <textarea class="form-control" name="witness2_address" rows="1"></textarea>
+                    </div>
                 </div>
                 <div class="mt-4 d-flex justify-content-between">
                     <button type="button" class="btn btn-outline-secondary btn-prev"><i
@@ -320,42 +390,56 @@
                                 <option value="Cornea only">Corneas Only</option>
                             </select>
                         </div>
-                        <p class="text-muted small mb-0">
-                            By submitting this form, I hereby pledge to donate my eyes after my death to be used for
-                            therapeutic, research, or education purposes. I understand my family will be the final
-                            authority to execute this wish, so I will inform them.
-                        </p>
+                        <div class="col-md-6">
+                            <label class="form-label">Place of Pledge</label>
+                            <input type="text" class="form-control" name="place" placeholder="e.g. Mumbai">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Preferred Eye Bank (Optional)</label>
+                            <input type="text" class="form-control" name="preferred_eye_bank">
+                        </div>
+                        <div class="col-md-12">
+                            <label class="form-label">Additional Notes</label>
+                            <textarea class="form-control" name="additional_notes" rows="2"></textarea>
+                        </div>
                     </div>
-                </div>
 
-                <div class="form-check mb-3">
-                    <input class="form-check-input" type="checkbox" id="consent_check" name="donor_consent" required>
-                    <label class="form-check-label" for="consent_check">
-                        <strong>I solemnly Pledge to donate my eyes.</strong> <span class="text-danger">*</span>
-                    </label>
-                </div>
-
-                <div class="form-check mb-4">
-                    <input class="form-check-input" type="checkbox" name="acknowledged_revocability" checked>
-                    <label class="form-check-label text-muted small">
-                        I understand this pledge is voluntary and can be revoked at any time.
-                    </label>
-                </div>
-
-                <!-- Hidden Date Field -->
-                <input type="hidden" name="date_of_pledge" id="date_of_pledge">
-
-                <div class="mt-4 d-flex justify-content-between">
-                    <button type="button" class="btn btn-outline-secondary btn-prev"><i
-                            class="bi bi-arrow-left me-2"></i> Previous</button>
-                    <button type="submit" class="btn btn-success px-5 btn-lg shadow-sm">
-                        <i class="bi bi-heart-fill me-2"></i> Confirm Pledge
-                    </button>
+                    <p class="text-muted small mb-0">
+                        By submitting this form, I hereby pledge to donate my eyes after my death to be used for
+                        therapeutic, research, or education purposes. I understand my family will be the final
+                        authority to execute this wish, so I will inform them.
+                    </p>
                 </div>
             </div>
 
-        </form>
+            <div class="form-check mb-3">
+                <input class="form-check-input" type="checkbox" id="consent_check" name="donor_consent" required>
+                <label class="form-check-label" for="consent_check">
+                    <strong>I solemnly Pledge to donate my eyes.</strong> <span class="text-danger">*</span>
+                </label>
+            </div>
+
+            <div class="form-check mb-4">
+                <input class="form-check-input" type="checkbox" name="acknowledged_revocability" checked>
+                <label class="form-check-label text-muted small">
+                    I understand this pledge is voluntary and can be revoked at any time.
+                </label>
+            </div>
+
+            <!-- Hidden Date Field -->
+            <input type="hidden" name="date_of_pledge" id="date_of_pledge">
+
+            <div class="mt-4 d-flex justify-content-between">
+                <button type="button" class="btn btn-outline-secondary btn-prev"><i class="bi bi-arrow-left me-2"></i>
+                    Previous</button>
+                <button type="submit" class="btn btn-success px-5 btn-lg shadow-sm">
+                    <i class="bi bi-heart-fill me-2"></i> Confirm Pledge
+                </button>
+            </div>
     </div>
+
+    </form>
+</div>
 </div>
 
 <script>

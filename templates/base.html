@@ -70,13 +70,13 @@
   inset:-120px;
   pointer-events:none;
   background:
-    radial-gradient(28px 28px at 12% 18%, rgba(255,255,255,0.95), transparent 65%),
-    radial-gradient(18px 18px at 22% 12%, rgba(255,255,255,0.85), transparent 70%),
-    radial-gradient(22px 22px at 88% 16%, rgba(255,255,255,0.85), transparent 70%),
-    radial-gradient(34px 34px at 78% 10%, rgba(255,255,255,0.90), transparent 70%),
-    radial-gradient(26px 26px at 70% 28%, rgba(255,255,255,0.70), transparent 70%),
-    radial-gradient(30px 30px at 10% 70%, rgba(255,255,255,0.70), transparent 70%),
-    radial-gradient(22px 22px at 30% 85%, rgba(255,255,255,0.60), transparent 70%);
+    radial-gradient(28px 28px at 12% 18%, rgba(255,255,255,0.95), transparent 30%),
+    radial-gradient(18px 18px at 22% 12%, rgba(255,255,255,0.85), transparent 30%),
+    radial-gradient(22px 22px at 88% 16%, rgba(255,255,255,0.85), transparent 30%),
+    radial-gradient(34px 34px at 78% 10%, rgba(255,255,255,0.90), transparent 30%),
+    radial-gradient(26px 26px at 70% 28%, rgba(255,255,255,0.70), transparent 30%),
+    radial-gradient(30px 30px at 10% 70%, rgba(255,255,255,0.70), transparent 30%),
+    radial-gradient(22px 22px at 30% 85%, rgba(255,255,255,0.60), transparent 30%);
   filter: blur(0.2px);
   opacity: 0.9;
 }
@@ -257,7 +257,7 @@
         <header class="px-3 py-2 mb-4">
             <div class="d-flex align-items-center justify-content-between gap-3 flex-wrap">
                 <div class="d-flex align-items-center gap-2">
-                    <span class="brand-mark" aria-hidden="true">EP</span>
+                    <img src="{{ url_for('static', filename='image/logo.jpeg') }}" alt="Eye Pledge Logo" class="brand-mark" style="width: 34px; height: 34px; border-radius: 10px; object-fit: cover;">
                     <div class="lh-sm">
                         <div class="fw-bold">Eye Donation Pledge</div>
                     </div>

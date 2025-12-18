@@ -291,7 +291,8 @@ def create_app(config_name='development'):
         """Home page"""
         pledge_count = EyeDonationPledge.query.filter_by(is_active=True).count()
         return safe_render('index.html', 
-                address = app.config.get('INSTITUTION_ADDRESS', 'Eye Bank'),    
+                address = app.config.get('INSTITUTION_ADDRESS', 'Eye Bank'),
+                
                 active_page='home', 
                 current_year=datetime.now().year,
                 pledge_count=pledge_count)
@@ -448,9 +449,6 @@ def create_app(config_name='development'):
     def admin_dashboard():
         """Admin dashboard with statistics"""
         total_pledges = EyeDonationPledge.query.filter_by(is_active=True).count()
-        verified_pledges = EyeDonationPledge.query.filter_by(is_active=True, is_verified=True).count()
-        pending_pledges = total_pledges - verified_pledges
-        
         # Get pledges by state (top 5)
         pledges_by_state = db.session.query(
             EyeDonationPledge.state,
@@ -470,8 +468,6 @@ def create_app(config_name='development'):
         
         return safe_render('admin/dashboard.html',
                              total_pledges=total_pledges,
-                             verified_pledges=verified_pledges,
-                             pending_pledges=pending_pledges,
                              pledges_by_state=pledges_by_state,
                              monthly_stats=monthly_stats)
 
@@ -481,7 +477,6 @@ def create_app(config_name='development'):
         """Admin pledges list with search and filter"""
         page = request.args.get('page', 1, type=int)
         search = request.args.get('search', '')
-        status = request.args.get('status', '')
         state = request.args.get('state', '')
         
         query = EyeDonationPledge.query.filter_by(is_active=True)
@@ -495,12 +490,6 @@ def create_app(config_name='development'):
                 (EyeDonationPledge.reference_number.ilike(f'%{search}%'))
             )
         
-        # Filter by status
-        if status == 'verified':
-            query = query.filter_by(is_verified=True)
-        elif status == 'pending':
-            query = query.filter_by(is_verified=False)
-        
         # Filter by state
         if state:
             query = query.filter_by(state=state)
@@ -513,8 +502,8 @@ def create_app(config_name='development'):
         
         return safe_render('admin/pledges_list.html',
                      pledges=pledges,
+                     pagination=pledges,
                      search=search,
-                     status=status,
                      state=state)
 
     @app.route("/admin/pledge/<int:pledge_id>")
@@ -527,43 +516,7 @@ def create_app(config_name='development'):
         ).all()
         return safe_render('admin/pledge_detail.html', pledge=pledge, audit_logs=audit_logs)
 
-    @app.route("/admin/pledge/<int:pledge_id>/verify", methods=["POST"])
-    @login_required
-    def admin_verify_pledge(pledge_id):
-        """Mark pledge as verified"""
-        pledge = EyeDonationPledge.query.get_or_404(pledge_id)
-        admin_id = session.get('admin_user_id')
-        
-        pledge.is_verified = True
-        pledge.verified_at = datetime.utcnow()
-        pledge.verified_by = admin_id
-        
-        # Log security event (handles DB audit log internally)
-        log_security_event('PLEDGE_VERIFIED', f"Pledge {pledge.reference_number} verified", user_id=admin_id, pledge_id=pledge.id)
-        
-        db.session.commit()
-        
-        flash('Pledge marked as verified', 'success')
-        return redirect(url_for('admin_pledge_detail', pledge_id=pledge_id))
 
-    @app.route("/admin/pledge/<int:pledge_id>/unverify", methods=["POST"])
-    @login_required
-    def admin_unverify_pledge(pledge_id):
-        """Mark pledge as unverified"""
-        pledge = EyeDonationPledge.query.get_or_404(pledge_id)
-        admin_id = session.get('admin_user_id')
-        
-        pledge.is_verified = False
-        pledge.verified_at = None
-        pledge.verified_by = None
-        
-        # Log security event
-        log_security_event('PLEDGE_UNVERIFIED', f"Pledge {pledge.reference_number} unverified", user_id=admin_id, pledge_id=pledge.id)
-        
-        db.session.commit()
-        
-        flash('Pledge marked as unverified', 'info')
-        return redirect(url_for('admin_pledge_detail', pledge_id=pledge_id))
 
     @app.route("/admin/pledge/<int:pledge_id>/deactivate", methods=["POST"])
     @login_required
@@ -587,7 +540,6 @@ def create_app(config_name='development'):
     def admin_export():
         """Export pledges as CSV"""
         search = request.args.get('search', '')
-        status = request.args.get('status', '')
         state = request.args.get('state', '')
         
         query = EyeDonationPledge.query.filter_by(is_active=True)
@@ -597,11 +549,6 @@ def create_app(config_name='development'):
                 (EyeDonationPledge.donor_name.ilike(f'%{search}%')) |
                 (EyeDonationPledge.donor_mobile.ilike(f'%{search}%'))
             )
-        
-        if status == 'verified':
-            query = query.filter_by(is_verified=True)
-        elif status == 'pending':
-            query = query.filter_by(is_verified=False)
         
         if state:
             query = query.filter_by(state=state)
@@ -613,7 +560,7 @@ def create_app(config_name='development'):
         writer = csv.writer(output)
         writer.writerow([
             'Reference Number', 'Donor Name', 'Mobile', 'Email', 'State', 
-            'Status', 'Created Date', 'Verified Date'
+            'Created Date'
         ])
         
         for pledge in pledges:
@@ -623,9 +570,7 @@ def create_app(config_name='development'):
                 pledge.donor_mobile,
                 pledge.donor_email,
                 pledge.state,
-                'Verified' if pledge.is_verified else 'Pending',
-                pledge.created_at.strftime('%Y-%m-%d'),
-                pledge.verified_at.strftime('%Y-%m-%d') if pledge.verified_at else ''
+                pledge.created_at.strftime('%Y-%m-%d')
             ])
         
         # Log security event
@@ -707,6 +652,9 @@ def create_app(config_name='development'):
         log_type = request.args.get('log_type')
         level = request.args.get('level')
         search = request.args.get('search')
+        user_id = request.args.get('user_id')
+        start_date_str = request.args.get('start_date')
+        end_date_str = request.args.get('end_date')
         page = request.args.get('page', 1, type=int)
         
         # Base query
@@ -717,18 +665,44 @@ def create_app(config_name='development'):
             query = query.filter_by(log_type=log_type)
         if level:
             query = query.filter_by(level=level)
+        if user_id:
+            query = query.filter_by(user_id=user_id)
         if search:
             query = query.filter(SystemLog.message.ilike(f'%{search}%'))
+            
+        # Date Filters
+        if start_date_str:
+            try:
+                start_date = datetime.strptime(start_date_str, '%Y-%m-%d')
+                query = query.filter(SystemLog.timestamp >= start_date)
+            except ValueError:
+                pass # Ignore invalid dates
+        
+        if end_date_str:
+            try:
+                # Include the entire end date (up to 23:59:59)
+                end_date_dt = datetime.strptime(end_date_str, '%Y-%m-%d')
+                end_date = end_date_dt + timedelta(days=1)
+                query = query.filter(SystemLog.timestamp < end_date)
+            except ValueError:
+                pass
             
         # Pagination
         logs = query.paginate(page=page, per_page=20, error_out=False)
         
+        # Get users for dropdown
+        users = AdminUser.query.with_entities(AdminUser.id, AdminUser.username).all()
+        
         return safe_render('admin/logs.html', 
                           logs=logs, 
                           active_page='logs',
+                          users=users,
                           log_type=log_type, 
                           level=level, 
-                          search=search)
+                          search=search,
+                          user_id=int(user_id) if user_id else '',
+                          start_date=start_date_str,
+                          end_date=end_date_str)
 
     @app.route("/admin/logs/clear", methods=["POST"])
     @login_required

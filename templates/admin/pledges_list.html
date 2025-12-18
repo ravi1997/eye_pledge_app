@@ -14,38 +14,31 @@
     <!-- Search & Filter Form -->
     <div class="form-section mb-4">
         <h5 class="mb-3"><i class="bi bi-funnel"></i> Search & Filter</h5>
-        
+
         <form method="GET" action="{{ url_for('admin_pledges') }}" class="row g-3">
             <div class="col-md-3">
-                <input type="text" class="form-control" name="q" placeholder="Name, Mobile, Email, Ref#" 
-                       value="{{ search_query }}">
+                <input type="text" class="form-control" name="q" placeholder="Name, Mobile, Email, Ref#"
+                    value="{{ search_query }}">
             </div>
 
-            <div class="col-md-2">
-                <select class="form-select" name="status">
-                    <option value="">All Status</option>
-                    <option value="verified" {% if filter_status == 'verified' %}selected{% endif %}>Verified</option>
-                    <option value="pending" {% if filter_status == 'pending' %}selected{% endif %}>Pending</option>
-                </select>
-            </div>
+
 
             <div class="col-md-2">
                 <select class="form-select" name="state">
                     <option value="">All States</option>
                     {% for state in states %}
-                    <option value="{{ state }}" {% if filter_state == state %}selected{% endif %}>{{ state }}</option>
+                    <option value="{{ state }}" {% if filter_state==state %}selected{% endif %}>{{ state }}</option>
                     {% endfor %}
                 </select>
             </div>
 
             <div class="col-md-2">
-                <input type="date" class="form-control" name="date_from" placeholder="From" 
-                       value="{{ filter_date_from }}">
+                <input type="date" class="form-control" name="date_from" placeholder="From"
+                    value="{{ filter_date_from }}">
             </div>
 
             <div class="col-md-2">
-                <input type="date" class="form-control" name="date_to" placeholder="To" 
-                       value="{{ filter_date_to }}">
+                <input type="date" class="form-control" name="date_to" placeholder="To" value="{{ filter_date_to }}">
             </div>
 
             <div class="col-md-1">
@@ -58,8 +51,8 @@
 
     <!-- Export Button -->
     <div class="mb-3">
-        <a href="{{ url_for('admin_export', status=filter_status, state=filter_state, date_from=filter_date_from, date_to=filter_date_to) }}" 
-           class="btn btn-success">
+        <a href="{{ url_for('admin_export', status=filter_status, state=filter_state, date_from=filter_date_from, date_to=filter_date_to) }}"
+            class="btn btn-success">
             <i class="bi bi-download"></i> Export as CSV
         </a>
         <a href="{{ url_for('admin_dashboard') }}" class="btn btn-secondary">
@@ -79,37 +72,31 @@
                         <th>City</th>
                         <th>State</th>
                         <th>Date</th>
-                        <th>Status</th>
+
                         <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% if pledges %}
-                        {% for pledge in pledges %}
-                        <tr>
-                            <td>
-                                <strong>{{ pledge.reference_number }}</strong>
-                            </td>
-                            <td>{{ pledge.donor_name }}</td>
-                            <td>{{ pledge.age or '-' }}</td>
-                            <td>{{ pledge.city }}</td>
-                            <td>{{ pledge.state }}</td>
-                            <td>{{ pledge.date_of_pledge.strftime('%d-%m-%Y') }}</td>
-                            <td>
-                                {% if pledge.is_verified %}
-                                    <span class="badge bg-success">Verified</span>
-                                {% else %}
-                                    <span class="badge bg-warning">Pending</span>
-                                {% endif %}
-                            </td>
-                            <td>
-                                <a href="{{ url_for('admin_pledge_detail', pledge_id=pledge.id) }}" 
-                                   class="btn btn-sm btn-info">
-                                    <i class="bi bi-eye"></i> View
-                                </a>
-                            </td>
-                        </tr>
-                        {% endfor %}
+                    {% for pledge in pledges %}
+                    <tr>
+                        <td>
+                            <strong>{{ pledge.reference_number }}</strong>
+                        </td>
+                        <td>{{ pledge.donor_name }}</td>
+                        <td>{{ pledge.age or '-' }}</td>
+                        <td>{{ pledge.city }}</td>
+                        <td>{{ pledge.state }}</td>
+                        <td>{{ pledge.date_of_pledge.strftime('%d-%m-%Y') }}</td>
+
+                        <td>
+                            <a href="{{ url_for('admin_pledge_detail', pledge_id=pledge.id) }}"
+                                class="btn btn-sm btn-info">
+                                <i class="bi bi-eye"></i> View
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
                     {% else %}
                     <tr>
                         <td colspan="8" class="text-center text-muted py-4">
@@ -127,31 +114,34 @@
             <ul class="pagination justify-content-center">
                 {% if pagination.has_prev %}
                 <li class="page-item">
-                    <a class="page-link" href="{{ url_for('admin_pledges', page=pagination.prev_num, q=search_query, status=filter_status, state=filter_state, date_from=filter_date_from, date_to=filter_date_to) }}">
+                    <a class="page-link"
+                        href="{{ url_for('admin_pledges', page=pagination.prev_num, q=search_query, status=filter_status, state=filter_state, date_from=filter_date_from, date_to=filter_date_to) }}">
                         Previous
                     </a>
                 </li>
                 {% endif %}
 
                 {% for page_num in pagination.iter_pages() %}
-                    {% if page_num %}
-                        {% if page_num == pagination.page %}
-                        <li class="page-item active">
-                            <span class="page-link">{{ page_num }}</span>
-                        </li>
-                        {% else %}
-                        <li class="page-item">
-                            <a class="page-link" href="{{ url_for('admin_pledges', page=page_num, q=search_query, status=filter_status, state=filter_state, date_from=filter_date_from, date_to=filter_date_to) }}">
-                                {{ page_num }}
-                            </a>
-                        </li>
-                        {% endif %}
-                    {% endif %}
+                {% if page_num %}
+                {% if page_num == pagination.page %}
+                <li class="page-item active">
+                    <span class="page-link">{{ page_num }}</span>
+                </li>
+                {% else %}
+                <li class="page-item">
+                    <a class="page-link"
+                        href="{{ url_for('admin_pledges', page=page_num, q=search_query, status=filter_status, state=filter_state, date_from=filter_date_from, date_to=filter_date_to) }}">
+                        {{ page_num }}
+                    </a>
+                </li>
+                {% endif %}
+                {% endif %}
                 {% endfor %}
 
                 {% if pagination.has_next %}
                 <li class="page-item">
-                    <a class="page-link" href="{{ url_for('admin_pledges', page=pagination.next_num, q=search_query, status=filter_status, state=filter_state, date_from=filter_date_from, date_to=filter_date_to) }}">
+                    <a class="page-link"
+                        href="{{ url_for('admin_pledges', page=pagination.next_num, q=search_query, status=filter_status, state=filter_state, date_from=filter_date_from, date_to=filter_date_to) }}">
                         Next
                     </a>
                 </li>

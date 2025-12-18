@@ -14,19 +14,10 @@
     <!-- Actions Bar -->
     <div class="form-section mb-4">
         <div class="row">
-            <div class="col-md-8">
-                {% if pledge.is_verified %}
-                    <span class="badge bg-success" style="font-size: 1.1rem;">Verified</span>
-                    <span class="small text-muted ms-2">
-                        by {{ pledge.verified_by }} on {{ pledge.verified_at.strftime('%d-%m-%Y %H:%M') }}
-                    </span>
-                {% else %}
-                    <span class="badge bg-warning" style="font-size: 1.1rem;">Pending Verification</span>
-                {% endif %}
-            </div>
+
             <div class="col-md-4 text-end">
-                <a href="{{ url_for('admin_print_pledge', pledge_id=pledge.id) }}" 
-                   class="btn btn-sm btn-outline-primary" target="_blank">
+                <a href="{{ url_for('admin_print_pledge', pledge_id=pledge.id) }}"
+                    class="btn btn-sm btn-outline-primary" target="_blank">
                     <i class="bi bi-printer"></i> Print/PDF
                 </a>
                 <a href="{{ url_for('admin_pledges') }}" class="btn btn-sm btn-outline-secondary">
@@ -143,7 +134,8 @@
                 <p><strong>Source:</strong> {{ pledge.source }}</p>
             </div>
             <div class="col-md-6">
-                <p><strong>Status:</strong> {% if pledge.is_active %}Active{% else %}<span class="badge bg-danger">Deactivated</span>{% endif %}</p>
+                <p><strong>Status:</strong> {% if pledge.is_active %}Active{% else %}<span
+                        class="badge bg-danger">Deactivated</span>{% endif %}</p>
             </div>
         </div>
     </div>
@@ -153,24 +145,14 @@
         <h5 class="mb-3"><i class="bi bi-tools"></i> Admin Actions</h5>
         <div class="row">
             <div class="col-md-6">
-                {% if not pledge.is_verified %}
-                <form method="POST" action="{{ url_for('admin_verify_pledge', pledge_id=pledge.id) }}" class="d-inline">
-                    <button type="submit" class="btn btn-success" onclick="return confirm('Mark as verified?')">
-                        <i class="bi bi-check-circle"></i> Mark as Verified
-                    </button>
-                </form>
-                {% else %}
-                <form method="POST" action="{{ url_for('admin_unverify_pledge', pledge_id=pledge.id) }}" class="d-inline">
-                    <button type="submit" class="btn btn-warning" onclick="return confirm('Mark as unverified?')">
-                        <i class="bi bi-arrow-counterclockwise"></i> Mark as Unverified
-                    </button>
-                </form>
-                {% endif %}
+
             </div>
             <div class="col-md-6">
                 {% if pledge.is_active %}
-                <form method="POST" action="{{ url_for('admin_deactivate_pledge', pledge_id=pledge.id) }}" class="d-inline">
-                    <button type="submit" class="btn btn-danger" onclick="return confirm('Deactivate this pledge? (Data will not be deleted)')">
+                <form method="POST" action="{{ url_for('admin_deactivate_pledge', pledge_id=pledge.id) }}"
+                    class="d-inline">
+                    <button type="submit" class="btn btn-danger"
+                        onclick="return confirm('Deactivate this pledge? (Data will not be deleted)')">
                         <i class="bi bi-trash"></i> Deactivate
                     </button>
                 </form>

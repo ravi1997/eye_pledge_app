@@ -25,6 +25,7 @@
 <div class="card shadow-sm mb-4">
     <div class="card-body bg-light">
         <form method="GET" action="{{ url_for('admin_logs') }}" class="row g-3">
+            <!-- Row 1: Primary Filters -->
             <div class="col-md-3">
                 <label for="log_type" class="form-label">Log Type</label>
                 <select name="log_type" id="log_type" class="form-select">
@@ -46,13 +47,36 @@
                     <option value="CRITICAL" {% if level=='CRITICAL' %}selected{% endif %}>Critical</option>
                 </select>
             </div>
-            <div class="col-md-4">
-                <label for="search" class="form-label">Search Message</label>
-                <input type="text" class="form-control" id="search" name="search" value="{{ search or '' }}"
-                    placeholder="Search keywords...">
+            <div class="col-md-3">
+                <label for="user_id" class="form-label">User</label>
+                <select name="user_id" id="user_id" class="form-select">
+                    <option value="">All Users</option>
+                    {% if users %}
+                    {% for u in users %}
+                    <option value="{{ u.id }}" {% if user_id==u.id %}selected{% endif %}>{{ u.username }}</option>
+                    {% endfor %}
+                    {% endif %}
+                </select>
             </div>
-            <div class="col-md-2 d-flex align-items-end">
-                <button type="submit" class="btn btn-primary w-100">Filter</button>
+            <div class="col-md-3">
+                <label for="search" class="form-label">Search</label>
+                <input type="text" class="form-control" id="search" name="search" value="{{ search or '' }}"
+                    placeholder="Message keywords...">
+            </div>
+
+            <!-- Row 2: Date Range & Actions -->
+            <div class="col-md-3">
+                <label for="start_date" class="form-label">Date From</label>
+                <input type="date" class="form-control" id="start_date" name="start_date"
+                    value="{{ start_date or '' }}">
+            </div>
+            <div class="col-md-3">
+                <label for="end_date" class="form-label">Date To</label>
+                <input type="date" class="form-control" id="end_date" name="end_date" value="{{ end_date or '' }}">
+            </div>
+            <div class="col-md-6 d-flex align-items-end justify-content-end">
+                <a href="{{ url_for('admin_logs') }}" class="btn btn-outline-secondary me-2">Reset</a>
+                <button type="submit" class="btn btn-primary px-4">Apply Filters</button>
             </div>
         </form>
     </div>
@@ -122,7 +146,7 @@
                 {% if logs.has_prev %}
                 <li class="page-item">
                     <a class="page-link"
-                        href="{{ url_for('admin_logs', page=logs.prev_num, log_type=log_type, level=level, search=search) }}">Previous</a>
+                        href="{{ url_for('admin_logs', page=logs.prev_num, log_type=log_type, level=level, search=search, user_id=user_id, start_date=start_date, end_date=end_date) }}">Previous</a>
                 </li>
                 {% else %}
                 <li class="page-item disabled"><span class="page-link">Previous</span></li>
@@ -135,7 +159,7 @@
                 {% if logs.has_next %}
                 <li class="page-item">
                     <a class="page-link"
-                        href="{{ url_for('admin_logs', page=logs.next_num, log_type=log_type, level=level, search=search) }}">Next</a>
+                        href="{{ url_for('admin_logs', page=logs.next_num, log_type=log_type, level=level, search=search, user_id=user_id, start_date=start_date, end_date=end_date) }}">Next</a>
                 </li>
                 {% else %}
                 <li class="page-item disabled"><span class="page-link">Next</span></li>

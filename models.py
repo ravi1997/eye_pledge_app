@@ -239,3 +239,28 @@ class AuditLog(db.Model):
     def __repr__(self):
         return f"<AuditLog {self.action} by user_id={self.admin_user_id}>"
 
+
+class SystemLog(db.Model):
+    """
+    Comprehensive system log for all event types.
+    Stores Access, Error, Security, App, Auth, Success, and Event logs.
+    """
+    __tablename__ = 'system_logs'
+
+    id = db.Column(db.Integer, primary_key=True)
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow, nullable=False, index=True)
+    log_type = db.Column(db.String(50), nullable=False, index=True)  # ACCESS, ERROR, SECURITY, APP, AUTH, SUCCESS, EVENT
+    level = db.Column(db.String(20), nullable=False)  # INFO, WARNING, ERROR, CRITICAL
+    message = db.Column(db.Text, nullable=False)
+    module = db.Column(db.String(100), nullable=True)  # Where it happened
+    user_id = db.Column(db.Integer, db.ForeignKey('admin_users.id'), nullable=True)
+    ip_address = db.Column(db.String(50), nullable=True)
+    details = db.Column(db.Text, nullable=True)  # JSON or extra details
+
+    # Relationship to user
+    user = db.relationship('AdminUser', backref='system_logs')
+
+    def __repr__(self):
+        return f"<SystemLog {self.log_type} - {self.level}>"
+
+

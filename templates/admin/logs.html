@@ -1,0 +1,147 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-12">
+        <div class="d-flex justify-content-between align-items-center">
+            <h2 class="mb-0">System Logs</h2>
+            <div>
+                <form action="{{ url_for('admin_clear_logs') }}" method="POST" class="d-inline me-2"
+                    onsubmit="return confirm('Are you sure you want to clear ALL logs? This cannot be undone.');">
+                    <button type="submit" class="btn btn-outline-danger">
+                        <i class="bi bi-trash"></i> Clear Logs
+                    </button>
+                </form>
+                <a href="{{ url_for('admin_dashboard') }}" class="btn btn-outline-secondary">
+                    <i class="bi bi-arrow-left"></i> Back to Dashboard
+                </a>
+            </div>
+        </div>
+        <hr>
+    </div>
+</div>
+
+<!-- Filter Form -->
+<div class="card shadow-sm mb-4">
+    <div class="card-body bg-light">
+        <form method="GET" action="{{ url_for('admin_logs') }}" class="row g-3">
+            <div class="col-md-3">
+                <label for="log_type" class="form-label">Log Type</label>
+                <select name="log_type" id="log_type" class="form-select">
+                    <option value="">All Types</option>
+                    <option value="ACCESS" {% if log_type=='ACCESS' %}selected{% endif %}>Access</option>
+                    <option value="SECURITY" {% if log_type=='SECURITY' %}selected{% endif %}>Security</option>
+                    <option value="ERROR" {% if log_type=='ERROR' %}selected{% endif %}>Error</option>
+                    <option value="APP" {% if log_type=='APP' %}selected{% endif %}>Application</option>
+                    <option value="AUTH" {% if log_type=='AUTH' %}selected{% endif %}>Auth</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label for="level" class="form-label">Level</label>
+                <select name="level" id="level" class="form-select">
+                    <option value="">All Levels</option>
+                    <option value="INFO" {% if level=='INFO' %}selected{% endif %}>Info</option>
+                    <option value="WARNING" {% if level=='WARNING' %}selected{% endif %}>Warning</option>
+                    <option value="ERROR" {% if level=='ERROR' %}selected{% endif %}>Error</option>
+                    <option value="CRITICAL" {% if level=='CRITICAL' %}selected{% endif %}>Critical</option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label for="search" class="form-label">Search Message</label>
+                <input type="text" class="form-control" id="search" name="search" value="{{ search or '' }}"
+                    placeholder="Search keywords...">
+            </div>
+            <div class="col-md-2 d-flex align-items-end">
+                <button type="submit" class="btn btn-primary w-100">Filter</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Logs Table -->
+<div class="card shadow-sm">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover table-striped mb-0">
+                <thead class="table-dark">
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Timestamp</th>
+                        <th scope="col">Type</th>
+                        <th scope="col">Level</th>
+                        <th scope="col">User</th>
+                        <th scope="col">Message</th>
+                        <th scope="col" style="width: 30%;">Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for log in logs.items %}
+                    <tr
+                        class="{% if log.level == 'ERROR' or log.level == 'CRITICAL' %}table-danger{% elif log.level == 'WARNING' %}table-warning{% endif %}">
+                        <td>{{ log.id }}</td>
+                        <td>{{ log.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                        <td><span class="badge bg-secondary">{{ log.log_type }}</span></td>
+                        <td>
+                            <span
+                                class="badge {% if log.level == 'INFO' %}bg-info{% elif log.level == 'WARNING' %}bg-warning text-dark{% elif log.level == 'ERROR' %}bg-danger{% else %}bg-secondary{% endif %}">
+                                {{ log.level }}
+                            </span>
+                        </td>
+                        <td>
+                            {% if log.user %}
+                            <span class="badge bg-light text-dark border">{{ log.user.username }}</span>
+                            {% elif log.user_id %}
+                            <span class="badge bg-light text-dark border">ID: {{ log.user_id }}</span>
+                            {% else %}
+                            <span class="text-muted">-</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ log.message }}</td>
+                        <td style="font-size: 0.85rem; word-break: break-all;">
+                            {% if log.details %}
+                            {{ log.details }}
+                            {% elif log.ip_address %}
+                            <span class="text-muted">IP: {{ log.ip_address }}</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="6" class="text-center py-4">No logs found matching your criteria.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Pagination -->
+    <div class="card-footer d-flex justify-content-center">
+        <nav aria-label="Log pagination">
+            <ul class="pagination mb-0">
+                {% if logs.has_prev %}
+                <li class="page-item">
+                    <a class="page-link"
+                        href="{{ url_for('admin_logs', page=logs.prev_num, log_type=log_type, level=level, search=search) }}">Previous</a>
+                </li>
+                {% else %}
+                <li class="page-item disabled"><span class="page-link">Previous</span></li>
+                {% endif %}
+
+                <li class="page-item disabled">
+                    <span class="page-link">Page {{ logs.page }} of {{ logs.pages }}</span>
+                </li>
+
+                {% if logs.has_next %}
+                <li class="page-item">
+                    <a class="page-link"
+                        href="{{ url_for('admin_logs', page=logs.next_num, log_type=log_type, level=level, search=search) }}">Next</a>
+                </li>
+                {% else %}
+                <li class="page-item disabled"><span class="page-link">Next</span></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
+</div>
+{% endblock %}

@@ -56,6 +56,16 @@
                 </a>
             </div>
         </div>
+
+        <div class="col-md-6 mb-3">
+            <div class="form-section">
+                <h5><i class="bi bi-journal-text"></i> System Logs</h5>
+                <p class="mb-3">View comprehensive system logs (Access, Security, Error).</p>
+                <a href="{{ url_for('admin_logs') }}" class="btn btn-secondary">
+                    <i class="bi bi-eye"></i> View System Logs
+                </a>
+            </div>
+        </div>
     </div>
 
     <!-- Charts Section -->
@@ -75,7 +85,11 @@
                         <tbody>
                             {% for month, count in pledges_by_month %}
                             <tr>
-                                <td>{% if month == '01' %}January{% elif month == '02' %}February{% elif month == '03' %}March{% elif month == '04' %}April{% elif month == '05' %}May{% elif month == '06' %}June{% elif month == '07' %}July{% elif month == '08' %}August{% elif month == '09' %}September{% elif month == '10' %}October{% elif month == '11' %}November{% elif month == '12' %}December{% endif %}</td>
+                                <td>{% if month == '01' %}January{% elif month == '02' %}February{% elif month == '03'
+                                    %}March{% elif month == '04' %}April{% elif month == '05' %}May{% elif month == '06'
+                                    %}June{% elif month == '07' %}July{% elif month == '08' %}August{% elif month ==
+                                    '09' %}September{% elif month == '10' %}October{% elif month == '11' %}November{%
+                                    elif month == '12' %}December{% endif %}</td>
                                 <td><span class="badge bg-primary">{{ count }}</span></td>
                             </tr>
                             {% endfor %}
@@ -114,6 +128,7 @@
             <a href="{{ url_for('admin_pledges') }}" class="btn btn-outline-primary">All Pledges</a>
             <a href="{{ url_for('admin_pledges', status='verified') }}" class="btn btn-outline-success">Verified</a>
             <a href="{{ url_for('admin_pledges', status='pending') }}" class="btn btn-outline-warning">Pending</a>
+            <a href="{{ url_for('admin_logs') }}" class="btn btn-outline-secondary">Logs</a>
             <a href="{{ url_for('admin_logout') }}" class="btn btn-outline-danger ms-2">Logout</a>
         </div>
     </div>

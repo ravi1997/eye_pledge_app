@@ -183,7 +183,8 @@
                 </h1>
 
                 <p class="muted-small mb-0" style="max-width: 56ch;">
-                    Join a community of donors who believe in restoring vision.
+                    Join <strong class="text-primary">{{ pledge_count }}</strong> people who have pledged to restore
+                    vision.
                     Pledge in minutes through a guided, clear, and secure experience.
                 </p>
 
@@ -248,7 +249,7 @@
             </div>
 
             <div class="mt-3 small text-secondary d-flex justify-content-between align-items-center">
-                <span>Built in partnership with National Eye Bank</span>
+                <span>Built in partnership with {{ institution_name }}</span>
                 <span class="icon-dot" style="width:28px;height:28px;border-radius:10px;">
                     <i class="bi bi-arrow-right"></i>
                 </span>
@@ -347,8 +348,9 @@
             </p>
 
             <div class="small mb-3">
-                <div><span class="fw-semibold">Email:</span> <a
-                        href="mailto:nat.eyebank@aiims.gov.in">nat.eyebank@aiims.gov.in</a></div>
+                <div><span class="fw-semibold">Helpline:</span> {{ institution_phone }}</div>
+                <div class="mt-1"><span class="fw-semibold">Email:</span> <a href="mailto:{{ institution_email }}">{{
+                        institution_email }}</a></div>
                 <div class="text-secondary mt-1"><span class="fw-semibold text-dark">Address:</span> Available on
                     request</div>
             </div>

@@ -414,12 +414,14 @@
             {% block footer %}
             <div class="row g-3 align-items-start">
                 <div class="col-md-4">
-                    <div class="fw-bold text-dark">National Eye Bank</div>
+                    <div class="fw-bold text-dark">{{ institution_name }}</div>
                     <div class="small">Address: {{ address }}</div>
                 </div>
                 <div class="col-md-4">
                     <div class="fw-bold text-dark">Contact</div>
-                    <div class="small"><i class="bi bi-envelope me-1"></i> nat.eyebank@aiims.gov.in</div>
+                    <div class="small"><i class="bi bi-envelope me-1"></i> <a href="mailto:{{ institution_email }}"
+                            class="text-reset text-decoration-none">{{ institution_email }}</a></div>
+                    <div class="small mt-1"><i class="bi bi-telephone me-1"></i> {{ institution_phone }}</div>
                 </div>
                 <div class="col-md-4">
                     <div class="fw-bold text-dark">Quick Links</div>
@@ -432,7 +434,7 @@
             </div>
 
             <div class="text-center small mt-4">
-                © {{ current_year|default(2025) }} National Eye Bank. All rights reserved.
+                © {{ current_year|default(2025) }} {{ institution_name }}. All rights reserved.
             </div>
             {% endblock %}
         </footer>

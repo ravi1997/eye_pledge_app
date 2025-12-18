@@ -4,7 +4,7 @@ import os
 import csv
 from io import StringIO
 
-from flask import Flask, render_template, request, redirect, url_for, flash, session, Response
+from flask import Flask, render_template, request, redirect, url_for, flash, session, Response, send_from_directory
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -152,10 +152,18 @@ def create_app(config_name='development'):
     @app.route("/")
     def index():
         """Home page"""
+        pledge_count = EyeDonationPledge.query.filter_by(is_active=True).count()
         return safe_render('index.html', 
                 address = app.config.get('INSTITUTION_ADDRESS', 'Eye Bank'),    
                 active_page='home', 
-                current_year=datetime.now().year)
+                current_year=datetime.now().year,
+                pledge_count=pledge_count)
+
+    @app.route("/favicon.ico")
+    def favicon():
+        """Favicon"""
+        return send_from_directory(os.path.join(app.root_path, 'static', 'image'),
+                                 'logo.png', mimetype='image/png')
 
     @app.route("/pledge", methods=["GET", "POST"])
     def pledge_form():

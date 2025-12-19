@@ -53,23 +53,19 @@
 
                     <div class="w-px h-6 bg-slate-300 mx-1"></div>
 
-                    <!-- Language Dropdown using Alpine.js -->
-                    <div class="relative" x-data="{ open: false }">
-                        <button @click="open = !open" @click.outside="open = false"
-                            class="nav-link flex items-center gap-1.5 focus:outline-none">
+                    <!-- Language Dropdown -->
+                    <div class="relative">
+                        <button id="lang-dropdown-btn" class="nav-link flex items-center gap-1.5 focus:outline-none">
                             <i class="bi bi-translate"></i>
                             <span class="hidden md:inline">{{ session.get('lang', 'English') }}</span>
-                            <i class="bi bi-chevron-down text-xs opacity-50 block ms-1"></i>
+                            <i class="bi bi-chevron-down text-xs opacity-50 block ms-1 transition-transform"
+                                id="lang-chevron"></i>
                         </button>
 
-                        <div x-show="open" x-transition:enter="transition ease-out duration-100"
-                            x-transition:enter-start="transform opacity-0 scale-95"
-                            x-transition:enter-end="transform opacity-100 scale-100"
-                            x-transition:leave="transition ease-in duration-75"
-                            x-transition:leave-start="transform opacity-100 scale-100"
-                            x-transition:leave-end="transform opacity-0 scale-95"
-                            class="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg ring-1 ring-black ring-opacity-5 z-50 py-1"
-                            style="display: none;">
+                        <div id="lang-dropdown-menu"
+                            class="hidden absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg ring-1 ring-black ring-opacity-5 z-50 py-1 origin-top-right transition-all duration-200 opacity-0 scale-95"
+                            style="display: block;">
+                            <!-- style="display:block" to perform override if needed, but 'hidden' class does job. Actually just rely on 'hidden' class toggling. -->
                             <a href="{{ url_for('set_language', lang='English') }}"
                                 class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-brand {% if session.get('lang') == 'English' or not session.get('lang') %}font-semibold bg-slate-50 text-brand{% endif %}">
                                 {{ _('English') }}
@@ -98,10 +94,10 @@
                 'warning': 'bg-yellow-50 text-yellow-700 border-yellow-200',
                 'info': 'bg-blue-50 text-blue-700 border-blue-200'
                 } %}
-                <div class="p-4 rounded-xl border {{ color_classes.get(category, 'bg-slate-50 text-slate-700 border-slate-200') }} shadow-sm flex items-start justify-between relative"
-                    role="alert" x-data="{ show: true }" x-show="show">
+                <div class="p-4 rounded-xl border {{ color_classes.get(category, 'bg-slate-50 text-slate-700 border-slate-200') }} shadow-sm flex items-start justify-between relative alert-box"
+                    role="alert">
                     <div class="flex-1">{{ message }}</div>
-                    <button type="button" @click="show = false" class="ml-4 text-current opacity-50 hover:opacity-100">
+                    <button type="button" class="ml-4 text-current opacity-50 hover:opacity-100 alert-close-btn">
                         <i class="bi bi-x-lg"></i>
                     </button>
                 </div>
@@ -115,7 +111,7 @@
             {% block content %}{% endblock %}
         </main>
 
-        <footer class="mt-16 pt-8 border-t border-slate-200/60 text-sm text-slate-500">
+        <footer class="mt-16 pt-8 px-3 border-t border-slate-200/60 text-sm text-slate-500">
             {% block footer %}
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div>
@@ -156,6 +152,69 @@
         </footer>
 
     </div>
+
+    <!-- UI Scripts -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- Language Dropdown ---
+            const langBtn = document.getElementById('lang-dropdown-btn');
+            const langMenu = document.getElementById('lang-dropdown-menu');
+            const langChevron = document.getElementById('lang-chevron');
+
+            if (langBtn && langMenu) {
+                langBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const isHidden = langMenu.classList.contains('hidden');
+
+                    if (isHidden) {
+                        // Open
+                        langMenu.classList.remove('hidden');
+                        // Small timeout to allow transition
+                        setTimeout(() => {
+                            langMenu.classList.remove('opacity-0', 'scale-95');
+                            langMenu.classList.add('opacity-100', 'scale-100');
+                        }, 10);
+                        langChevron.classList.add('rotate-180');
+                    } else {
+                        // Close
+                        langMenu.classList.remove('opacity-100', 'scale-100');
+                        langMenu.classList.add('opacity-0', 'scale-95');
+
+                        setTimeout(() => {
+                            langMenu.classList.add('hidden');
+                        }, 200); // Match transition duration
+                        langChevron.classList.remove('rotate-180');
+                    }
+                });
+
+                // Close on click outside
+                document.addEventListener('click', (e) => {
+                    if (!langBtn.contains(e.target) && !langMenu.contains(e.target)) {
+                        if (!langMenu.classList.contains('hidden')) {
+                            langMenu.classList.remove('opacity-100', 'scale-100');
+                            langMenu.classList.add('opacity-0', 'scale-95');
+                            setTimeout(() => {
+                                langMenu.classList.add('hidden');
+                            }, 200);
+                            langChevron.classList.remove('rotate-180');
+                        }
+                    }
+                });
+            }
+
+            // --- Flash Message Dismiss ---
+            document.querySelectorAll('.alert-close-btn').forEach(btn => {
+                btn.addEventListener('click', function () {
+                    const alertBox = this.closest('.alert-box');
+                    if (alertBox) {
+                        alertBox.style.opacity = '0';
+                        alertBox.style.transition = 'opacity 0.3s ease';
+                        setTimeout(() => alertBox.remove(), 300);
+                    }
+                });
+            });
+        });
+    </script>
 
     {% block scripts %}{% endblock %}
 </body>

@@ -32,8 +32,8 @@
                     <span class="font-medium text-slate-900">{{ pledge.donor_name }}</span>
                 </div>
                 <div>
-                    <span class="block text-slate-500 text-xs font-semibold uppercase">{{ _('Age') }}</span>
-                    <span class="font-medium text-slate-900">{{ pledge.age or 'Not provided' }}</span>
+                    <span class="block text-slate-500 text-xs font-semibold uppercase">{{ _('DOB') }}</span>
+                    <span class="font-medium text-slate-900">{{ pledge.donor_dob.strftime('%d-%m-%Y') }}</span>
                 </div>
                 <div>
                     <span class="block text-slate-500 text-xs font-semibold uppercase">{{ _('City') }}</span>

@@ -3,8 +3,10 @@ from functools import wraps
 import os
 import csv
 from io import StringIO
+from util import generate_eye_donor_card, fill_eye_donor_card_fields, images_to_pdf
 
-from flask import Flask, render_template, request, redirect, url_for, flash, session, make_response, send_from_directory, Response, has_request_context
+
+from flask import Flask, render_template, send_file, request, redirect, url_for, flash, session, make_response, send_from_directory, Response, has_request_context
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -445,6 +447,82 @@ def create_app(config_name='development'):
         return safe_render('pledge_view.html',address = app.config.get('INSTITUTION_ADDRESS', 'Eye Bank'),
                 
                 active_page='pledge', current_year=datetime.now().year,  pledge=pledge)
+
+    @app.route("/pledge/<ref_num>/pdf")
+    def pledge_pdf(ref_num):
+        """Download pledge PDF"""
+        pdf_path = f"static/image/temp/eye_donor_card_{ref_num}.pdf"
+        
+        if os.path.exists(pdf_path):
+            return send_file(pdf_path, as_attachment=True,download_name=f"eye_donor_card_{ref_num}.pdf"),200
+
+        pledge = EyeDonationPledge.query.filter_by(reference_number=ref_num).first_or_404()
+
+
+        path = generate_eye_donor_card(
+            qr_data="http://127.0.0.1:5000/success/NEB-2025-000003",
+            template_image="static/image/donor_front.png",
+            output_dir="static/image/temp"
+        )
+
+        print("Generated:", path)
+
+        def _safe(v, default=""):
+            return (str(v).strip().upper() if v is not None else default)
+
+        def _format_dob(d):
+            # pledge.donor_dob is likely a date (or None). Your serializer used isoformat().
+            return d.strftime("%d-%m-%Y") if d else ""
+
+        def _build_address(p):
+            parts = [
+                _safe(p.address_line1.upper()),
+                _safe(p.address_line2.upper()),
+                _safe(p.city.upper()),
+                _safe(p.district.upper()),
+                _safe(p.state.upper()),
+                _safe(p.pincode.upper()),
+                _safe(p.country.upper()),
+            ]
+            # keep only non-empty parts and join nicely
+            return ", ".join([x for x in parts if x])
+        
+        out = fill_eye_donor_card_fields(
+            template_path="static/image/donor_back.png",
+            output_dir="static/image/temp",
+            
+            # Donor fields
+            name=_safe(pledge.donor_name.upper()),
+            dob=_format_dob(pledge.donor_dob),
+            address=_build_address(pledge),
+            ref_no=_safe(pledge.reference_number),   # <-- uses your reference_number
+            phone=_safe(pledge.donor_mobile),
+
+            # Witness fields (using witness1)
+            witness_name=_safe(pledge.witness1_name.upper()),
+            witness_relation=_safe(pledge.witness1_relationship.upper()),
+            witness_phone1=_safe(pledge.witness1_mobile),
+        )
+
+        print("Saved:", out)
+
+
+        pdf_path = images_to_pdf(
+            image_path_1=path,
+            image_path_2=out,
+            output_path=f"static/image/temp/eye_donor_card_{pledge.reference_number}.pdf",
+        )
+
+        os.remove(path)
+        os.remove(out)
+
+        print("PDF created:", pdf_path)
+
+        return send_file(
+            pdf_path,
+            as_attachment=True,
+            download_name=f"eye_donor_card_{pledge.reference_number}.pdf"
+            ),200
 
     # ========================
     # ADMIN ROUTES

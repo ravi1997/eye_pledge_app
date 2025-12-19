@@ -1,260 +1,113 @@
 {% extends "base.html" %}
 {% set active_page = "home" %}
 
-{% block extra_css %}
-<style>
-    /* Timeline Styles */
-    .timeline {
-        list-style: none !important;
-        padding: 0;
-        margin: 0;
-        position: relative;
-        display: flex;
-        justify-content: space-between;
-        gap: 1rem;
-        align-items: flex-start;
-        /* Changed from center to allow wrapping */
-        padding-top: 6px;
-    }
-
-    /* Horizontal Line (Desktop) */
-    .timeline::before {
-        content: "";
-        position: absolute;
-        left: 6%;
-        right: 6%;
-        height: 2px;
-        background: rgba(15, 23, 42, 0.06);
-        top: 24px;
-        z-index: 0;
-        border-radius: 2px;
-    }
-
-    .timeline-item {
-        position: relative;
-        flex: 1;
-        /* Allow flexbox to distribute space */
-        text-align: center;
-        z-index: 2;
-        min-width: 0;
-        padding: 0 .5rem;
-    }
-
-    .timeline-circle {
-        width: 48px;
-        height: 48px;
-        border-radius: 50%;
-        background: var(--brand, #2563eb);
-        color: white;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: 700;
-        font-size: 1.1rem;
-        box-shadow: 0 8px 22px rgba(37, 99, 235, 0.25);
-        /* Brand colored shadow */
-        margin: 0 auto;
-        /* Centered on desktop */
-        position: relative;
-        top: -2px;
-        /* slight visual lift */
-        border: 3px solid #fff;
-        /* White ring to separate from line */
-    }
-
-    /* Text Styles - Full Visibility (No Truncation) */
-    .timeline-label {
-        display: block;
-        margin-top: 1rem;
-        color: var(--text, #0f172a);
-        font-size: 1rem;
-        font-weight: 700;
-        line-height: 1.3;
-    }
-
-    .timeline-sub {
-        display: block;
-        font-size: .88rem;
-        color: var(--muted, #64748b);
-        margin-top: .4rem;
-        line-height: 1.5;
-    }
-
-    /* Responsive Vertical Timeline for Mobile */
-    @media (max-width: 768px) {
-        .timeline {
-            flex-direction: column;
-            align-items: flex-start;
-            padding-left: 0;
-            gap: 0;
-            /* Let items handle spacing */
-        }
-
-        /* Vertical Line */
-        .timeline::before {
-            left: 23px;
-            /* Center of 48px circle is 24px, -1px for 2px width line = 23px */
-            right: auto;
-            top: 0;
-            bottom: 0;
-            width: 2px;
-            height: 100%;
-            background: linear-gradient(to bottom, transparent 0%, rgba(15, 23, 42, 0.1) 10%, rgba(15, 23, 42, 0.1) 90%, transparent 100%);
-        }
-
-        .timeline-item {
-            display: flex;
-            /* Horizontal flex layout for Item Row */
-            text-align: left;
-            align-items: flex-start;
-            padding: 0 0 2rem 0;
-            /* Bottom spacing between steps */
-            width: 100%;
-        }
-
-        .timeline-circle {
-            margin: 0;
-            /* Reset auto margin */
-            flex-shrink: 0;
-            /* Prevent shrinking */
-            z-index: 2;
-            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
-        }
-
-        /* Content Wrapper */
-        .timeline-content {
-            padding-left: 1.25rem;
-            padding-top: 0.25rem;
-        }
-
-        .timeline-label {
-            margin-top: 0;
-            font-size: 1.05rem;
-        }
-    }
-
-
-    /* Remove any vertical timeline/bullets in the details section if inherited */
-    .steps-column .step {
-        display: block;
-        padding-top: .9rem;
-        padding-bottom: .9rem;
-        border-top: 1px solid rgba(0, 0, 0, 0.04);
-    }
-
-    .steps-column .step:first-of-type {
-        border-top: 0;
-        padding-top: .25rem;
-    }
-
-    .steps-column .step>div {
-        margin-left: 0;
-    }
-
-    .step .step-bullet {
-        display: none !important;
-    }
-
-    .steps-column .fw-semibold {
-        font-size: 1.02rem;
-    }
-
-    .steps-column .small.text-secondary {
-        margin-top: .25rem;
-    }
-</style>
-{% endblock %}
-
 {% block title %}{{ _('Eye Donation Pledge') }} - {{ _('Home') }}{% endblock %}
 
 {% block hero_content %}
-<section class="row g-4 align-items-stretch">
-    <!-- HERO LEFT -->
-    <div class="col-lg-7">
-        <div class="soft-card p-4 h-100 animate-enter">
-            <div class="d-flex flex-column gap-3">
-                <div class="pill">
+<section class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+        <!-- HERO LEFT -->
+        <div class="lg:col-span-7">
+            <div class="glass-panel p-8 h-full flex flex-col gap-6 animate-enter">
+
+                <div
+                    class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-50 text-brand-600 font-semibold text-sm border border-blue-100 self-start">
                     <i class="bi bi-stars" aria-hidden="true"></i>
                     {{ _('Pledge with confidence') }}
                 </div>
 
-                <h1 class="mb-1" style="letter-spacing:-0.02em;">
+                <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-slate-900 leading-tight">
                     {{ _('A modern path to gifting the promise of sight.') }}
                 </h1>
 
-                <p class="muted-small mb-0" style="max-width: 56ch;">
-                    {{ _('Join') }} <strong class="text-primary">{{ pledge_count }}</strong> {{ _('people who have
-                    pledged to restore vision.') }}
+                <p class="text-slate-500 text-lg leading-relaxed max-w-xl">
+                    {{ _('Join') }} <strong class="text-brand-600 font-semibold">{{ pledge_count }}</strong> {{
+                    _('people who have pledged to restore vision.') }}
                     {{ _('Pledge in minutes through a guided, clear, and secure experience.') }}
                 </p>
 
-                <div class="d-flex gap-2 flex-wrap mt-2">
-                    <a class="btn btn-primary cta cta-primary" href="{{ url_for('pledge_form') }}">
-                        <i class="bi bi-heart-fill me-2"></i>{{ _('Start Pledging') }}
+                <div class="flex flex-wrap gap-3 mt-2">
+                    <a class="px-6 py-3 rounded-xl bg-gradient-to-r from-brand-600 to-blue-600 text-white font-bold shadow-lg shadow-brand-500/30 hover:shadow-brand-500/40 hover:-translate-y-0.5 transition-all flex items-center gap-2"
+                        href="{{ url_for('pledge_form') }}">
+                        <i class="bi bi-heart-fill"></i>{{ _('Start Pledging') }}
                     </a>
-                    <a class="btn cta cta-outline" href="#learn-more">
+                    <a class="px-6 py-3 rounded-xl bg-white/70 backdrop-blur border border-slate-200 text-slate-700 font-bold hover:bg-white transition-all"
+                        href="#learn-more">
                         {{ _('Learn More') }}
                     </a>
                 </div>
 
-                <div class="d-flex gap-2 flex-wrap mt-1">
-                    <span class="badge-soft"><i class="bi bi-building-check"></i>{{ _('Managed by National Eye Bank')
-                        }}</span>
-                    <span class="badge-soft"><i class="bi bi-shield-check"></i>{{ _('Secure, consent-based workflow')
-                        }}</span>
-                    <span class="badge-soft"><i class="bi bi-stopwatch"></i>{{ _('Takes ~3–5 minutes') }}</span>
+                <div class="flex flex-wrap gap-2 mt-2">
+                    <span
+                        class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-100/50 border border-slate-200/50 text-slate-500 text-xs font-bold uppercase tracking-wide">
+                        <i class="bi bi-building-check"></i>{{ _('Managed by National Eye Bank') }}
+                    </span>
+                    <span
+                        class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-100/50 border border-slate-200/50 text-slate-500 text-xs font-bold uppercase tracking-wide">
+                        <i class="bi bi-shield-check"></i>{{ _('Secure workflow') }}
+                    </span>
+                    <span
+                        class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-100/50 border border-slate-200/50 text-slate-500 text-xs font-bold uppercase tracking-wide">
+                        <i class="bi bi-stopwatch"></i>{{ _('~3–5 mins') }}
+                    </span>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- HERO RIGHT CARD -->
-    <div class="col-lg-5">
-        <div class="card-solid p-4 h-100 animate-enter delay-2">
-            <div class="section-label mb-2">{{ _('Eye pledge') }}</div>
-
-            <div class="d-flex align-items-start gap-3">
-                <div class="icon-dot"><i class="bi bi-eye"></i></div>
-                <div>
-                    <div class="fw-bold fs-5">{{ _('Purpose-built for eye donation') }}</div>
-                    <div class="small text-secondary mt-1">
-                        {{ _('Your pledge connects trained teams and your family to deliver sight-saving corneal tissue
-                        to patients and researchers in need.') }}
-                    </div>
+        <!-- HERO RIGHT CARD -->
+        <div class="lg:col-span-5">
+            <div
+                class="bg-white border border-slate-100 rounded-2xl shadow-xl hover:shadow-2xl transition-shadow p-8 h-full animate-enter delay-200">
+                <div class="text-xs font-extrabold tracking-widest uppercase text-slate-400 mb-4">{{ _('Eye pledge') }}
                 </div>
-            </div>
 
-            <div class="mt-3 d-flex flex-column gap-2">
-                <div class="d-flex gap-2 align-items-start">
-                    <i class="bi bi-check-circle-fill text-primary mt-1"></i>
-                    <div class="small">
-                        <div class="fw-semibold">{{ _('Verified workflow') }}</div>
-                        <div class="text-secondary">{{ _('Clear instructions with transparency.') }}</div>
+                <div class="flex items-start gap-4">
+                    <div
+                        class="w-10 h-10 rounded-xl flex items-center justify-center bg-brand-50 text-brand-600 border border-brand-100 shrink-0">
+                        <i class="bi bi-eye text-lg"></i>
+                    </div>
+                    <div>
+                        <div class="font-bold text-lg text-slate-900">{{ _('Purpose-built for eye donation') }}</div>
+                        <div class="text-sm text-slate-500 mt-1 leading-relaxed">
+                            {{ _('Your pledge connects trained teams and your family to deliver sight-saving corneal
+                            tissue to patients and researchers.') }}
+                        </div>
                     </div>
                 </div>
 
-                <div class="d-flex gap-2 align-items-start">
-                    <i class="bi bi-check-circle-fill text-primary mt-1"></i>
-                    <div class="small">
-                        <div class="fw-semibold">{{ _('Support at every step') }}</div>
-                        <div class="text-secondary">{{ _('Help is available when needed.') }}</div>
+                <div class="mt-8 flex flex-col gap-4">
+                    <div class="flex gap-3 items-start">
+                        <i class="bi bi-check-circle-fill text-brand-500 mt-1 shrink-0"></i>
+                        <div>
+                            <div class="font-semibold text-slate-900 text-sm">{{ _('Verified workflow') }}</div>
+                            <div class="text-slate-500 text-xs mt-0.5">{{ _('Clear instructions with transparency.') }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-3 items-start">
+                        <i class="bi bi-check-circle-fill text-brand-500 mt-1 shrink-0"></i>
+                        <div>
+                            <div class="font-semibold text-slate-900 text-sm">{{ _('Support at every step') }}</div>
+                            <div class="text-slate-500 text-xs mt-0.5">{{ _('Help is available when needed.') }}</div>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-3 items-start">
+                        <i class="bi bi-check-circle-fill text-brand-500 mt-1 shrink-0"></i>
+                        <div>
+                            <div class="font-semibold text-slate-900 text-sm">{{ _('Downloadable confirmation') }}</div>
+                            <div class="text-slate-500 text-xs mt-0.5">{{ _('Get a reference after submission.') }}
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <div class="d-flex gap-2 align-items-start">
-                    <i class="bi bi-check-circle-fill text-primary mt-1"></i>
-                    <div class="small">
-                        <div class="fw-semibold">{{ _('Downloadable confirmation') }}</div>
-                        <div class="text-secondary">{{ _('Get a reference after submission.') }}</div>
-                    </div>
+                <div
+                    class="mt-8 pt-6 border-t border-slate-50 flex justify-between items-center text-xs text-slate-400 font-medium">
+                    <span>{{ _('Built in partnership with') }} {{ institution_name }}</span>
+                    <i class="bi bi-arrow-right text-brand-500"></i>
                 </div>
-            </div>
-
-            <div class="mt-3 small text-secondary d-flex justify-content-between align-items-center">
-                <span>{{ _('Built in partnership with') }} {{ institution_name }}</span>
-                <span class="icon-dot" style="width:28px;height:28px;border-radius:10px;">
-                    <i class="bi bi-arrow-right"></i>
-                </span>
             </div>
         </div>
     </div>
@@ -264,174 +117,156 @@
 {% block content %}
 
 <!-- IMPACT + SUPPORT -->
-<section class="row g-4 mt-1" id="learn-more">
-    <!-- IMPACT -->
-    <div class="col-lg-7">
-        <div class="soft-card p-4 animate-enter delay-3">
-            <div class="section-label">{{ _('Impact') }}</div>
-            <h2 class="h4 fw-bold mt-2">{{ _('Why donate your eyes?') }}</h2>
+<section class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 mt-8 pb-10" id="learn-more">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
 
-            <div class="row g-3 mt-1">
-                <div class="col-md-6">
-                    <div class="card-solid p-3 h-100">
-                        <div class="d-flex gap-2 align-items-start">
-                            <span class="icon-dot"><i class="bi bi-brightness-high"></i></span>
+        <!-- IMPACT -->
+        <div class="lg:col-span-7">
+            <div class="glass-panel p-8 animate-enter delay-300">
+                <div class="text-xs font-extrabold tracking-widest uppercase text-slate-400 mb-2">{{ _('Impact') }}
+                </div>
+                <h2 class="text-2xl font-bold text-slate-900 mb-6">{{ _('Why donate your eyes?') }}</h2>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Feature Items -->
+                    {% set impacts = [
+                    ('bi-brightness-high', 'Restore sight', 'Corneal transplants help people regain vision and
+                    independence.'),
+                    ('bi-journal-medical', 'Advance research', 'Eye tissue supports breakthroughs in vision science and
+                    treatments.'),
+                    ('bi-person-check', 'No age barrier', 'Pledges are accepted at any age and with most conditions.'),
+                    ('bi-arrow-repeat', 'Fully revocable', 'You can change your decision anytime—your latest choice is
+                    respected.')
+                    ] %}
+
+                    {% for icon, title, desc in impacts %}
+                    <div
+                        class="bg-white border border-slate-100 rounded-xl p-4 hover:shadow-md transition-shadow h-full">
+                        <div class="flex gap-3 items-start">
+                            <span
+                                class="w-8 h-8 rounded-lg flex items-center justify-center bg-brand-50 text-brand-600 border border-brand-100 shrink-0">
+                                <i class="bi {{ icon }}"></i>
+                            </span>
                             <div>
-                                <div class="fw-semibold">{{ _('Restore sight') }}</div>
-                                <div class="small text-secondary">{{ _('Corneal transplants help people regain vision
-                                    and independence.') }}</div>
+                                <div class="font-semibold text-slate-900 text-sm">{{ _(title) }}</div>
+                                <div class="text-xs text-slate-500 mt-1 leading-snug">{{ _(desc) }}</div>
                             </div>
                         </div>
                     </div>
+                    {% endfor %}
                 </div>
 
-                <div class="col-md-6">
-                    <div class="card-solid p-3 h-100">
-                        <div class="d-flex gap-2 align-items-start">
-                            <span class="icon-dot"><i class="bi bi-journal-medical"></i></span>
-                            <div>
-                                <div class="fw-semibold">{{ _('Advance research') }}</div>
-                                <div class="small text-secondary">{{ _('Eye tissue supports breakthroughs in vision
-                                    science and treatments.') }}</div>
-                            </div>
-                        </div>
+                <div class="mt-6 p-4 rounded-xl bg-brand-50/50 border border-brand-100/50 flex gap-3 items-start">
+                    <i class="bi bi-info-circle-fill text-brand-600 mt-0.5 shrink-0"></i>
+                    <div>
+                        <div class="font-semibold text-slate-900 text-sm">{{ _('Important to know') }}</div>
+                        <div class="text-slate-600 text-xs mt-0.5 leading-relaxed">{{ _('Eye donation takes place after
+                            death. Your family may be contacted when needed if you have pledged.') }}</div>
                     </div>
                 </div>
 
-                <div class="col-md-6">
-                    <div class="card-solid p-3 h-100">
-                        <div class="d-flex gap-2 align-items-start">
-                            <span class="icon-dot"><i class="bi bi-person-check"></i></span>
-                            <div>
-                                <div class="fw-semibold">{{ _('No age barrier') }}</div>
-                                <div class="small text-secondary">{{ _('Pledges are accepted at any age and with most
-                                    conditions.') }}</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-6">
-                    <div class="card-solid p-3 h-100">
-                        <div class="d-flex gap-2 align-items-start">
-                            <span class="icon-dot"><i class="bi bi-arrow-repeat"></i></span>
-                            <div>
-                                <div class="fw-semibold">{{ _('Fully revocable') }}</div>
-                                <div class="small text-secondary">{{ _('You can change your decision anytime—your latest
-                                    choice is respected.') }}</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
-
-            <div class="mt-3 p-3 rounded-3"
-                style="background: rgba(37,99,235,.06); border:1px solid rgba(37,99,235,.12);">
-                <div class="d-flex gap-2 align-items-start">
-                    <i class="bi bi-info-circle-fill text-primary mt-1"></i>
-                    <div class="small">
-                        <div class="fw-semibold">{{ _('Important to know') }}</div>
-                        <div class="text-secondary">{{ _('Eye donation takes place after death. Your family may be
-                            contacted when needed if you have pledged.') }}</div>
-                    </div>
-                </div>
-            </div>
-
         </div>
-    </div>
 
-    <!-- SUPPORT -->
-    <div class="col-lg-5">
-        <div class="soft-card p-4 h-100 animate-enter delay-4">
-            <div class="section-label">{{ _('Support') }}</div>
-            <h2 class="h5 fw-bold mt-2">{{ _('Need help?') }}</h2>
-            <p class="small text-secondary mb-3">
-                {{ _('If you have questions or need assistance with your pledge, reach out anytime.') }}
-            </p>
+        <!-- SUPPORT -->
+        <div class="lg:col-span-5">
+            <div class="glass-panel p-8 h-full animate-enter delay-500">
+                <div class="text-xs font-extrabold tracking-widest uppercase text-slate-400 mb-2">{{ _('Support') }}
+                </div>
+                <h2 class="text-xl font-bold text-slate-900 mb-4">{{ _('Need help?') }}</h2>
+                <p class="text-sm text-slate-500 mb-6">
+                    {{ _('If you have questions or need assistance with your pledge, reach out anytime.') }}
+                </p>
 
-            <div class="small mb-3">
-                <div><span class="fw-semibold">{{ _('Helpline') }}:</span> <a href="tel:{{ institution_phone }}"
-                        class="text-reset text-decoration-none">{{ institution_phone }}</a></div>
-                <div class="mt-1"><span class="fw-semibold">{{ _('Email') }}:</span> <a
-                        href="mailto:{{ institution_email }}">{{
-                        institution_email }}</a></div>
-                <div class="text-secondary mt-1"><span class="fw-semibold text-dark">{{ _('Address') }}:</span> {{
-                    _('Available on request') }}</div>
-            </div>
+                <div class="space-y-3 mb-8 text-sm">
+                    <div class="flex items-center gap-2">
+                        <span class="font-semibold text-slate-700 w-20">{{ _('Helpline') }}:</span>
+                        <a href="tel:{{ institution_phone }}" class="text-brand-600 font-medium hover:underline">{{
+                            institution_phone }}</a>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="font-semibold text-slate-700 w-20">{{ _('Email') }}:</span>
+                        <a href="mailto:{{ institution_email }}" class="text-brand-600 font-medium hover:underline">{{
+                            institution_email }}</a>
+                    </div>
+                    <div class="flex items-start gap-2">
+                        <span class="font-semibold text-slate-700 w-20">{{ _('Address') }}:</span>
+                        <span class="text-slate-500">{{ _('Available on request') }}</span>
+                    </div>
+                </div>
 
-            <div class="row g-3">
-                <div class="col-6">
-                    <div class="card-solid p-3 h-100 text-center">
-                        <div class="icon-dot mx-auto mb-2"><i class="bi bi-book"></i></div>
-                        <div class="fw-semibold">{{ _('Resources') }}</div>
-                        <div class="small text-secondary">{{ _('Guides and FAQs about the donation journey.') }}</div>
-                        <button class="btn btn-sm mt-2 cta-outline" type="button" disabled>
+                <div class="grid grid-cols-2 gap-4">
+                    <div
+                        class="bg-white border border-slate-200 rounded-xl p-4 text-center hover:border-brand-200 transition-colors">
+                        <div
+                            class="w-10 h-10 mx-auto rounded-lg flex items-center justify-center bg-slate-50 text-slate-600 mb-3">
+                            <i class="bi bi-book"></i>
+                        </div>
+                        <div class="font-semibold text-slate-900 text-sm">{{ _('Resources') }}</div>
+                        <div class="text-xs text-slate-400 mt-1 mb-3">{{ _('Guides.') }}</div>
+                        <button
+                            class="w-full py-1.5 px-3 rounded-lg border border-slate-200 text-xs font-medium text-slate-400 bg-slate-50 cursor-not-allowed">
                             {{ _('Coming soon') }}
                         </button>
                     </div>
-                </div>
 
-                <div class="col-6">
-                    <div class="card-solid p-3 h-100 text-center">
-                        <div class="icon-dot mx-auto mb-2"><i class="bi bi-pencil-square"></i></div>
-                        <div class="fw-semibold">{{ _('Register') }}</div>
-                        <div class="small text-secondary">{{ _('Ready to pledge? Complete the form now.') }}</div>
-                        <a class="btn btn-sm btn-primary mt-2 cta-primary" href="{{ url_for('pledge_form') }}">
+                    <div
+                        class="bg-white border border-slate-200 rounded-xl p-4 text-center hover:border-brand-200 transition-colors">
+                        <div
+                            class="w-10 h-10 mx-auto rounded-lg flex items-center justify-center bg-brand-50 text-brand-600 mb-3">
+                            <i class="bi bi-pencil-square"></i>
+                        </div>
+                        <div class="font-semibold text-slate-900 text-sm">{{ _('Register') }}</div>
+                        <div class="text-xs text-slate-400 mt-1 mb-3">{{ _('Ready?') }}</div>
+                        <a href="{{ url_for('pledge_form') }}"
+                            class="block w-full py-1.5 px-3 rounded-lg bg-brand-600 text-white text-xs font-bold hover:bg-brand-700 transition-colors shadow-lg shadow-brand-500/20">
                             {{ _('Start') }}
                         </a>
                     </div>
                 </div>
-            </div>
 
+            </div>
         </div>
+
     </div>
-</section>
 
-<!-- PROCESS -->
-<section class="row g-4 mt-4 card-solid">
-    <div class="col-12">
-        <div class="soft-card p-4 animate-enter delay-4">
-            <!-- <div class="section-label">Process</div> -->
-            <h2 class="h2 fw-bold mt-2">{{ _('How to pledge') }}</h2>
+    <!-- PROCESS -->
+    <div class="bg-white border border-slate-100 rounded-2xl shadow-xl mt-8 p-8 animate-enter delay-500">
+        <h2 class="text-2xl font-bold text-slate-900 mb-8">{{ _('How to pledge') }}</h2>
 
-            <!-- horizontal timeline (numbers) -->
-            <div class="mt-2 mb-2 ">
-                <ul class="timeline d-flex align-items-center mt-3">
-                    <li class="timeline-item">
-                        <div class="timeline-circle">1</div>
-                        <div class="timeline-content">
-                            <div class="timeline-label">{{ _('Share details') }}</div>
-                            <div class="timeline-sub">{{ _('Complete the Eye Donation Pledge Form with your personal
-                                details.') }}</div>
-                        </div>
-                    </li>
-                    <li class="timeline-item">
-                        <div class="timeline-circle">2</div>
-                        <div class="timeline-content">
-                            <div class="timeline-label">{{ _('Add witnesses') }}</div>
-                            <div class="timeline-sub">{{ _('Include people to be informed and confirmers for
-                                transparency.') }}</div>
-                        </div>
-                    </li>
-                    <li class="timeline-item">
-                        <div class="timeline-circle">3</div>
-                        <div class="timeline-content">
-                            <div class="timeline-label">{{ _('Declare consent') }}</div>
-                            <div class="timeline-sub">{{ _('Affirm your understanding of terms and withdrawal rights.')
-                                }}</div>
-                        </div>
-                    </li>
-                    <li class="timeline-item">
-                        <div class="timeline-circle">4</div>
-                        <div class="timeline-content">
-                            <div class="timeline-label">{{ _('Receive reference') }}</div>
-                            <div class="timeline-sub">{{ _('Get a unique reference number to keep and share.') }}</div>
-                        </div>
-                    </li>
-                </ul>
-            </div>
+        <!-- Responsive Timeline -->
+        <ul class="relative flex flex-col md:flex-row justify-between items-start gap-8 md:gap-4 md:pt-4">
 
-        </div>
+            <!-- Horizontal Connectors (Desktop) -->
+            <div class="hidden md:block absolute left-[10%] right-[10%] top-[40px] h-0.5 bg-slate-100 -z-0"></div>
+
+            <!-- Vertical Connectors (Mobile) -->
+            <div class="md:hidden absolute left-[23px] top-6 bottom-6 w-0.5 bg-slate-100 -z-0"></div>
+
+            {% set steps = [
+            ('1', 'Share details', 'Complete the Eye Donation Pledge Form with your personal details.'),
+            ('2', 'Add witnesses', 'Include people to be informed and confirmers for transparency.'),
+            ('3', 'Declare consent', 'Affirm your understanding of terms and withdrawal rights.'),
+            ('4', 'Receive reference', 'Get a unique reference number to keeping and share.')
+            ] %}
+
+            {% for num, title, desc in steps %}
+            <li class="relative z-10 flex md:flex-col items-start md:items-center gap-4 md:gap-2 flex-1 group">
+                <!-- Circle -->
+                <div
+                    class="w-12 h-12 rounded-full bg-brand-600 text-white flex items-center justify-center font-bold text-lg shadow-lg shadow-brand-500/25 ring-4 ring-white shrink-0 mx-0 md:mx-auto transition-transform group-hover:scale-110">
+                    {{ num }}
+                </div>
+
+                <!-- Content -->
+                <div class="md:text-center md:px-2 pt-1 md:pt-4">
+                    <h3 class="font-bold text-slate-900 text-base md:text-lg mb-1">{{ _(title) }}</h3>
+                    <p class="text-sm text-slate-500 leading-relaxed">{{ _(desc) }}</p>
+                </div>
+            </li>
+            {% endfor %}
+
+        </ul>
     </div>
 </section>
 

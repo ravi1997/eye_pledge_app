@@ -1,0 +1,68 @@
+@import "tailwindcss";
+
+@source "../../templates";
+@source "../../static/js";
+
+@theme {
+    --color-brand: #2563eb;
+    --color-brand-500: #2563eb;
+    --color-brand-600: #1d4ed8;
+    --color-brand-light: #60a5fa;
+
+    --color-muted: #475569;
+
+    --color-bg-0: #f8fbff;
+    --color-bg-1: #eef4ff;
+    --color-bg-2: #e7efff;
+
+    --font-sans: 'Inter', sans-serif;
+
+    --background-image-hero-pattern: url('../image/background.png');
+}
+
+@layer utilities {
+    .app-bg {
+        @apply min-h-screen text-slate-900 relative overflow-x-hidden;
+        background: url("../image/background.png") center right / cover no-repeat,
+            radial-gradient(900px 650px at 78% 12%, rgba(46, 98, 238, 0.28), transparent 65%),
+            radial-gradient(800px 600px at 18% 10%, rgba(120, 180, 255, 0.36), transparent 62%),
+            radial-gradient(1100px 900px at 78% 22%, rgba(80, 140, 255, 0.20), transparent 70%),
+            radial-gradient(900px 750px at 20% 78%, rgba(80, 140, 255, 0.16), transparent 72%),
+            linear-gradient(180deg, #f8fbff 0%, #eef4ff 45%, #e7efff 100%);
+        background-attachment: fixed;
+    }
+
+    /* Floating blobs overlay */
+    .app-bg::before {
+        content: "";
+        @apply absolute inset-[-120px] pointer-events-none opacity-90;
+        background:
+            radial-gradient(28px 28px at 12% 18%, rgba(255, 255, 255, 0.95), transparent 30%),
+            radial-gradient(18px 18px at 22% 12%, rgba(255, 255, 255, 0.85), transparent 30%),
+            radial-gradient(22px 22px at 88% 16%, rgba(255, 255, 255, 0.85), transparent 30%),
+            radial-gradient(34px 34px at 78% 10%, rgba(255, 255, 255, 0.90), transparent 30%),
+            radial-gradient(26px 26px at 70% 28%, rgba(255, 255, 255, 0.70), transparent 30%),
+            radial-gradient(30px 30px at 10% 70%, rgba(255, 255, 255, 0.70), transparent 30%),
+            radial-gradient(22px 22px at 30% 85%, rgba(255, 255, 255, 0.60), transparent 30%);
+        filter: blur(0.2px);
+    }
+
+    /* Noise layer */
+    .app-bg::after {
+        content: "";
+        @apply absolute inset-0 pointer-events-none opacity-[0.03] mix-blend-multiply;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='.35'/%3E%3C/svg%3E");
+    }
+
+    .glass-panel {
+        @apply backdrop-blur-xl bg-white/80 border border-slate-200/50 shadow-lg rounded-2xl;
+    }
+
+    .nav-link {
+        @apply px-3 py-2 rounded-lg text-slate-500 hover:text-brand transition-colors font-medium;
+    }
+
+    .nav-link.active {
+        @apply bg-white/75 text-brand font-semibold shadow-sm;
+    }
+}

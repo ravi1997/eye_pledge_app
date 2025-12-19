@@ -344,7 +344,9 @@ def create_app(config_name='development'):
                 for error in errors:
                     flash(error, 'danger')
                 app_logger.warning(f"Validation errors found, rendering form again: {errors}")
-                return safe_render('pledge_form.html', form_data=request.form)
+                return safe_render('pledge_form.html', address = app.config.get('INSTITUTION_ADDRESS', 'Eye Bank'),
+                
+                active_page='pledge', current_year=datetime.now().year, form_data=request.form)
             
             app_logger.info("Validation successful, attempting to save to DB")
             try:
@@ -420,21 +422,29 @@ def create_app(config_name='development'):
                 db.session.rollback()
                 app_logger.error(f"Error saving pledge: {str(e)}", exc_info=True)
                 flash(f'Error saving pledge: {str(e)}', 'danger')
-                return safe_render('pledge_form.html', form_data=request.form)
+                return safe_render('pledge_form.html', address = app.config.get('INSTITUTION_ADDRESS', 'Eye Bank'),
+                
+                active_page='pledge', current_year=datetime.now().year, form_data=request.form)
         
-        return safe_render('pledge_form.html', form_data={})
+        return safe_render('pledge_form.html', address = app.config.get('INSTITUTION_ADDRESS', 'Eye Bank'),
+                
+                active_page='pledge', current_year=datetime.now().year, form_data={})
 
     @app.route("/success/<ref_num>")
     def success(ref_num):
         """Success page after pledge submission"""
         pledge = EyeDonationPledge.query.filter_by(reference_number=ref_num).first()
-        return safe_render('success.html', pledge=pledge, ref_num=ref_num)
+        return safe_render('success.html', address = app.config.get('INSTITUTION_ADDRESS', 'Eye Bank'),
+                
+                active_page='pledge', current_year=datetime.now().year,  pledge=pledge, ref_num=ref_num)
 
     @app.route("/pledge/<ref_num>/view")
     def view_pledge(ref_num):
         """View submitted pledge (public)"""
         pledge = EyeDonationPledge.query.filter_by(reference_number=ref_num).first_or_404()
-        return safe_render('pledge_view.html', pledge=pledge)
+        return safe_render('pledge_view.html',address = app.config.get('INSTITUTION_ADDRESS', 'Eye Bank'),
+                
+                active_page='pledge', current_year=datetime.now().year,  pledge=pledge)
 
     # ========================
     # ADMIN ROUTES
@@ -462,7 +472,9 @@ def create_app(config_name='development'):
                 log_security_event('LOGIN_FAILURE', f"Failed login attempt for username: {username}", level='warning')
                 flash('Invalid username or password', 'danger')
         
-        return safe_render('admin/login.html')
+        return safe_render('admin/login.html', address = app.config.get('INSTITUTION_ADDRESS', 'Eye Bank'),
+                
+                active_page='admin', current_year=datetime.now().year)
 
     @app.route("/admin/logout")
     def admin_logout():

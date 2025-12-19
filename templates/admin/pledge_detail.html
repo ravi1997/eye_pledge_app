@@ -3,137 +3,229 @@
 {% block title %}Pledge Details - Admin{% endblock %}
 
 {% block content %}
-<div class="page-header">
-    <div class="container-main">
-        <h1>Pledge Details</h1>
-        <p class="subtitle">Reference: {{ pledge.reference_number }}</p>
-    </div>
-</div>
-
-<div class="container-main">
-    <!-- Actions Bar -->
-    <div class="form-section mb-4 text-end">
-        <a href="{{ url_for('admin_print_pledge', pledge_id=pledge.id) }}" class="btn btn-sm btn-outline-primary"
-            target="_blank">
-            <i class="bi bi-printer"></i> Print/PDF
-        </a>
-        <a href="{{ url_for('admin_pledges') }}" class="btn btn-sm btn-outline-secondary">
-            <i class="bi bi-arrow-left"></i> Back
-        </a>
-    </div>
-
-    <!-- Donor Information -->
-    <div class="form-section">
-        <h3><i class="bi bi-person-circle"></i> Donor Information</h3>
-        <div class="row">
-            <div class="col-md-6">
-                <p><strong>Name:</strong> {{ pledge.donor_name }}</p>
-                <p><strong>Gender:</strong> {{ pledge.gender or 'N/A' }}</p>
-                <p><strong>Date of Birth:</strong> {{ pledge.date_of_birth or 'N/A' }}</p>
-                <p><strong>Age:</strong> {{ pledge.age or 'N/A' }}</p>
-                <p><strong>Blood Group:</strong> {{ pledge.blood_group or 'N/A' }}</p>
-            </div>
-            <div class="col-md-6">
-                <p><strong>Mobile:</strong> {{ pledge.donor_mobile or 'N/A' }}</p>
-                <p><strong>Email:</strong> {{ pledge.donor_email or 'N/A' }}</p>
-                <p><strong>Occupation:</strong> {{ pledge.occupation or 'N/A' }}</p>
-                <p><strong>Marital Status:</strong> {{ pledge.marital_status or 'N/A' }}</p>
-            </div>
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="mb-8 border-b border-slate-200 pb-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+            <h1 class="text-3xl font-bold text-slate-900">Pledge Details</h1>
+            <p class="text-slate-500 font-mono text-sm mt-1">Reference: <span
+                    class="bg-slate-100 px-2 py-0.5 rounded text-slate-800">{{ pledge.reference_number }}</span></p>
         </div>
-        {% if pledge.id_proof_type %}
-        <hr>
-        <div class="row">
-            <div class="col-md-6">
-                <p><strong>ID Proof Type:</strong> {{ pledge.id_proof_type }}</p>
-            </div>
-            <div class="col-md-6">
-                <p><strong>ID Proof Number:</strong> {{ pledge.id_proof_number }}</p>
-            </div>
-        </div>
-        {% endif %}
-    </div>
-
-    <!-- Address Information -->
-    <div class="form-section">
-        <h3><i class="bi bi-geo-alt-fill"></i> Address Information</h3>
-        <p>{{ pledge.address_line1 }}</p>
-        {% if pledge.address_line2 %}<p>{{ pledge.address_line2 }}</p>{% endif %}
-        <p>{{ pledge.city }}, {{ pledge.district }} - {{ pledge.pincode }}</p>
-        <p>{{ pledge.state }}, {{ pledge.country }}</p>
-    </div>
-
-    <!-- Pledge Information -->
-    <div class="form-section">
-        <h3><i class="bi bi-check-circle"></i> Pledge Information</h3>
-        <div class="row">
-            <div class="col-md-6">
-                <p><strong>Date of Pledge:</strong> {{ pledge.date_of_pledge.strftime('%d-%m-%Y') }}</p>
-                <p><strong>Time of Pledge:</strong> {{ pledge.time_of_pledge or 'N/A' }}</p>
-                <p><strong>Organs Consented:</strong> {{ pledge.organs_consented }}</p>
-            </div>
-            <div class="col-md-6">
-                <p><strong>Language of Consent:</strong> {{ pledge.language_preference }}</p>
-                <p><strong>Place of Pledge:</strong> {{ pledge.place_of_pledge or 'N/A' }}</p>
-                <p><strong>Preferred Eye Bank:</strong> {{ pledge.preferred_eye_bank or 'N/A' }}</p>
-            </div>
-        </div>
-        {% if pledge.pledge_additional_notes %}
-        <hr>
-        <p><strong>Additional Notes:</strong></p>
-        <p class="text-muted" style="white-space: pre-wrap;">{{ pledge.pledge_additional_notes }}</p>
-        {% endif %}
-    </div>
-
-    <!-- Witness 1 Information -->
-    <div class="form-section">
-        <h3><i class="bi bi-person-check"></i> Witness 1 (Next of Kin)</h3>
-        <div class="row">
-            <div class="col-md-6">
-                <p><strong>Name:</strong> {{ pledge.witness1_name }}</p>
-                <p><strong>Relationship:</strong> {{ pledge.witness1_relationship or 'N/A' }}</p>
-                <p><strong>Mobile:</strong> {{ pledge.witness1_mobile or 'N/A' }}</p>
-            </div>
-            <div class="col-md-6">
-                <p><strong>Email:</strong> {{ pledge.witness1_email or 'N/A' }}</p>
-                <p><strong>Telephone:</strong> {{ pledge.witness1_telephone or 'N/A' }}</p>
-                <p><strong>Address:</strong> {{ pledge.witness1_address or 'Same as Donor' }}</p>
-            </div>
+        <div class="flex gap-2">
+            <a href="{{ url_for('admin_print_pledge', pledge_id=pledge.id) }}" target="_blank"
+                class="inline-flex items-center px-4 py-2 border border-slate-300 text-sm font-medium rounded-md text-slate-700 bg-white hover:bg-slate-50 shadow-sm transition-colors">
+                <i class="bi bi-printer mr-2"></i> Print/PDF
+            </a>
+            <a href="{{ url_for('admin_pledges') }}"
+                class="inline-flex items-center px-4 py-2 border border-slate-300 text-sm font-medium rounded-md text-slate-700 bg-white hover:bg-slate-50 shadow-sm transition-colors">
+                <i class="bi bi-arrow-left mr-2"></i> Back
+            </a>
         </div>
     </div>
 
-    <!-- Witness 2 Information (if provided) -->
-    {% if pledge.witness2_name %}
-    <div class="form-section">
-        <h3><i class="bi bi-person"></i> Witness 2</h3>
-        <div class="row">
-            <div class="col-md-6">
-                <p><strong>Name:</strong> {{ pledge.witness2_name }}</p>
-                <p><strong>Relationship:</strong> {{ pledge.witness2_relationship or 'N/A' }}</p>
-                <p><strong>Mobile:</strong> {{ pledge.witness2_mobile or 'N/A' }}</p>
+    <div class="space-y-6">
+        <!-- Donor Information -->
+        <div class="bg-white shadow rounded-lg border border-slate-200 overflow-hidden">
+            <div class="px-6 py-4 bg-slate-50 border-b border-slate-200 flex items-center gap-2">
+                <i class="bi bi-person-circle text-brand-600 text-lg"></i>
+                <h3 class="text-lg font-medium text-slate-900">Donor Information</h3>
             </div>
-            <div class="col-md-6">
-                <p><strong>Email:</strong> {{ pledge.witness2_email or 'N/A' }}</p>
-                <p><strong>Telephone:</strong> {{ pledge.witness2_telephone or 'N/A' }}</p>
-                <p><strong>Address:</strong> {{ pledge.witness2_address or 'N/A' }}</p>
+            <div class="p-6">
+                <dl class="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-6">
+                    <div class="sm:col-span-1">
+                        <dt class="text-xs font-medium text-slate-500 uppercase tracking-wider">Full Name</dt>
+                        <dd class="mt-1 text-sm font-semibold text-slate-900">{{ pledge.donor_name }}</dd>
+                    </div>
+                    <div class="sm:col-span-1">
+                        <dt class="text-xs font-medium text-slate-500 uppercase tracking-wider">Contact</dt>
+                        <dd class="mt-1 text-sm text-slate-900">
+                            <div><span class="text-slate-500 w-16 inline-block">Mobile:</span> {{ pledge.donor_mobile or
+                                'N/A' }}</div>
+                            <div><span class="text-slate-500 w-16 inline-block">Email:</span> {{ pledge.donor_email or
+                                'N/A' }}</div>
+                        </dd>
+                    </div>
+                    <div class="sm:col-span-1">
+                        <dt class="text-xs font-medium text-slate-500 uppercase tracking-wider">Personal Info</dt>
+                        <dd class="mt-1 text-sm text-slate-900">
+                            <div><span class="text-slate-500 w-16 inline-block">Gender:</span> {{ pledge.gender or 'N/A'
+                                }}</div>
+                            <div><span class="text-slate-500 w-16 inline-block">DOB:</span> {{ pledge.date_of_birth or
+                                'N/A' }}</div>
+                            <div><span class="text-slate-500 w-16 inline-block">Age:</span> {{ pledge.age or 'N/A' }}
+                            </div>
+                        </dd>
+                    </div>
+                    <div class="sm:col-span-1">
+                        <dt class="text-xs font-medium text-slate-500 uppercase tracking-wider">Other Details</dt>
+                        <dd class="mt-1 text-sm text-slate-900">
+                            <div><span class="text-slate-500 w-24 inline-block">Occupation:</span> {{ pledge.occupation
+                                or 'N/A' }}</div>
+                            <div><span class="text-slate-500 w-24 inline-block">Marital:</span> {{ pledge.marital_status
+                                or 'N/A' }}</div>
+                            <div><span class="text-slate-500 w-24 inline-block">Blood Grp:</span> {{ pledge.blood_group
+                                or 'N/A' }}</div>
+                        </dd>
+                    </div>
+                </dl>
+
+                {% if pledge.id_proof_type %}
+                <div class="mt-6 pt-6 border-t border-slate-100 grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <dt class="text-xs font-medium text-slate-500 uppercase tracking-wider">ID Proof Type</dt>
+                        <dd class="mt-1 text-sm text-slate-900">{{ pledge.id_proof_type }}</dd>
+                    </div>
+                    <div>
+                        <dt class="text-xs font-medium text-slate-500 uppercase tracking-wider">ID Proof Number</dt>
+                        <dd class="mt-1 text-sm text-slate-900 font-mono bg-slate-50 inline-block px-2 py-0.5 rounded">
+                            {{ pledge.id_proof_number }}</dd>
+                    </div>
+                </div>
+                {% endif %}
             </div>
         </div>
-    </div>
-    {% endif %}
 
-    <!-- System Information -->
-    <div class="form-section">
-        <h3><i class="bi bi-info-circle"></i> System Information</h3>
-        <p><strong>Created At:</strong> {{ pledge.created_at.strftime('%d-%m-%Y %H:%M:%S') }}</p>
-        <p><strong>Source:</strong> {{ pledge.source }}</p>
-    </div>
+        <!-- Address Information -->
+        <div class="bg-white shadow rounded-lg border border-slate-200 overflow-hidden">
+            <div class="px-6 py-4 bg-slate-50 border-b border-slate-200 flex items-center gap-2">
+                <i class="bi bi-geo-alt-fill text-brand-600 text-lg"></i>
+                <h3 class="text-lg font-medium text-slate-900">Address Information</h3>
+            </div>
+            <div class="p-6">
+                <div class="text-sm text-slate-900 leading-relaxed">
+                    <p>{{ pledge.address_line1 }}</p>
+                    {% if pledge.address_line2 %}<p>{{ pledge.address_line2 }}</p>{% endif %}
+                    <p>{{ pledge.city }}, {{ pledge.district }} - {{ pledge.pincode }}</p>
+                    <p class="font-medium mt-1">{{ pledge.state }}, {{ pledge.country }}</p>
+                </div>
+            </div>
+        </div>
 
+        <!-- Pledge Information -->
+        <div class="bg-white shadow rounded-lg border border-slate-200 overflow-hidden">
+            <div class="px-6 py-4 bg-slate-50 border-b border-slate-200 flex items-center gap-2">
+                <i class="bi bi-check-circle text-brand-600 text-lg"></i>
+                <h3 class="text-lg font-medium text-slate-900">Pledge Information</h3>
+            </div>
+            <div class="p-6">
+                <dl class="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-6">
+                    <div class="sm:col-span-1">
+                        <dt class="text-xs font-medium text-slate-500 uppercase tracking-wider">Timings</dt>
+                        <dd class="mt-1 text-sm text-slate-900">
+                            <div><span class="text-slate-500 w-24 inline-block">Date:</span> {{
+                                pledge.date_of_pledge.strftime('%d-%m-%Y') }}</div>
+                            <div><span class="text-slate-500 w-24 inline-block">Time:</span> {{ pledge.time_of_pledge or
+                                'N/A' }}</div>
+                        </dd>
+                    </div>
+                    <div class="sm:col-span-1">
+                        <dt class="text-xs font-medium text-slate-500 uppercase tracking-wider">Preferences</dt>
+                        <dd class="mt-1 text-sm text-slate-900">
+                            <div><span class="text-slate-500 w-24 inline-block">Language:</span> {{
+                                pledge.language_preference }}</div>
+                            <div><span class="text-slate-500 w-24 inline-block">Place:</span> {{ pledge.place_of_pledge
+                                or 'N/A' }}</div>
+                            <div><span class="text-slate-500 w-24 inline-block">Eye Bank:</span> {{
+                                pledge.preferred_eye_bank or 'N/A' }}</div>
+                        </dd>
+                    </div>
+                    <div class="sm:col-span-2">
+                        <dt class="text-xs font-medium text-slate-500 uppercase tracking-wider">Organs Consented</dt>
+                        <dd
+                            class="mt-1 text-sm font-bold text-brand-600 bg-brand-50 inline-block px-3 py-1 rounded-full border border-brand-100">
+                            {{ pledge.organs_consented }}
+                        </dd>
+                    </div>
+                </dl>
 
+                {% if pledge.pledge_additional_notes %}
+                <div class="mt-6 pt-6 border-t border-slate-100">
+                    <dt class="text-xs font-medium text-slate-500 uppercase tracking-wider mb-2">Additional Notes</dt>
+                    <dd
+                        class="text-sm text-slate-700 bg-yellow-50 p-3 rounded-lg border border-yellow-100 whitespace-pre-wrap">
+                        {{ pledge.pledge_additional_notes }}</dd>
+                </div>
+                {% endif %}
+            </div>
+        </div>
 
-    <!-- Navigation -->
-    <div class="form-section text-center">
-        <a href="{{ url_for('admin_pledges') }}" class="btn btn-outline-secondary">
-            <i class="bi bi-arrow-left"></i> Back to List
-        </a>
+        <!-- Witness Information -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Witness 1 -->
+            <div class="bg-white shadow rounded-lg border border-slate-200 overflow-hidden">
+                <div class="px-6 py-4 bg-slate-50 border-b border-slate-200 flex items-center gap-2">
+                    <i class="bi bi-person-check text-brand-600 text-lg"></i>
+                    <h3 class="text-lg font-medium text-slate-900">Witness 1 (Next of Kin)</h3>
+                </div>
+                <div class="p-6">
+                    <dl class="space-y-3">
+                        <div>
+                            <dt class="text-xs font-medium text-slate-500 uppercase">Name & Relation</dt>
+                            <dd class="text-sm font-semibold text-slate-900">{{ pledge.witness1_name }} <span
+                                    class="font-normal text-slate-500">({{ pledge.witness1_relationship or 'N/A'
+                                    }})</span></dd>
+                        </div>
+                        <div>
+                            <dt class="text-xs font-medium text-slate-500 uppercase">Contact</dt>
+                            <dd class="text-sm text-slate-900">{{ pledge.witness1_mobile or 'N/A' }}</dd>
+                            <dd class="text-sm text-slate-900">{{ pledge.witness1_email or 'N/A' }}</dd>
+                        </div>
+                        <div>
+                            <dt class="text-xs font-medium text-slate-500 uppercase">Address</dt>
+                            <dd class="text-sm text-slate-900">{{ pledge.witness1_address or 'Same as Donor' }}</dd>
+                        </div>
+                    </dl>
+                </div>
+            </div>
+
+            <!-- Witness 2 -->
+            {% if pledge.witness2_name %}
+            <div class="bg-white shadow rounded-lg border border-slate-200 overflow-hidden">
+                <div class="px-6 py-4 bg-slate-50 border-b border-slate-200 flex items-center gap-2">
+                    <i class="bi bi-person text-brand-600 text-lg"></i>
+                    <h3 class="text-lg font-medium text-slate-900">Witness 2</h3>
+                </div>
+                <div class="p-6">
+                    <dl class="space-y-3">
+                        <div>
+                            <dt class="text-xs font-medium text-slate-500 uppercase">Name & Relation</dt>
+                            <dd class="text-sm font-semibold text-slate-900">{{ pledge.witness2_name }} <span
+                                    class="font-normal text-slate-500">({{ pledge.witness2_relationship or 'N/A'
+                                    }})</span></dd>
+                        </div>
+                        <div>
+                            <dt class="text-xs font-medium text-slate-500 uppercase">Contact</dt>
+                            <dd class="text-sm text-slate-900">{{ pledge.witness2_mobile or 'N/A' }}</dd>
+                            <dd class="text-sm text-slate-900">{{ pledge.witness2_email or 'N/A' }}</dd>
+                        </div>
+                        <div>
+                            <dt class="text-xs font-medium text-slate-500 uppercase">Address</dt>
+                            <dd class="text-sm text-slate-900">{{ pledge.witness2_address or 'N/A' }}</dd>
+                        </div>
+                    </dl>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- System Information -->
+        <div class="bg-white shadow rounded-lg border border-slate-200 overflow-hidden">
+            <div class="px-6 py-4 bg-slate-50 border-b border-slate-200 flex items-center gap-2">
+                <i class="bi bi-info-circle text-slate-500 text-lg"></i>
+                <h3 class="text-lg font-medium text-slate-900">System Information</h3>
+            </div>
+            <div class="p-6 flex flex-wrap gap-8">
+                <div>
+                    <dt class="text-xs font-medium text-slate-500 uppercase tracking-wider">Created At</dt>
+                    <dd class="mt-1 text-sm text-slate-900 font-mono">{{ pledge.created_at.strftime('%d-%m-%Y %H:%M:%S')
+                        }}</dd>
+                </div>
+                <div>
+                    <dt class="text-xs font-medium text-slate-500 uppercase tracking-wider">Source</dt>
+                    <dd class="mt-1 text-sm text-slate-900">{{ pledge.source }}</dd>
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>
 {% endblock %}

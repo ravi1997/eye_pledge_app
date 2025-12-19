@@ -388,13 +388,14 @@
         <!-- TOP NAV -->
         <header class="px-3 py-2 mb-4">
             <div class="d-flex align-items-center justify-content-between gap-3 flex-wrap">
-                <div class="d-flex align-items-center gap-2">
+                <a href="{{ url_for('index') }}"
+                    class="d-flex align-items-center gap-2 text-decoration-none text-reset">
                     <img src="{{ url_for('static', filename='image/logo.png') }}" alt="Eye Pledge Logo" height="42"
                         class="me-1">
                     <div class="lh-sm">
                         <div class="fw-bold">{{ _('Eye Donation Pledge') }}</div>
                     </div>
-                </div>
+                </a>
 
                 <nav class="nav nav-pills gap-2 align-items-center">
                     <a class="nav-link {% if active_page=='home' %}active{% endif %}" href="{{ url_for('index') }}">{{

@@ -305,6 +305,25 @@ def create_app(config_name='development'):
                 current_year=datetime.now().year,
                 pledge_count=pledge_count)
 
+from translations import TRANSLATIONS
+
+# ... [previous imports] ...
+
+# After app initialization
+
+@app.context_processor
+def inject_translations():
+    """Inject translation helper into templates"""
+    def t(key, *args):
+        lang = session.get('lang', 'English')
+        # Fallback to English if key missing in selected lang
+        text = TRANSLATIONS.get(lang, {}).get(key, TRANSLATIONS['English'].get(key, key))
+        if args:
+            return text.format(*args)
+        return text
+    
+    return dict(t=t)
+
     @app.route("/favicon.ico")
     def favicon():
         """Favicon"""

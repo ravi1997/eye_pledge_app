@@ -5,8 +5,8 @@
 {% block content %}
 <div class="page-header">
     <div class="container-main">
-        <h1><i class="bi bi-check-circle" style="color: #28a745;"></i> Thank You!</h1>
-        <p class="subtitle">Your pledge has been recorded successfully</p>
+        <h1><i class="bi bi-check-circle" style="color: #28a745;"></i> {{ _('Thank You!') }}</h1>
+        <p class="subtitle">{{ _('Your pledge has been recorded successfully') }}</p>
     </div>
 </div>
 
@@ -16,59 +16,60 @@
             <i class="bi bi-heart-fill"></i>
         </div>
 
-        <h2 class="mb-4">Pledge Confirmation</h2>
+        <h2 class="mb-4">{{ _('Pledge Confirmation') }}</h2>
 
         <p class="lead mb-4">
-            Your eye donation pledge has been successfully recorded in our system. 
-            Thank you for your noble decision to help restore sight to the blind!
+            {{ _('Your eye donation pledge has been successfully recorded in our system.') }}
+            {{ _('Thank you for your noble decision to help restore sight to the blind!') }}
         </p>
 
         <div class="alert alert-info" role="alert">
-            <strong>Your Reference Number:</strong> <br>
+            <strong>{{ _('Your Reference Number:') }}</strong> <br>
             <span style="font-size: 1.5rem; font-weight: 700; font-family: monospace; color: #0066cc;">
                 {{ pledge.reference_number }}
             </span>
-            <p class="small mt-2 mb-0">Please save this reference number for your records</p>
+            <p class="small mt-2 mb-0">{{ _('Please save this reference number for your records') }}</p>
         </div>
 
         <div class="form-section mt-4" style="background-color: #f0f7ff;">
-            <h4 class="mb-3">Pledge Summary</h4>
+            <h4 class="mb-3">{{ _('Pledge Summary') }}</h4>
             <div class="row text-start">
                 <div class="col-md-6">
-                    <p><strong>Name:</strong> {{ pledge.donor_name }}</p>
-                    <p><strong>Mobile:</strong> {{ pledge.donor_mobile or 'N/A' }}</p>
-                    <p><strong>Email:</strong> {{ pledge.donor_email or 'N/A' }}</p>
+                    <p><strong>{{ _('Name') }}:</strong> {{ pledge.donor_name }}</p>
+                    <p><strong>{{ _('Mobile') or 'Mobile' }}:</strong> {{ pledge.donor_mobile or 'N/A' }}</p>
+                    <p><strong>{{ _('Email') }}:</strong> {{ pledge.donor_email or 'N/A' }}</p>
                 </div>
                 <div class="col-md-6">
-                    <p><strong>City:</strong> {{ pledge.city }}</p>
-                    <p><strong>State:</strong> {{ pledge.state }}</p>
-                    <p><strong>Date of Pledge:</strong> {{ pledge.date_of_pledge.strftime('%d-%m-%Y') }}</p>
+                    <p><strong>{{ _('City') }}:</strong> {{ pledge.city }}</p>
+                    <p><strong>{{ _('State') }}:</strong> {{ pledge.state }}</p>
+                    <p><strong>{{ _('Date of Pledge') }}:</strong> {{ pledge.date_of_pledge.strftime('%d-%m-%Y') }}</p>
                 </div>
             </div>
             <div class="row text-start">
                 <div class="col-md-12">
-                    <p><strong>Witness (Next of Kin):</strong> {{ pledge.witness1_name }}</p>
+                    <p><strong>{{ _('Witness (Next of Kin)') }}:</strong> {{ pledge.witness1_name }}</p>
                 </div>
             </div>
         </div>
 
         <div class="alert alert-warning mt-4" role="alert">
-            <strong>Important Information:</strong>
+            <strong>{{ _('Important Information') }}:</strong>
             <ul class="mb-0 mt-2" style="text-align: left;">
-                <li>Your family members will be contacted at the time of death based on the contact information you provided</li>
-                <li>You can revoke your pledge at any time by contacting us</li>
-                <li>Your pledge will help restore sight to those in need</li>
-                <li>The reference number is confidential and personal to you</li>
+                <li>{{ _('Your family members will be contacted at the time of death based on the contact information
+                    you provided') }}</li>
+                <li>{{ _('You can revoke your pledge at any time by contacting us') }}</li>
+                <li>{{ _('Your pledge will help restore sight to those in need') }}</li>
+                <li>{{ _('The reference number is confidential and personal to you') }}</li>
             </ul>
         </div>
 
         <div class="form-section mt-4" style="background-color: #f9f9f9;">
-            <h5 class="mb-3">What Happens Next?</h5>
+            <h5 class="mb-3">{{ _('What Happens Next?') }}</h5>
             <ol style="text-align: left;">
-                <li>Your pledge details are securely stored in our system</li>
-                <li>Upon your death, your family will be notified to facilitate eye donation</li>
-                <li>Our medical team will handle the removal and processing of eyes</li>
-                <li>Your eyes may help restore sight to 2 individuals through corneal transplant</li>
+                <li>{{ _('Your pledge details are securely stored in our system') }}</li>
+                <li>{{ _('Upon your death, your family will be notified to facilitate eye donation') }}</li>
+                <li>{{ _('Our medical team will handle the removal and processing of eyes') }}</li>
+                <li>{{ _('Your eyes may help restore sight to 2 individuals through corneal transplant') }}</li>
             </ol>
         </div>
 
@@ -84,8 +85,8 @@
         </div>
 
         <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mt-4">
-            <a href="{{ url_for('view_pledge', ref_num=pledge.reference_number) }}" 
-               class="btn btn-info me-sm-2">View Pledge Details</a>
+            <a href="{{ url_for('view_pledge', ref_num=pledge.reference_number) }}" class="btn btn-info me-sm-2">View
+                Pledge Details</a>
             <a href="{{ url_for('index') }}" class="btn btn-primary">Back to Home</a>
         </div>
 

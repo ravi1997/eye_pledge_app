@@ -107,9 +107,9 @@
 {% block content %}
 <div class="page-header pb-5">
     <div class="container-main text-center">
-        <h1 class="mb-2">Eye Donation Pledge</h1>
+        <h1 class="mb-2">{{ _('Eye Donation Pledge') }}</h1>
         <p class="subtitle mx-auto" style="max-width: 600px;">
-            A few simple steps to leave a legacy of sight.
+            {{ _('A few simple steps to leave a legacy of sight.') }}
         </p>
     </div>
 </div>
@@ -128,51 +128,52 @@
 
             <!-- STEP 1: Personal Details -->
             <div class="form-step active" data-step-index="1">
-                <h4 class="mb-4 text-brand">1. Personal Information</h4>
+                <h4 class="mb-4 text-brand">{{ _('1. Personal Information') }}</h4>
                 <div class="row g-4">
                     <div class="col-md-6">
-                        <label for="donor_name" class="form-label">Full Name <span class="text-danger">*</span></label>
+                        <label for="donor_name" class="form-label">{{ _('Full Name') }} <span
+                                class="text-danger">*</span></label>
                         <input type="text" class="form-control" id="donor_name" name="donor_name" required>
-                        <div class="invalid-feedback">Please enter your full name.</div>
+                        <div class="invalid-feedback">{{ _('Please enter your full name.') }}</div>
                     </div>
                     <div class="col-md-6">
-                        <label for="gender" class="form-label">Gender</label>
+                        <label for="gender" class="form-label">{{ _('Gender') }}</label>
                         <select class="form-select" id="gender" name="gender">
-                            <option value="">Select Gender</option>
-                            <option value="Male">Male</option>
-                            <option value="Female">Female</option>
-                            <option value="Other">Other</option>
+                            <option value="">{{ _('Select Gender') }}</option>
+                            <option value="Male">{{ _('Male') }}</option>
+                            <option value="Female">{{ _('Female') }}</option>
+                            <option value="Other">{{ _('Other') }}</option>
                         </select>
                     </div>
                     <div class="col-md-6">
-                        <label for="marital_status" class="form-label">Marital Status</label>
+                        <label for="marital_status" class="form-label">{{ _('Marital Status') }}</label>
                         <select class="form-select" id="marital_status" name="marital_status">
-                            <option value="">Select Status</option>
-                            <option value="Single">Single</option>
-                            <option value="Married">Married</option>
-                            <option value="Divorced">Divorced</option>
-                            <option value="Widowed">Widowed</option>
-                            <option value="Other">Other</option>
+                            <option value="">{{ _('Select Status') }}</option>
+                            <option value="Single">{{ _('Single') }}</option>
+                            <option value="Married">{{ _('Married') }}</option>
+                            <option value="Divorced">{{ _('Divorced') }}</option>
+                            <option value="Widowed">{{ _('Widowed') }}</option>
+                            <option value="Other">{{ _('Other') }}</option>
                         </select>
                     </div>
                     <div class="col-md-6">
-                        <label for="occupation" class="form-label">Occupation</label>
+                        <label for="occupation" class="form-label">{{ _('Occupation') }}</label>
                         <input type="text" class="form-control" id="occupation" name="occupation"
-                            placeholder="e.g. Engineer, Student">
+                            placeholder="{{ _('e.g. Engineer, Student') }}">
                     </div>
                     <div class="col-md-4">
-                        <label for="date_of_birth" class="form-label">Date of Birth</label>
+                        <label for="date_of_birth" class="form-label">{{ _('Date of Birth') }}</label>
                         <input type="date" class="form-control" id="date_of_birth" name="date_of_birth">
                     </div>
                     <div class="col-md-4">
-                        <label for="age" class="form-label">Age</label>
+                        <label for="age" class="form-label">{{ _('Age') }}</label>
                         <input type="number" class="form-control" id="age" name="age" min="1" max="120" readonly>
-                        <small class="text-muted">Auto-calculated</small>
+                        <small class="text-muted">{{ _('Auto-calculated') }}</small>
                     </div>
                     <div class="col-md-4">
-                        <label for="blood_group" class="form-label">Blood Group</label>
+                        <label for="blood_group" class="form-label">{{ _('Blood Group') }}</label>
                         <select class="form-select" id="blood_group" name="blood_group">
-                            <option value="">Select Group</option>
+                            <option value="">{{ _('Select Group') }}</option>
                             <option value="A+">A+</option>
                             <option value="A-">A-</option>
                             <option value="B+">B+</option>
@@ -184,7 +185,8 @@
                         </select>
                     </div>
                     <div class="col-12">
-                        <label class="form-label">ID Proof (Indian Standard) <span class="text-danger">*</span></label>
+                        <label class="form-label">{{ _('ID Proof (Indian Standard)') }} <span
+                                class="text-danger">*</span></label>
                         <div class="input-group">
                             <select class="form-select" name="id_proof_type" style="max-width: 150px;">
                                 <option value="Aadhaar">Aadhaar</option>
@@ -193,49 +195,49 @@
                                 <option value="Driving License">Driving License</option>
                                 <option value="Passport">Passport</option>
                             </select>
-                            <input type="text" class="form-control" name="id_proof_number" placeholder="Enter ID Number"
-                                required>
+                            <input type="text" class="form-control" name="id_proof_number"
+                                placeholder="{{ _('Enter ID Number') }}" required>
                         </div>
                     </div>
                 </div>
                 <div class="mt-4 text-end">
-                    <button type="button" class="btn btn-primary px-4 btn-next">Next Step <i
+                    <button type="button" class="btn btn-primary px-4 btn-next">{{ _('Next Step') }} <i
                             class="bi bi-arrow-right ms-2"></i></button>
                 </div>
             </div>
 
             <!-- STEP 2: Address & Contact -->
             <div class="form-step" data-step-index="2">
-                <h4 class="mb-4 text-brand">2. Contact & Address</h4>
+                <h4 class="mb-4 text-brand">{{ _('2. Contact & Address') }}</h4>
                 <div class="row g-4">
                     <div class="col-md-6">
-                        <label for="donor_mobile" class="form-label">Mobile Number <span
+                        <label for="donor_mobile" class="form-label">{{ _('Mobile Number') }} <span
                                 class="text-danger">*</span></label>
                         <div class="input-group">
                             <span class="input-group-text">+91</span>
                             <input type="tel" class="form-control" id="donor_mobile" name="donor_mobile"
-                                pattern="[0-9]{10}" placeholder="10-digit number" required>
+                                pattern="[0-9]{10}" placeholder="{{ _('10-digit number') }}" required>
                         </div>
-                        <div class="invalid-feedback">Enter a valid 10-digit mobile number.</div>
+                        <div class="invalid-feedback">{{ _('Enter a valid 10-digit mobile number.') }}</div>
                     </div>
                     <div class="col-md-6">
-                        <label for="donor_email" class="form-label">Email Address</label>
+                        <label for="donor_email" class="form-label">{{ _('Email Address') }}</label>
                         <input type="email" class="form-control" id="donor_email" name="donor_email"
                             placeholder="name@example.com">
                     </div>
                     <div class="col-12">
-                        <label class="form-label">Address Line 1 <span class="text-danger">*</span></label>
+                        <label class="form-label">{{ _('Address Line 1') }} <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" name="address_line1" required>
                     </div>
                     <div class="col-12">
-                        <label class="form-label">Address Line 2</label>
+                        <label class="form-label">{{ _('Address Line 2') }}</label>
                         <input type="text" class="form-control" name="address_line2"
-                            placeholder="Apartment, Studio, or Floor">
+                            placeholder="{{ _('Apartment, Studio, or Floor') }}">
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label">State / UT <span class="text-danger">*</span></label>
+                        <label class="form-label">{{ _('State / UT') }} <span class="text-danger">*</span></label>
                         <select class="form-select" id="state" name="state" required>
-                            <option value="">Select State</option>
+                            <option value="">{{ _('Select State') }}</option>
                             <option value="Andhra Pradesh">Andhra Pradesh</option>
                             <option value="Arunachal Pradesh">Arunachal Pradesh</option>
                             <option value="Assam">Assam</option>
@@ -269,145 +271,145 @@
                         </select>
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label">City <span class="text-danger">*</span></label>
+                        <label class="form-label">{{ _('City') }} <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" name="city" required>
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label">District</label>
+                        <label class="form-label">{{ _('District') }}</label>
                         <input type="text" class="form-control" name="district">
                     </div>
                     <div class="col-md-4">
-                        <label class="form-label">Pincode <span class="text-danger">*</span></label>
+                        <label class="form-label">{{ _('Pincode') }} <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" name="pincode" pattern="[0-9]{6}"
-                            placeholder="6-digit code" required>
+                            placeholder="{{ _('6-digit code') }}" required>
                     </div>
                 </div>
                 <div class="mt-4 d-flex justify-content-between">
                     <button type="button" class="btn btn-outline-secondary btn-prev"><i
-                            class="bi bi-arrow-left me-2"></i> Previous</button>
-                    <button type="button" class="btn btn-primary px-4 btn-next">Next Step <i
+                            class="bi bi-arrow-left me-2"></i> {{ _('Previous') }}</button>
+                    <button type="button" class="btn btn-primary px-4 btn-next">{{ _('Next Step') }} <i
                             class="bi bi-arrow-right ms-2"></i></button>
                 </div>
             </div>
 
             <!-- STEP 3: Witness (Next of Kin) -->
             <div class="form-step" data-step-index="3">
-                <h4 class="mb-4 text-brand">3. Next of Kin / Witness</h4>
+                <h4 class="mb-4 text-brand">{{ _('3. Next of Kin / Witness') }}</h4>
                 <div class="alert alert-info border-0 bg-soft-brand mb-4">
                     <i class="bi bi-info-circle-fill me-2"></i>
-                    A witness (preferably next of kin) is mandatory for the pledge to be registered.
+                    {{ _('A witness (preferably next of kin) is mandatory for the pledge to be registered.') }}
                 </div>
                 <div class="row g-4">
                     <div class="col-md-6">
-                        <label class="form-label">Witness Name <span class="text-danger">*</span></label>
+                        <label class="form-label">{{ _('Witness Name') }} <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" name="witness1_name" required>
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label">Relationship <span class="text-danger">*</span></label>
+                        <label class="form-label">{{ _('Relationship') }} <span class="text-danger">*</span></label>
                         <select class="form-select" name="witness1_relationship" required>
-                            <option value="">Select Relationship</option>
-                            <option value="Father">Father</option>
-                            <option value="Mother">Mother</option>
-                            <option value="Spouse">Spouse</option>
-                            <option value="Child">Child</option>
-                            <option value="Sibling">Sibling</option>
-                            <option value="Friend">Friend</option>
-                            <option value="Other">Other</option>
+                            <option value="">{{ _('Select Relationship') }}</option>
+                            <option value="Father">{{ _('Father') }}</option>
+                            <option value="Mother">{{ _('Mother') }}</option>
+                            <option value="Spouse">{{ _('Spouse') }}</option>
+                            <option value="Child">{{ _('Child') }}</option>
+                            <option value="Sibling">{{ _('Sibling') }}</option>
+                            <option value="Friend">{{ _('Friend') }}</option>
+                            <option value="Other">{{ _('Other') }}</option>
                         </select>
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label">Witness Mobile <span class="text-danger">*</span></label>
+                        <label class="form-label">{{ _('Witness Mobile') }} <span class="text-danger">*</span></label>
                         <div class="input-group">
                             <span class="input-group-text">+91</span>
                             <input type="tel" class="form-control" name="witness1_mobile" pattern="[0-9]{10}" required>
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label">Witness Email</label>
+                        <label class="form-label">{{ _('Witness Email') }}</label>
                         <input type="email" class="form-control" name="witness1_email">
                     </div>
                     <div class="col-12">
-                        <label class="form-label">Witness Address</label>
+                        <label class="form-label">{{ _('Witness Address') }}</label>
                         <textarea class="form-control" name="witness1_address" rows="2"></textarea>
                     </div>
                 </div>
 
                 <hr class="my-4">
-                <h5 class="text-muted mb-3">Second Witness (Optional)</h5>
+                <h5 class="text-muted mb-3">{{ _('Second Witness (Optional)') }}</h5>
                 <div class="row g-4">
                     <div class="col-md-6">
-                        <label class="form-label">Witness Name</label>
+                        <label class="form-label">{{ _('Witness Name') }}</label>
                         <input type="text" class="form-control" name="witness2_name">
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label">Relationship</label>
+                        <label class="form-label">{{ _('Relationship') }}</label>
                         <select class="form-select" name="witness2_relationship">
-                            <option value="">Select Relationship</option>
-                            <option value="Father">Father</option>
-                            <option value="Mother">Mother</option>
-                            <option value="Spouse">Spouse</option>
-                            <option value="Child">Child</option>
-                            <option value="Sibling">Sibling</option>
-                            <option value="Friend">Friend</option>
-                            <option value="Other">Other</option>
+                            <option value="">{{ _('Select Relationship') }}</option>
+                            <option value="Father">{{ _('Father') }}</option>
+                            <option value="Mother">{{ _('Mother') }}</option>
+                            <option value="Spouse">{{ _('Spouse') }}</option>
+                            <option value="Child">{{ _('Child') }}</option>
+                            <option value="Sibling">{{ _('Sibling') }}</option>
+                            <option value="Friend">{{ _('Friend') }}</option>
+                            <option value="Other">{{ _('Other') }}</option>
                         </select>
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label">Witness Mobile</label>
+                        <label class="form-label">{{ _('Witness Mobile') }}</label>
                         <div class="input-group">
                             <span class="input-group-text">+91</span>
                             <input type="tel" class="form-control" name="witness2_mobile" pattern="[0-9]{10}">
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label">Witness Email</label>
+                        <label class="form-label">{{ _('Witness Email') }}</label>
                         <input type="email" class="form-control" name="witness2_email">
                     </div>
                     <div class="col-12">
-                        <label class="form-label">Witness Address</label>
+                        <label class="form-label">{{ _('Witness Address') }}</label>
                         <textarea class="form-control" name="witness2_address" rows="1"></textarea>
                     </div>
                 </div>
                 <div class="mt-4 d-flex justify-content-between">
                     <button type="button" class="btn btn-outline-secondary btn-prev"><i
-                            class="bi bi-arrow-left me-2"></i> Previous</button>
-                    <button type="button" class="btn btn-primary px-4 btn-next">Next Step <i
+                            class="bi bi-arrow-left me-2"></i> {{ _('Previous') }}</button>
+                    <button type="button" class="btn btn-primary px-4 btn-next">{{ _('Next Step') }} <i
                             class="bi bi-arrow-right ms-2"></i></button>
                 </div>
             </div>
 
             <!-- STEP 4: Pledge & Consent -->
             <div class="form-step" data-step-index="4">
-                <h4 class="mb-4 text-brand">4. Final Consent</h4>
+                <h4 class="mb-4 text-brand">{{ _('4. Final Consent') }}</h4>
 
                 <div class="card bg-light border-0 mb-4">
                     <div class="card-body">
-                        <h5 class="card-title fw-bold">My Wish</h5>
+                        <h5 class="card-title fw-bold">{{ _('My Wish') }}</h5>
                         <div class="mb-3">
-                            <label class="form-label">I wish to donate:</label>
+                            <label class="form-label">{{ _('I wish to donate:') }}</label>
                             <select class="form-select" name="organs_consented">
-                                <option value="Both eyes" selected>Both Eyes (Recommended)</option>
-                                <option value="Cornea only">Corneas Only</option>
+                                <option value="Both eyes" selected>{{ _('Both Eyes (Recommended)') }}</option>
+                                <option value="Cornea only">{{ _('Corneas Only') }}</option>
                             </select>
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label">Place of Pledge</label>
+                            <label class="form-label">{{ _('Place of Pledge') }}</label>
                             <input type="text" class="form-control" name="place" placeholder="e.g. Mumbai">
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label">Preferred Eye Bank (Optional)</label>
+                            <label class="form-label">{{ _('Preferred Eye Bank (Optional)') }}</label>
                             <input type="text" class="form-control" name="preferred_eye_bank">
                         </div>
                         <div class="col-md-12">
-                            <label class="form-label">Additional Notes</label>
+                            <label class="form-label">{{ _('Additional Notes') }}</label>
                             <textarea class="form-control" name="additional_notes" rows="2"></textarea>
                         </div>
                     </div>
 
                     <p class="text-muted small mb-0">
-                        By submitting this form, I hereby pledge to donate my eyes after my death to be used for
-                        therapeutic, research, or education purposes. I understand my family will be the final
-                        authority to execute this wish, so I will inform them.
+                        {{ _('By submitting this form, I hereby pledge to donate my eyes after my death to be used for
+                        therapeutic, research, or education purposes. I understand my family will be the final authority
+                        to execute this wish, so I will inform them.') }}
                     </p>
                 </div>
             </div>
@@ -415,14 +417,23 @@
             <div class="form-check mb-3">
                 <input class="form-check-input" type="checkbox" id="consent_check" name="donor_consent" required>
                 <label class="form-check-label" for="consent_check">
-                    <strong>I solemnly Pledge to donate my eyes.</strong> <span class="text-danger">*</span>
+                    <strong>{{ _('I solemnly Pledge to donate my eyes.') }}</strong> <span class="text-danger">*</span>
                 </label>
             </div>
 
             <div class="form-check mb-4">
                 <input class="form-check-input" type="checkbox" name="acknowledged_revocability" checked>
                 <label class="form-check-label text-muted small">
-                    I understand this pledge is voluntary and can be revoked at any time.
+                    {{ _('I understand this pledge is voluntary and can be revoked at any time.') }}
+                </label>
+            </div>
+
+            <div class="form-check mb-4">
+                <input class="form-check-input" type="checkbox" id="dpdp_consent" name="dpdp_consent" required>
+                <label class="form-check-label text-muted small" for="dpdp_consent">
+                    {{ _('I consent to the collection and processing of my personal data for the purpose of eye donation
+                    pledging as per the Digital Personal Data Protection (DPDP) Act, 2023.') }} <span
+                        class="text-danger">*</span>
                 </label>
             </div>
 
@@ -431,9 +442,9 @@
 
             <div class="mt-4 d-flex justify-content-between">
                 <button type="button" class="btn btn-outline-secondary btn-prev"><i class="bi bi-arrow-left me-2"></i>
-                    Previous</button>
+                    {{ _('Previous') }}</button>
                 <button type="submit" class="btn btn-success px-5 btn-lg shadow-sm">
-                    <i class="bi bi-heart-fill me-2"></i> Confirm Pledge
+                    <i class="bi bi-heart-fill me-2"></i> {{ _('Confirm Pledge') }}
                 </button>
             </div>
     </div>

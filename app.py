@@ -11,7 +11,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 from config import Config
 from models import EyeDonationPledge, AdminUser, AuditLog, SystemLog, db
-from translations import get_translation
+from translations import TRANSLATIONS
 
 import logging
 import sys
@@ -104,10 +104,16 @@ def create_app(config_name='development'):
         }
 
     @app.context_processor
-    def inject_language_helper():
-        def translate(text):
+    def inject_translations():
+        """Inject translation helper into templates"""
+        def translate(key, *args):
             lang = session.get('lang', 'English')
-            return get_translation(text, lang)
+            # Fallback to English if key missing in selected lang
+            text = TRANSLATIONS.get(lang, {}).get(key, TRANSLATIONS['English'].get(key, key))
+            if args:
+                return text.format(*args)
+            return text
+        
         return dict(_=translate)
 
     # ========================
@@ -305,24 +311,7 @@ def create_app(config_name='development'):
                 current_year=datetime.now().year,
                 pledge_count=pledge_count)
 
-from translations import TRANSLATIONS
 
-# ... [previous imports] ...
-
-# After app initialization
-
-@app.context_processor
-def inject_translations():
-    """Inject translation helper into templates"""
-    def t(key, *args):
-        lang = session.get('lang', 'English')
-        # Fallback to English if key missing in selected lang
-        text = TRANSLATIONS.get(lang, {}).get(key, TRANSLATIONS['English'].get(key, key))
-        if args:
-            return text.format(*args)
-        return text
-    
-    return dict(t=t)
 
     @app.route("/favicon.ico")
     def favicon():

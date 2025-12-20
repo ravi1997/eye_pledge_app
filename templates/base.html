@@ -40,6 +40,8 @@
                     class="flex items-center gap-2 bg-white/50 p-1.5 rounded-xl border border-white/50 backdrop-blur-sm shadow-sm">
                     <a class="nav-link {% if active_page=='home' %}active{% endif %}" href="{{ url_for('index') }}">{{
                         _('Home') }}</a>
+                    <a class="nav-link {% if active_page=='stats' %}active{% endif %}" href="{{ url_for('stats') }}">{{
+                        _('Live Impact') }}</a>
                     <a class="nav-link {% if active_page=='pledge' %}active{% endif %}"
                         href="{{ url_for('pledge_form') }}">{{ _('Pledge Form') }}</a>
 
@@ -139,8 +141,12 @@
                         <a href="{{ url_for('index') }}" class="hover:text-brand transition-colors">{{ _('Home') }}</a>
                         <a href="{{ url_for('pledge_form') }}" class="hover:text-brand transition-colors">{{ _('Pledge
                             Form') }}</a>
+                        <a href="{{ url_for('stats') }}" class="hover:text-brand transition-colors">{{ _('Live Impact')
+                            }}</a>
                         <a href="{{ url_for('admin_login') }}" class="hover:text-brand transition-colors">{{ _('Admin
                             Login') }}</a>
+                        <a href="{{ url_for('guide') }}" class="hover:text-brand transition-colors">{{ _('Guide &
+                            Resources') }}</a>
                     </div>
                 </div>
             </div>

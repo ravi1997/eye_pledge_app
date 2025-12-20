@@ -330,6 +330,160 @@ def create_app(config_name='development'):
         # Redirect back to the page the user came from, or home
         return redirect(request.referrer or url_for('index'))
 
+    @app.route('/guide')
+    def guide():
+        """Render the educational guide page"""
+        return render_template('guide.html', active_page='guide')
+
+    @app.route('/stats')
+    def stats():
+        """Public Live Dashboard"""
+        from sqlalchemy import func, extract
+
+        # 1. Total Count
+        total_pledges = EyeDonationPledge.query.filter_by(is_active=True).count()
+        
+        # 2. Today's Count
+        today = datetime.now().date()
+        today_pledges = EyeDonationPledge.query.filter_by(is_active=True).filter(
+            func.date(EyeDonationPledge.created_at) == today
+        ).count()
+        
+        # 3. Top States
+        top_states = db.session.query(
+            EyeDonationPledge.state,
+            func.count(EyeDonationPledge.id).label('count')
+        ).filter_by(is_active=True).group_by(EyeDonationPledge.state).order_by(
+            func.count(EyeDonationPledge.id).desc()
+        ).limit(5).all()
+
+        # 4. Recent Heroes (Anonymized)
+        recent_raw = EyeDonationPledge.query.filter_by(is_active=True).order_by(
+            EyeDonationPledge.created_at.desc()
+        ).limit(10).all()
+
+        recent_pledges = []
+        for p in recent_raw:
+            # Anonymize Name: "Ravinder Singh" -> "Ravinder S."
+            name_parts = p.donor_name.split()
+            display_name = name_parts[0]
+            if len(name_parts) > 1:
+                display_name += f" {name_parts[-1][0]}."
+            
+            # Simple "Time Ago" logic
+            delta = datetime.now() - p.created_at
+            if delta.days > 0:
+                time_ago = f"{delta.days}d ago"
+            elif delta.seconds > 3600:
+                time_ago = f"{delta.seconds // 3600}h ago"
+            else:
+                time_ago = f"{delta.seconds // 60}m ago"
+
+            recent_pledges.append({
+                'initials': f"{name_parts[0][0]}{name_parts[-1][0] if len(name_parts)>1 else ''}",
+                'name': display_name,
+                'city': p.city,
+                'state': p.state,
+                'time_ago': time_ago
+            })
+
+        # --- Advanced Graphs Data ---
+
+        # 5. Monthly Stats for Current Year
+        current_year = datetime.now().year
+        monthly_raw = db.session.query(
+            extract('month', EyeDonationPledge.created_at).label('month'),
+            func.count(EyeDonationPledge.id).label('count')
+        ).filter_by(is_active=True).filter(
+            extract('year', EyeDonationPledge.created_at) == current_year
+        ).group_by('month').all()
+
+        # Ensure all 12 months present
+        monthly_data = [0] * 12
+        for m_num, count in monthly_raw:
+            monthly_data[int(m_num) - 1] = count
+
+        # 6. Yearly Stats (All Time)
+        yearly_raw = db.session.query(
+            extract('year', EyeDonationPledge.created_at).label('year'),
+            func.count(EyeDonationPledge.id).label('count')
+        ).filter_by(is_active=True).group_by('year').order_by('year').all()
+        
+        yearly_labels = [int(r[0]) for r in yearly_raw]
+        yearly_data = [r[1] for r in yearly_raw]
+
+        # 7. Last 7 Days Trend
+        seven_days_ago = today - timedelta(days=6) # 7 days inclusive
+        daily_raw = db.session.query(
+            func.date(EyeDonationPledge.created_at).label('date'),
+            func.count(EyeDonationPledge.id).label('count')
+        ).filter_by(is_active=True).filter(
+            func.date(EyeDonationPledge.created_at) >= seven_days_ago
+        ).group_by('date').all()
+        
+        # Fill gaps
+        last_7_dates = [(today - timedelta(days=i)).strftime('%d %b') for i in range(6, -1, -1)]
+        last_7_counts = [0] * 7
+        
+        # Map DB results to array
+        daily_dict = {str(r[0]): r[1] for r in daily_raw} # r[0] is date object or string depending on dialect
+        
+        for i in range(7):
+            d_obj = today - timedelta(days=6-i)
+            d_str = str(d_obj) # YYYY-MM-DD
+            if d_str in daily_dict:
+                last_7_counts[i] = daily_dict[d_str]
+
+        # 8. Demographics: Gender
+        gender_raw = db.session.query(
+            EyeDonationPledge.donor_gender,
+            func.count(EyeDonationPledge.id)
+        ).filter_by(is_active=True).group_by(EyeDonationPledge.donor_gender).all()
+        
+        gender_labels = [r[0] for r in gender_raw if r[0]]
+        gender_data = [r[1] for r in gender_raw if r[0]]
+
+        # 9. Demographics: Age Groups
+        # Using simple Python aggregation for predefined buckets is safer/easier cross-SQL-dialects than complex Case statements if scale is small
+        # But let's use a SQL Case based approach for efficiency
+        from sqlalchemy import case
+        
+        age_buckets = db.session.query(
+            case(
+                (EyeDonationPledge.donor_age < 20, '< 20'),
+                ((EyeDonationPledge.donor_age >= 20) & (EyeDonationPledge.donor_age < 40), '20-40'),
+                ((EyeDonationPledge.donor_age >= 40) & (EyeDonationPledge.donor_age < 60), '40-60'),
+                (EyeDonationPledge.donor_age >= 60, '60+'),
+                else_='Unknown'
+            ).label('age_group'),
+            func.count(EyeDonationPledge.id)
+        ).filter_by(is_active=True).group_by('age_group').all()
+        
+        # Sort reasonably: <20, 20-40, 40-60, 60+
+        age_order = {'< 20': 1, '20-40': 2, '40-60': 3, '60+': 4, 'Unknown': 5}
+        age_buckets.sort(key=lambda x: age_order.get(x[0], 99))
+        
+        age_labels = [r[0] for r in age_buckets]
+        age_data = [r[1] for r in age_buckets]
+
+        return render_template('stats.html', 
+                             active_page='stats',
+                             total_pledges=total_pledges,
+                             today_pledges=today_pledges,
+                             top_states=top_states,
+                             recent_pledges=recent_pledges,
+                             # Chart Data
+                             monthly_data=monthly_data,
+                             yearly_labels=yearly_labels,
+                             yearly_data=yearly_data,
+                             last_7_dates=last_7_dates,
+                             last_7_counts=last_7_counts,
+                             gender_labels=gender_labels,
+                             gender_data=gender_data,
+                             age_labels=age_labels,
+                             age_data=age_data,
+                             current_year=current_year)
+
     @app.route("/pledge", methods=["GET", "POST"])
     def pledge_form():
         """Pledge form - display and submit"""

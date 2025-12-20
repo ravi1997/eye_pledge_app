@@ -1,0 +1,207 @@
+{% extends "base.html" %}
+
+{% block title %}{{ _('Eye Donation Guide & Resources') }}{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto">
+
+    <!-- Hero Section -->
+    <div class="text-center mb-16">
+        <h1
+            class="text-4xl md:text-5xl font-bold text-slate-900 mb-6 bg-clip-text text-transparent bg-gradient-to-r from-brand-600 to-brand-400">
+            {{ _('Understanding Eye Donation') }}
+        </h1>
+        <p class="text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed">
+            {{ _('Your comprehensive guide to the noble act of sight restoration. Learn how a simple pledge can
+            transform two lives forever.') }}
+        </p>
+    </div>
+
+    <!-- Family Instructions (Highlighted) -->
+    <div class="bg-blue-50 border-l-4 border-blue-500 p-8 rounded-xl shadow-sm mb-16">
+        <div class="flex items-start gap-4">
+            <i class="bi bi-people-fill text-3xl text-blue-600 mt-1"></i>
+            <div>
+                <h2 class="text-2xl font-bold text-blue-900 mb-4">{{ _('The Most Critical Step: Tell Your Family') }}
+                </h2>
+                <div class="prose prose-blue text-blue-800">
+                    <p class="mb-4">
+                        {{ _('Pledging online is just the first step. In India, **the consent of the next of kin is
+                        mandatory** at the time of donation, even if you have a donor card.') }}
+                    </p>
+                    <p class="font-medium">
+                        {{ _('Therefore, please inform your family members about your wish today. Ask them to call the
+                        Eye Bank immediately (ensure donation happens within 6 hours of death).') }}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- The Process Timeline -->
+    <div class="mb-20">
+        <h2 class="text-3xl font-bold text-slate-900 mb-10 text-center">{{ _('The Donation Process') }}</h2>
+        <div class="relative border-l-2 border-slate-200 ml-4 md:ml-6 space-y-12">
+
+            <!-- Step 1 -->
+            <div class="relative pl-8 md:pl-12">
+                <span class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-brand-500 ring-4 ring-white"></span>
+                <h3 class="text-xl font-bold text-slate-900 mb-2">{{ _('1. Pledging') }}</h3>
+                <p class="text-slate-600">{{ _('You fill out the pledge form and receive a donor card. You inform your
+                    family about your decision.') }}</p>
+            </div>
+
+            <!-- Step 2 -->
+            <div class="relative pl-8 md:pl-12">
+                <span class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-brand-500 ring-4 ring-white"></span>
+                <h3 class="text-xl font-bold text-slate-900 mb-2">{{ _('2. Time of Death') }}</h3>
+                <p class="text-slate-600">{{ _('When the donor passes away, the family must contact the nearest Eye Bank
+                    or call 1919 (National Eye Donation Helpline) within 6 hours.') }}</p>
+            </div>
+
+            <!-- Step 3 -->
+            <div class="relative pl-8 md:pl-12">
+                <span class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-brand-500 ring-4 ring-white"></span>
+                <h3 class="text-xl font-bold text-slate-900 mb-2">{{ _('3. Retrieval') }}</h3>
+                <p class="text-slate-600">{{ _('A medical team visits the home or hospital. The procedure takes only
+                    15-20 minutes and leaves no disfigurement.') }}</p>
+            </div>
+
+            <!-- Step 4 -->
+            <div class="relative pl-8 md:pl-12">
+                <span class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-green-500 ring-4 ring-white"></span>
+                <h3 class="text-xl font-bold text-slate-900 mb-2">{{ _('4. Restoration of Sight') }}</h3>
+                <p class="text-slate-600">{{ _('The corneas are processed and transplanted to two blind patients,
+                    restoring their vision and giving them a new lease on life.') }}</p>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Myths vs Facts -->
+    <div class="mb-20">
+        <h2 class="text-3xl font-bold text-slate-900 mb-10 text-center">{{ _('Myths vs. Facts') }}</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100">
+                <div class="flex items-center gap-2 mb-3 text-red-500 font-bold">
+                    <i class="bi bi-x-circle-fill"></i> {{ _('Myth') }}
+                </div>
+                <p class="text-slate-900 font-medium mb-4">"{{ _('Eye donation disfigures the face.') }}"</p>
+                <div class="border-t border-slate-100 pt-3">
+                    <div class="flex items-center gap-2 mb-1 text-green-600 font-bold text-sm">
+                        <i class="bi bi-check-circle-fill"></i> {{ _('Fact') }}
+                    </div>
+                    <p class="text-slate-600 text-sm">{{ _('Not at all. The procedure is precise and does not disrupt
+                        the facial appearance. Funerals can proceed as normal with an open casket.') }}</p>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100">
+                <div class="flex items-center gap-2 mb-3 text-red-500 font-bold">
+                    <i class="bi bi-x-circle-fill"></i> {{ _('Myth') }}
+                </div>
+                <p class="text-slate-900 font-medium mb-4">"{{ _('Old people cannot donate eyes.') }}"</p>
+                <div class="border-t border-slate-100 pt-3">
+                    <div class="flex items-center gap-2 mb-1 text-green-600 font-bold text-sm">
+                        <i class="bi bi-check-circle-fill"></i> {{ _('Fact') }}
+                    </div>
+                    <p class="text-slate-600 text-sm">{{ _('Anyone can donate! Age is not a strict barrier for corneal
+                        donation. Even people with cataracts or spectacles can donate.') }}</p>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100">
+                <div class="flex items-center gap-2 mb-3 text-red-500 font-bold">
+                    <i class="bi bi-x-circle-fill"></i> {{ _('Myth') }}
+                </div>
+                <p class="text-slate-900 font-medium mb-4">"{{ _('Doctors will not save me if I am a donor.') }}"</p>
+                <div class="border-t border-slate-100 pt-3">
+                    <div class="flex items-center gap-2 mb-1 text-green-600 font-bold text-sm">
+                        <i class="bi bi-check-circle-fill"></i> {{ _('Fact') }}
+                    </div>
+                    <p class="text-slate-600 text-sm">{{ _('Saving your life is always the first priority. Organ/Eye
+                        donation is only considered after death is declared.') }}</p>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100">
+                <div class="flex items-center gap-2 mb-3 text-red-500 font-bold">
+                    <i class="bi bi-x-circle-fill"></i> {{ _('Myth') }}
+                </div>
+                <p class="text-slate-900 font-medium mb-4">"{{ _('My family will be charged for donation.') }}"</p>
+                <div class="border-t border-slate-100 pt-3">
+                    <div class="flex items-center gap-2 mb-1 text-green-600 font-bold text-sm">
+                        <i class="bi bi-check-circle-fill"></i> {{ _('Fact') }}
+                    </div>
+                    <p class="text-slate-600 text-sm">{{ _('Eye donation is a free, charitable act. There are no costs
+                        involved for the donor\'s family.') }}</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- FAQ -->
+    <div>
+        <h2 class="text-3xl font-bold text-slate-900 mb-10 text-center">{{ _('Frequently Asked Questions') }}</h2>
+        <div class="space-y-4">
+
+            <details
+                class="group bg-white rounded-xl shadow-sm border border-slate-200 open:ring-2 open:ring-brand-100 transition-all">
+                <summary class="flex items-center justify-between p-6 cursor-pointer list-none">
+                    <span class="font-bold text-slate-800">{{ _('Can I donate if I wear glasses?') }}</span>
+                    <i class="bi bi-chevron-down text-slate-400 transition-transform group-open:rotate-180"></i>
+                </summary>
+                <div class="px-6 pb-6 text-slate-600">
+                    {{ _('Yes, absolutely. People who wear glasses for short-sightedness, long-sightedness, or
+                    astigmatism can donate their eyes. The cornea is usually unaffected.') }}
+                </div>
+            </details>
+
+            <details
+                class="group bg-white rounded-xl shadow-sm border border-slate-200 open:ring-2 open:ring-brand-100 transition-all">
+                <summary class="flex items-center justify-between p-6 cursor-pointer list-none">
+                    <span class="font-bold text-slate-800">{{ _('Can I donate if I have had eye surgery?') }}</span>
+                    <i class="bi bi-chevron-down text-slate-400 transition-transform group-open:rotate-180"></i>
+                </summary>
+                <div class="px-6 pb-6 text-slate-600">
+                    {{ _('It depends on the type of surgery. Those who have had cataract surgery can still donate.
+                    However, if you have had major corneal surgery, you may not be suitable. The medical team will
+                    assess this at the time.') }}
+                </div>
+            </details>
+
+            <details
+                class="group bg-white rounded-xl shadow-sm border border-slate-200 open:ring-2 open:ring-brand-100 transition-all">
+                <summary class="flex items-center justify-between p-6 cursor-pointer list-none">
+                    <span class="font-bold text-slate-800">{{ _('Who cannot donate eyes?') }}</span>
+                    <i class="bi bi-chevron-down text-slate-400 transition-transform group-open:rotate-180"></i>
+                </summary>
+                <div class="px-6 pb-6 text-slate-600">
+                    {{ _('People suffering from certain communicable diseases like HIV/AIDS, Hepatitis B/C, Rabies,
+                    Septicemia, or blood cancer may not be able to donate. Conditions are evaluated strictly to ensure
+                    safety.') }}
+                </div>
+            </details>
+
+        </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="mt-20 text-center bg-slate-900 rounded-3xl p-12 relative overflow-hidden">
+        <div class="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]">
+        </div>
+        <div class="relative z-10">
+            <h2 class="text-3xl font-bold text-white mb-6">{{ _('Ready to Change the World?') }}</h2>
+            <p class="text-slate-300 mb-8 max-w-xl mx-auto">{{ _('Join thousands of others who have pledged to leave a
+                legacy of sight. It takes less than 2 minutes.') }}</p>
+            <a href="{{ url_for('pledge_form') }}"
+                class="inline-block px-8 py-4 bg-brand-500 hover:bg-brand-600 text-white font-bold rounded-xl shadow-lg shadow-brand-500/30 transition-all transform hover:-translate-y-1">
+                {{ _('Pledge Your Eyes Now') }}
+            </a>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

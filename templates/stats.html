@@ -113,7 +113,7 @@
     </div>
 
     <!-- COMPARATIVE INSIGHTS STRIP -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 animate-enter delay-400">
+    <div class="hidden grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 animate-enter delay-400">
         <!-- Month over Month -->
         <div class="glass-panel p-5 flex items-center justify-between">
             <div>
@@ -146,7 +146,7 @@
     <!-- Charts Row 1: Historical & Trends -->
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
         <!-- Historical Multi-Year Trend -->
-        <div class="lg:col-span-2 glass-panel p-6 md:p-8 animate-enter delay-500">
+        <div class="hidden lg:col-span-2 glass-panel p-6 md:p-8 animate-enter delay-500">
             <div class="flex items-center justify-between mb-6">
                 <div>
                     <h3 class="text-xl font-bold text-slate-900">{{ _('Historical Impact') }}</h3>
@@ -181,7 +181,7 @@
     <!-- Charts Row 2: Deep Dive Insights -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
         <!-- Source Analysis -->
-        <div class="glass-panel p-6 md:p-8 animate-enter delay-600">
+        <div class="hidden glass-panel p-6 md:p-8 animate-enter delay-600">
             <div class="flex items-center justify-between mb-6">
                 <div>
                     <h3 class="text-lg font-bold text-slate-900">{{ _('Pledge Sources') }}</h3>
@@ -290,10 +290,9 @@
             </div>
         </div>
     </div>
-    </div>
 
     <!-- Demographics Section (Static Data Visualization for Modern Feel) -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 animate-enter delay-700">
+    <div class="grid grid-cols-1 lg:grid-cols-2 py-6 gap-8 mb-8 animate-enter delay-700">
         <div class="glass-panel p-6 md:p-8">
             <div class="flex items-center justify-between mb-6">
                 <div>

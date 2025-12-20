@@ -14,6 +14,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from config import Config
 from models import EyeDonationPledge, AdminUser, AuditLog, SystemLog, db
 from translations import TRANSLATIONS
+from api.stats_routes import stats_bp
 
 import logging
 import sys
@@ -75,6 +76,9 @@ def create_app(config_name='development'):
     
     db.init_app(app)
     migrate.init_app(app, db)
+    
+    # Register Blueprints
+    app.register_blueprint(stats_bp)
 
     # Import models from external file if exists, otherwise define here
     

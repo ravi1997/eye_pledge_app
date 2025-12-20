@@ -383,4 +383,132 @@ class DashboardAnalytics:
         
         return {
             'languages': [{'language': l.language_preference, 'count': l.count} for l in lang_dist]
+        }    @staticmethod
+    def get_historical_comparison(years=5):
+        """
+        Get pledge comparisons for the last N years.
+        
+        Args:
+            years: Number of years to compare
+            
+        Returns:
+            dict: Year-wise labels and data
+        """
+        current_year = datetime.now().year
+        data_by_year = {}
+        
+        # Calculate start year
+        start_year = current_year - years + 1
+        
+        print(f"Adding historical comparison from {start_year}")
+        
+        # Query for yearly aggregation
+        yearly_counts = db.session.query(
+            extract('year', EyeDonationPledge.created_at).label('year'),
+            func.count(EyeDonationPledge.id).label('count')
+        ).filter(
+            EyeDonationPledge.is_active == True,
+            extract('year', EyeDonationPledge.created_at) >= start_year
+        ).group_by('year').order_by('year').all()
+        
+        # Format response
+        labels = []
+        data = []
+        
+        for row in yearly_counts:
+            labels.append(str(int(row.year)))
+            data.append(row.count)
+            
+        return {
+            'labels': labels,
+            'data': data
         }
+
+    @staticmethod
+    def get_comparative_metrics():
+        """
+        Get comparative indicators (MoM, YoY).
+        """
+        now = datetime.now()
+        current_year = now.year
+        current_month = now.month
+        
+        # Query total count function
+        def get_count_for_period(year, month=None):
+            q = EyeDonationPledge.query.filter_by(is_active=True).filter(
+                extract('year', EyeDonationPledge.created_at) == year
+            )
+            if month:
+                q = q.filter(extract('month', EyeDonationPledge.created_at) == month)
+            return q.count()
+
+        # Month over Month
+        this_month_count = get_count_for_period(current_year, current_month)
+        
+        if current_month == 1:
+            last_month_count = get_count_for_period(current_year - 1, 12)
+        else:
+            last_month_count = get_count_for_period(current_year, current_month - 1)
+            
+        mom_growth = 0
+        if last_month_count > 0:
+            mom_growth = round(((this_month_count - last_month_count) / last_month_count) * 100, 1)
+
+        # Year over Year (YTD) to compare fair progress
+        # Compare Jan-CurrentMonth of this year vs Jan-CurrentMonth of last year
+        # This is more accurate than comparing a partial 2024 to a full 2023
+        
+        # Logic for YTD
+        # Since standard SQL alchemy filtering for "month <= X" inside extract can be complex across DBs in YTD context, 
+        # we will fetch full year counts for simplicity in this version, 
+        # OR implement a rough YoY of total yearly volume.
+        # Let's stick to Total Year comparison for "YoY" card generally.
+        
+        this_year_count = get_count_for_period(current_year)
+        last_year_count = get_count_for_period(current_year - 1)
+        
+        yoy_growth = 0
+        if last_year_count > 0:
+            yoy_growth = round(((this_year_count - last_year_count) / last_year_count) * 100, 1)
+
+        return {
+            'mom': {'value': mom_growth, 'count': this_month_count, 'prev_count': last_month_count},
+            'yoy': {'value': yoy_growth, 'count': this_year_count, 'prev_count': last_year_count}
+        }
+
+    @staticmethod
+    def get_source_distribution():
+        """Get breakdown of pledges by source."""
+        results = db.session.query(
+            EyeDonationPledge.source,
+            func.count(EyeDonationPledge.id)
+        ).filter_by(is_active=True).group_by(EyeDonationPledge.source).all()
+        
+        labels = [r[0] for r in results]
+        data = [r[1] for r in results]
+        
+        return {'labels': labels, 'data': data}
+
+    @staticmethod
+    def get_medical_consent_stats():
+        """Get stats on consent types (Cornea vs Whole Eye)."""
+        results = db.session.query(
+            EyeDonationPledge.organs_consented,
+            func.count(EyeDonationPledge.id)
+        ).filter_by(is_active=True).group_by(EyeDonationPledge.organs_consented).all()
+        
+        return [{'label': r[0], 'value': r[1]} for r in results]
+
+    @staticmethod
+    def get_district_wise_stats(state_name):
+        """Get district-level stats for a specific state."""
+        results = db.session.query(
+            EyeDonationPledge.district,
+            func.count(EyeDonationPledge.id)
+        ).filter(
+            EyeDonationPledge.is_active == True,
+            EyeDonationPledge.state == state_name,
+            EyeDonationPledge.district.isnot(None)
+        ).group_by(EyeDonationPledge.district).order_by(func.count(EyeDonationPledge.id).desc()).all()
+        
+        return [{'district': r[0], 'count': r[1]} for r in results]

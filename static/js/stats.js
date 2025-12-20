@@ -258,7 +258,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 options: {
                     ...commonOptions,
                     plugins: {
-                        legend: { position: 'bottom' }
+                        legend: {
+                            display: true,
+                            position: 'bottom',
+                            labels: { usePointStyle: true, boxWidth: 8, padding: 15, font: { size: 11 } }
+                        }
                     }
                 }
             });
@@ -300,6 +304,115 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // 8. Historical Comparison
+    async function loadHistoricalChart() {
+        const data = await fetchData('/api/stats/historical');
+        const element = document.getElementById('historicalChart');
+        if (data && element) {
+            const ctx = element.getContext('2d');
+            const gradient = ctx.createLinearGradient(0, 0, 0, 300);
+            gradient.addColorStop(0, 'rgba(79, 70, 229, 0.2)'); // Indigo
+            gradient.addColorStop(1, 'rgba(79, 70, 229, 0)');
+
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: data.labels,
+                    datasets: [{
+                        label: 'Total Pledges',
+                        data: data.data,
+                        borderColor: '#4f46e5', // Indigo-600
+                        backgroundColor: gradient,
+                        borderWidth: 3,
+                        tension: 0.3,
+                        fill: true,
+                        pointBackgroundColor: '#fff',
+                        pointBorderColor: '#4f46e5',
+                        pointBorderWidth: 2,
+                        pointRadius: 5
+                    }]
+                },
+                options: commonOptions
+            });
+        }
+    }
+
+    // 9. Comparative Metrics (MoM, YoY)
+    async function loadComparativeMetrics() {
+        const data = await fetchData('/api/stats/comparative');
+        if (data) {
+            // MoM
+            const momVal = document.getElementById('momGrowthValue');
+            const momBadge = document.getElementById('momGrowthBadge');
+            if (momVal && momBadge) {
+                momVal.innerText = `${data.mom.value}%`;
+                momBadge.innerText = data.mom.value >= 0 ? 'Increase' : 'Decrease';
+                momBadge.className = `text-xs font-medium px-2 py-0.5 rounded-full ${data.mom.value >= 0 ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`;
+            }
+
+            // YoY
+            const yoyVal = document.getElementById('yoyGrowthValue');
+            const yoyBadge = document.getElementById('yoyGrowthBadge');
+            if (yoyVal && yoyBadge) {
+                yoyVal.innerText = `${data.yoy.value}%`;
+                yoyBadge.innerText = data.yoy.value >= 0 ? 'Increase' : 'Decrease';
+                yoyBadge.className = `text-xs font-medium px-2 py-0.5 rounded-full ${data.yoy.value >= 0 ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`;
+            }
+        }
+    }
+
+    // 10. Source Distribution
+    async function loadSourceChart() {
+        const data = await fetchData('/api/stats/sources');
+        const element = document.getElementById('sourceChart');
+        if (data && element) {
+            new Chart(element.getContext('2d'), {
+                type: 'bar',
+                data: {
+                    labels: data.labels,
+                    datasets: [{
+                        label: 'Pledges by Source',
+                        data: data.data,
+                        backgroundColor: '#14b8a6', // Teal-500
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    ...commonOptions,
+                    indexAxis: 'y', // Horizontal Bar Chart
+                }
+            });
+        }
+    }
+
+    // 11. Consent Types
+    async function loadConsentChart() {
+        const data = await fetchData('/api/stats/consent');
+        const element = document.getElementById('consentChart');
+        if (data && element) {
+            new Chart(element.getContext('2d'), {
+                type: 'pie',
+                data: {
+                    labels: data.map(i => i.label),
+                    datasets: [{
+                        data: data.map(i => i.value),
+                        backgroundColor: ['#f43f5e', '#f59e0b', '#8b5cf6', '#10b981'], // Rose, Amber, Violet, Emerald
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    ...commonOptions,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: { usePointStyle: true, boxWidth: 8, padding: 15 }
+                        }
+                    }
+                }
+            });
+        }
+    }
+
     // Initialize all components
     loadSummaryStats();
     loadMonthlyChart();
@@ -307,6 +420,11 @@ document.addEventListener('DOMContentLoaded', () => {
     loadYearlyChart();
     loadDemographics();
     loadHourlyChart();
+    loadHistoricalChart(); // New
+    loadComparativeMetrics(); // New
+    loadSourceChart(); // New
+    loadConsentChart(); // New
+    loadTopStates(); // Initial load only, complex list structure
 
     // Auto-refresh summary only every 30s to be light
     setInterval(loadSummaryStats, 30000);

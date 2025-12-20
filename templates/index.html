@@ -204,10 +204,10 @@
                         </div>
                         <div class="font-semibold text-slate-900 text-sm">{{ _('Resources') }}</div>
                         <div class="text-xs text-slate-400 mt-1 mb-3">{{ _('Guides.') }}</div>
-                        <button
-                            class="w-full py-1.5 px-3 rounded-lg border border-slate-200 text-xs font-medium text-slate-400 bg-slate-50 cursor-not-allowed">
-                            {{ _('Coming soon') }}
-                        </button>
+                        <a href="{{ url_for('guide') }}"
+                            class="block w-full py-1.5 px-3 rounded-lg border border-slate-200 text-xs font-medium text-slate-600 bg-slate-50 hover:bg-slate-100 hover:text-brand-600 transition-colors">
+                            {{ _('View Guide') }}
+                        </a>
                     </div>
 
                     <div

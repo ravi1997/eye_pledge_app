@@ -1,206 +1,242 @@
 {% extends "base.html" %}
+{% set active_page = "guide" %}
 
-{% block title %}{{ _('Eye Donation Guide & Resources') }}{% endblock %}
+{% block title %}{{ _('Eye Donation Guide') }} - {{ _('Learn More') }}{% endblock %}
+
+{% block hero_content %}
+<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
+    <!-- Hero Card -->
+    <div class="relative bg-white rounded-[2rem] shadow-xl overflow-hidden animate-enter border border-slate-100">
+        <!-- Subtle Pattern Background -->
+        <div class="absolute inset-0 bg-gradient-to-br from-blue-50/50 via-white to-indigo-50/50"></div>
+        <div class="absolute inset-0 opacity-[0.03] bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]">
+        </div>
+
+        <div class="relative z-10 px-8 py-16 md:py-20 md:px-16 text-center">
+
+            <span
+                class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-50 text-brand-700 font-bold text-xs uppercase tracking-wider mb-6 border border-brand-100">
+                <i class="bi bi-book"></i> {{ _('Comprehensive Guide') }}
+            </span>
+
+            <h1 class="text-4xl md:text-6xl font-extrabold text-slate-900 mb-6 tracking-tight leading-tight">
+                {{ _('Understanding') }}
+                <span class="text-brand-600">{{ _('Eye Donation') }}</span>
+            </h1>
+
+            <p class="text-slate-600 text-lg md:text-xl leading-relaxed max-w-2xl mx-auto mb-12">
+                {{ _('Your decision to pledge can bridge the gap between darkness and light. Learn how a simple act of
+                kindness transforms lives forever.') }}
+            </p>
+
+            <!-- Key Info Box - High Contrast -->
+            <div
+                class="bg-white rounded-xl shadow-md border border-slate-200 p-8 max-w-3xl mx-auto text-left transform transition-transform hover:scale-[1.01] duration-300 relative overflow-hidden">
+                <div class="absolute top-0 left-0 w-1.5 h-full bg-brand-500"></div>
+                <div class="flex flex-col md:flex-row gap-6 items-start">
+                    <div
+                        class="w-12 h-12 rounded-lg bg-brand-100 text-brand-600 flex items-center justify-center shrink-0 text-xl">
+                        <i class="bi bi- megaphone-fill"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold text-slate-900 mb-2">{{ _('The Most Critical Step: Tell Your
+                            Family') }}</h3>
+                        <p class="text-slate-600 leading-relaxed text-base mb-4">
+                            {{ _('Pledging online is just the first step. In India, **the consent of the next of kin is
+                            mandatory** at the time of donation, even if you have a donor card.') }}
+                        </p>
+                        <div
+                            class="inline-flex items-center gap-2 text-sm font-semibold text-brand-700 bg-brand-50 px-3 py-1.5 rounded-lg border border-brand-100">
+                            <i class="bi bi-check-circle-fill"></i>
+                            {{ _('Please inform your family members today.') }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
 
 {% block content %}
-<div class="max-w-4xl mx-auto">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-16 pb-24 space-y-20">
 
-    <!-- Hero Section -->
-    <div class="text-center mb-16">
-        <h1
-            class="text-4xl md:text-5xl font-bold text-slate-900 mb-6 bg-clip-text text-transparent bg-gradient-to-r from-brand-600 to-brand-400">
-            {{ _('Understanding Eye Donation') }}
-        </h1>
-        <p class="text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed">
-            {{ _('Your comprehensive guide to the noble act of sight restoration. Learn how a simple pledge can
-            transform two lives forever.') }}
-        </p>
-    </div>
-
-    <!-- Family Instructions (Highlighted) -->
-    <div class="bg-blue-50 border-l-4 border-blue-500 p-8 rounded-xl shadow-sm mb-16">
-        <div class="flex items-start gap-4">
-            <i class="bi bi-people-fill text-3xl text-blue-600 mt-1"></i>
-            <div>
-                <h2 class="text-2xl font-bold text-blue-900 mb-4">{{ _('The Most Critical Step: Tell Your Family') }}
-                </h2>
-                <div class="prose prose-blue text-blue-800">
-                    <p class="mb-4">
-                        {{ _('Pledging online is just the first step. In India, **the consent of the next of kin is
-                        mandatory** at the time of donation, even if you have a donor card.') }}
-                    </p>
-                    <p class="font-medium">
-                        {{ _('Therefore, please inform your family members about your wish today. Ask them to call the
-                        Eye Bank immediately (ensure donation happens within 6 hours of death).') }}
-                    </p>
-                </div>
-            </div>
+    <!-- Process Timeline -->
+    <section class="animate-enter delay-200">
+        <div class="text-center mb-16">
+            <h2 class="text-3xl font-bold text-slate-900 mb-3">{{ _('The Donation Process') }}</h2>
+            <p class="text-slate-600 max-w-xl mx-auto">{{ _('A transparent look at what happens when you pledge.') }}
+            </p>
         </div>
-    </div>
 
-    <!-- The Process Timeline -->
-    <div class="mb-20">
-        <h2 class="text-3xl font-bold text-slate-900 mb-10 text-center">{{ _('The Donation Process') }}</h2>
-        <div class="relative border-l-2 border-slate-200 ml-4 md:ml-6 space-y-12">
+        <div class="relative max-w-4xl mx-auto">
+            <!-- Timeline Line -->
+            <div class="absolute left-8 md:left-1/2 top-4 bottom-4 w-0.5 bg-slate-200 -ml-px hidden md:block"></div>
+            <!-- Mobile Line -->
+            <div class="absolute left-6 top-4 bottom-4 w-0.5 bg-slate-200 -ml-px md:hidden"></div>
 
-            <!-- Step 1 -->
-            <div class="relative pl-8 md:pl-12">
-                <span class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-brand-500 ring-4 ring-white"></span>
-                <h3 class="text-xl font-bold text-slate-900 mb-2">{{ _('1. Pledging') }}</h3>
-                <p class="text-slate-600">{{ _('You fill out the pledge form and receive a donor card. You inform your
-                    family about your decision.') }}</p>
-            </div>
-
-            <!-- Step 2 -->
-            <div class="relative pl-8 md:pl-12">
-                <span class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-brand-500 ring-4 ring-white"></span>
-                <h3 class="text-xl font-bold text-slate-900 mb-2">{{ _('2. Time of Death') }}</h3>
-                <p class="text-slate-600">{{ _('When the donor passes away, the family must contact the nearest Eye Bank
-                    or call 1919 (National Eye Donation Helpline) within 6 hours.') }}</p>
-            </div>
-
-            <!-- Step 3 -->
-            <div class="relative pl-8 md:pl-12">
-                <span class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-brand-500 ring-4 ring-white"></span>
-                <h3 class="text-xl font-bold text-slate-900 mb-2">{{ _('3. Retrieval') }}</h3>
-                <p class="text-slate-600">{{ _('A medical team visits the home or hospital. The procedure takes only
-                    15-20 minutes and leaves no disfigurement.') }}</p>
-            </div>
-
-            <!-- Step 4 -->
-            <div class="relative pl-8 md:pl-12">
-                <span class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-green-500 ring-4 ring-white"></span>
-                <h3 class="text-xl font-bold text-slate-900 mb-2">{{ _('4. Restoration of Sight') }}</h3>
-                <p class="text-slate-600">{{ _('The corneas are processed and transplanted to two blind patients,
-                    restoring their vision and giving them a new lease on life.') }}</p>
-            </div>
-
-        </div>
-    </div>
-
-    <!-- Myths vs Facts -->
-    <div class="mb-20">
-        <h2 class="text-3xl font-bold text-slate-900 mb-10 text-center">{{ _('Myths vs. Facts') }}</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-
-            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100">
-                <div class="flex items-center gap-2 mb-3 text-red-500 font-bold">
-                    <i class="bi bi-x-circle-fill"></i> {{ _('Myth') }}
-                </div>
-                <p class="text-slate-900 font-medium mb-4">"{{ _('Eye donation disfigures the face.') }}"</p>
-                <div class="border-t border-slate-100 pt-3">
-                    <div class="flex items-center gap-2 mb-1 text-green-600 font-bold text-sm">
-                        <i class="bi bi-check-circle-fill"></i> {{ _('Fact') }}
+            <div class="space-y-12">
+                <!-- Step 1 -->
+                <div class="relative flex flex-col md:flex-row items-start md:items-center gap-8 group">
+                    <div class="flex-1 md:text-right pr-6 md:pr-12 md:pl-0 pl-16">
+                        <div
+                            class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition-shadow relative z-10">
+                            <span
+                                class="absolute top-6 right-full mr-4 w-3 h-3 bg-slate-200 rotate-45 hidden md:block border-t border-r border-slate-100 bg-white"></span>
+                            <!-- Arrow Fix -->
+                            <h3 class="text-xl font-bold text-slate-900 mb-2">{{ _('1. Pledging') }}</h3>
+                            <p class="text-slate-500 text-sm leading-relaxed">{{ _('You fill out the pledge form and
+                                receive a donor card. Most importantly, you inform your family about your decision.') }}
+                            </p>
+                        </div>
                     </div>
-                    <p class="text-slate-600 text-sm">{{ _('Not at all. The procedure is precise and does not disrupt
-                        the facial appearance. Funerals can proceed as normal with an open casket.') }}</p>
-                </div>
-            </div>
-
-            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100">
-                <div class="flex items-center gap-2 mb-3 text-red-500 font-bold">
-                    <i class="bi bi-x-circle-fill"></i> {{ _('Myth') }}
-                </div>
-                <p class="text-slate-900 font-medium mb-4">"{{ _('Old people cannot donate eyes.') }}"</p>
-                <div class="border-t border-slate-100 pt-3">
-                    <div class="flex items-center gap-2 mb-1 text-green-600 font-bold text-sm">
-                        <i class="bi bi-check-circle-fill"></i> {{ _('Fact') }}
+                    <!-- Icon Node -->
+                    <div
+                        class="absolute left-6 md:left-1/2 -translate-x-1/2 w-10 h-10 rounded-full bg-brand-600 text-white flex items-center justify-center shadow-lg shadow-brand-200 z-10 border-4 border-white">
+                        <span class="font-bold text-sm">1</span>
                     </div>
-                    <p class="text-slate-600 text-sm">{{ _('Anyone can donate! Age is not a strict barrier for corneal
-                        donation. Even people with cataracts or spectacles can donate.') }}</p>
+                    <div class="hidden md:block flex-1"></div>
                 </div>
-            </div>
 
-            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100">
-                <div class="flex items-center gap-2 mb-3 text-red-500 font-bold">
-                    <i class="bi bi-x-circle-fill"></i> {{ _('Myth') }}
-                </div>
-                <p class="text-slate-900 font-medium mb-4">"{{ _('Doctors will not save me if I am a donor.') }}"</p>
-                <div class="border-t border-slate-100 pt-3">
-                    <div class="flex items-center gap-2 mb-1 text-green-600 font-bold text-sm">
-                        <i class="bi bi-check-circle-fill"></i> {{ _('Fact') }}
+                <!-- Step 2 -->
+                <div class="relative flex flex-col md:flex-row items-start md:items-center gap-8 group">
+                    <div class="hidden md:block flex-1"></div>
+                    <!-- Icon Node -->
+                    <div
+                        class="absolute left-6 md:left-1/2 -translate-x-1/2 w-10 h-10 rounded-full bg-brand-600 text-white flex items-center justify-center shadow-lg shadow-brand-200 z-10 border-4 border-white">
+                        <span class="font-bold text-sm">2</span>
                     </div>
-                    <p class="text-slate-600 text-sm">{{ _('Saving your life is always the first priority. Organ/Eye
-                        donation is only considered after death is declared.') }}</p>
-                </div>
-            </div>
-
-            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100">
-                <div class="flex items-center gap-2 mb-3 text-red-500 font-bold">
-                    <i class="bi bi-x-circle-fill"></i> {{ _('Myth') }}
-                </div>
-                <p class="text-slate-900 font-medium mb-4">"{{ _('My family will be charged for donation.') }}"</p>
-                <div class="border-t border-slate-100 pt-3">
-                    <div class="flex items-center gap-2 mb-1 text-green-600 font-bold text-sm">
-                        <i class="bi bi-check-circle-fill"></i> {{ _('Fact') }}
+                    <div class="flex-1 md:pl-12 pl-16 pr-6">
+                        <div
+                            class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition-shadow">
+                            <h3 class="text-xl font-bold text-slate-900 mb-2">{{ _('2. Time of Death') }}</h3>
+                            <p class="text-slate-500 text-sm leading-relaxed">{{ _('When the donor passes away, the
+                                family must contact the nearest Eye Bank or call 1919 within 6 hours.') }}</p>
+                        </div>
                     </div>
-                    <p class="text-slate-600 text-sm">{{ _('Eye donation is a free, charitable act. There are no costs
-                        involved for the donor\'s family.') }}</p>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="relative flex flex-col md:flex-row items-start md:items-center gap-8 group">
+                    <div class="flex-1 md:text-right pr-6 md:pr-12 md:pl-0 pl-16">
+                        <div
+                            class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition-shadow">
+                            <h3 class="text-xl font-bold text-slate-900 mb-2">{{ _('3. Retrieval') }}</h3>
+                            <p class="text-slate-500 text-sm leading-relaxed">{{ _('Medical team visits the home or
+                                hospital. The procedure takes only 15-20 minutes, is bloodless, and leaves no
+                                disfigurement.') }}</p>
+                        </div>
+                    </div>
+                    <div
+                        class="absolute left-6 md:left-1/2 -translate-x-1/2 w-10 h-10 rounded-full bg-brand-600 text-white flex items-center justify-center shadow-lg shadow-brand-200 z-10 border-4 border-white">
+                        <span class="font-bold text-sm">3</span>
+                    </div>
+                    <div class="hidden md:block flex-1"></div>
+                </div>
+
+                <!-- Step 4 -->
+                <div class="relative flex flex-col md:flex-row items-start md:items-center gap-8 group">
+                    <div class="hidden md:block flex-1"></div>
+                    <div
+                        class="absolute left-6 md:left-1/2 -translate-x-1/2 w-10 h-10 rounded-full bg-green-500 text-white flex items-center justify-center shadow-lg shadow-green-200 z-10 border-4 border-white">
+                        <span class="font-bold text-sm">4</span>
+                    </div>
+                    <div class="flex-1 md:pl-12 pl-16 pr-6">
+                        <div
+                            class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition-shadow border-l-4 border-l-green-500">
+                            <h3 class="text-xl font-bold text-slate-900 mb-2">{{ _('4. Restoration of Sight') }}</h3>
+                            <p class="text-slate-500 text-sm leading-relaxed">{{ _('The corneas are processed and
+                                transplanted to two blind patients, restoring their vision and giving them a new lease
+                                on life.') }}</p>
+                        </div>
+                    </div>
                 </div>
             </div>
-
         </div>
+    </section>
+
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+
+        <!-- Myths vs Facts -->
+        <section class="animate-enter delay-300">
+            <div class="flex items-center gap-3 mb-8">
+                <i class="bi bi-lightbulb text-2xl text-yellow-500"></i>
+                <h2 class="text-2xl font-bold text-slate-900">{{ _('Myths vs. Facts') }}</h2>
+            </div>
+
+            <div class="space-y-4">
+                {% set myths = [
+                ('Eye donation disfigures the face.', 'Not at all. The procedure is precise, leaves no scar, and
+                respects the donor. Open casket funerals are possible.'),
+                ('Old people cannot donate eyes.', 'Anyone can donate! Age is not a strict barrier. Even people with
+                cataracts or glasses can donate.'),
+                ('My family will be charged.', 'Eye donation is a 100% free, charitable act. There are no costs for the
+                donor family.')
+                ] %}
+
+                {% for myth, fact in myths %}
+                <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                    <div class="px-5 py-3 bg-red-50 border-b border-red-100 flex items-center gap-3">
+                        <span
+                            class="text-xs font-bold text-red-600 bg-white border border-red-200 px-2 py-0.5 rounded uppercase">{{
+                            _('Myth') }}</span>
+                        <span class="font-semibold text-slate-900 text-sm">{{ _(myth) }}</span>
+                    </div>
+                    <div class="px-5 py-4 flex items-start gap-3">
+                        <span
+                            class="text-xs font-bold text-green-700 bg-green-50 border border-green-200 px-2 py-0.5 rounded uppercase mt-0.5">{{
+                            _('Fact') }}</span>
+                        <span class="text-slate-600 text-sm leading-relaxed">{{ _(fact) }}</span>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+
+        <!-- Common Questions -->
+        <section class="animate-enter delay-400">
+            <div class="flex items-center gap-3 mb-8">
+                <i class="bi bi-patch-question text-2xl text-blue-500"></i>
+                <h2 class="text-2xl font-bold text-slate-900">{{ _('Common Questions') }}</h2>
+            </div>
+
+            <div class="space-y-3">
+                {% set faqs = [
+                ('Can I donate if I wear glasses?', 'Yes. Short-sightedness, long-sightedness, or astigmatism do not
+                affect the cornea.'),
+                ('Can I donate if I have had eye surgery?', 'Cataract surgery is fine. Major corneal surgeries might be
+                an exclusion, but let the medical team decide.'),
+                ('Who cannot donate eyes?', 'Systemic infections like HIV/AIDS, Hepatitis B/C, Rabies, or Septicemia are
+                contraindications.')
+                ] %}
+
+                {% for q, a in faqs %}
+                <details class="group bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                    <summary
+                        class="flex items-center justify-between p-5 cursor-pointer list-none hover:bg-slate-50 transition-colors">
+                        <span class="font-semibold text-slate-900 text-sm">{{ _(q) }}</span>
+                        <span class="transition-transform group-open:rotate-180 text-slate-400">
+                            <i class="bi bi-chevron-down"></i>
+                        </span>
+                    </summary>
+                    <div class="px-5 pb-5 text-slate-600 text-sm leading-relaxed border-t border-slate-100 pt-3">
+                        {{ _(a) }}
+                    </div>
+                </details>
+                {% endfor %}
+            </div>
+        </section>
     </div>
 
-    <!-- FAQ -->
-    <div>
-        <h2 class="text-3xl font-bold text-slate-900 mb-10 text-center">{{ _('Frequently Asked Questions') }}</h2>
-        <div class="space-y-4">
-
-            <details
-                class="group bg-white rounded-xl shadow-sm border border-slate-200 open:ring-2 open:ring-brand-100 transition-all">
-                <summary class="flex items-center justify-between p-6 cursor-pointer list-none">
-                    <span class="font-bold text-slate-800">{{ _('Can I donate if I wear glasses?') }}</span>
-                    <i class="bi bi-chevron-down text-slate-400 transition-transform group-open:rotate-180"></i>
-                </summary>
-                <div class="px-6 pb-6 text-slate-600">
-                    {{ _('Yes, absolutely. People who wear glasses for short-sightedness, long-sightedness, or
-                    astigmatism can donate their eyes. The cornea is usually unaffected.') }}
-                </div>
-            </details>
-
-            <details
-                class="group bg-white rounded-xl shadow-sm border border-slate-200 open:ring-2 open:ring-brand-100 transition-all">
-                <summary class="flex items-center justify-between p-6 cursor-pointer list-none">
-                    <span class="font-bold text-slate-800">{{ _('Can I donate if I have had eye surgery?') }}</span>
-                    <i class="bi bi-chevron-down text-slate-400 transition-transform group-open:rotate-180"></i>
-                </summary>
-                <div class="px-6 pb-6 text-slate-600">
-                    {{ _('It depends on the type of surgery. Those who have had cataract surgery can still donate.
-                    However, if you have had major corneal surgery, you may not be suitable. The medical team will
-                    assess this at the time.') }}
-                </div>
-            </details>
-
-            <details
-                class="group bg-white rounded-xl shadow-sm border border-slate-200 open:ring-2 open:ring-brand-100 transition-all">
-                <summary class="flex items-center justify-between p-6 cursor-pointer list-none">
-                    <span class="font-bold text-slate-800">{{ _('Who cannot donate eyes?') }}</span>
-                    <i class="bi bi-chevron-down text-slate-400 transition-transform group-open:rotate-180"></i>
-                </summary>
-                <div class="px-6 pb-6 text-slate-600">
-                    {{ _('People suffering from certain communicable diseases like HIV/AIDS, Hepatitis B/C, Rabies,
-                    Septicemia, or blood cancer may not be able to donate. Conditions are evaluated strictly to ensure
-                    safety.') }}
-                </div>
-            </details>
-
-        </div>
-    </div>
-
-    <!-- CTA -->
-    <div class="mt-20 text-center bg-slate-900 rounded-3xl p-12 relative overflow-hidden">
-        <div class="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]">
-        </div>
-        <div class="relative z-10">
-            <h2 class="text-3xl font-bold text-white mb-6">{{ _('Ready to Change the World?') }}</h2>
-            <p class="text-slate-300 mb-8 max-w-xl mx-auto">{{ _('Join thousands of others who have pledged to leave a
-                legacy of sight. It takes less than 2 minutes.') }}</p>
-            <a href="{{ url_for('pledge_form') }}"
-                class="inline-block px-8 py-4 bg-brand-500 hover:bg-brand-600 text-white font-bold rounded-xl shadow-lg shadow-brand-500/30 transition-all transform hover:-translate-y-1">
-                {{ _('Pledge Your Eyes Now') }}
-            </a>
-        </div>
+    <!-- Simple CTA -->
+    <div class="animate-enter delay-500 text-center py-12">
+        <h2 class="text-2xl font-bold text-slate-900 mb-4">{{ _('Ready to Leave a Legacy?') }}</h2>
+        <a href="{{ url_for('pledge_form') }}"
+            class="inline-flex items-center gap-2 bg-brand-600 text-white font-bold py-3.5 px-8 rounded-xl shadow-lg hover:bg-brand-700 hover:shadow-xl transition-all hover:-translate-y-0.5">
+            <i class="bi bi-heart-fill"></i>
+            {{ _('Pledge Your Eyes Now') }}
+        </a>
     </div>
 
 </div>

@@ -434,37 +434,7 @@ def create_app(config_name='development'):
             if d_str in daily_dict:
                 last_7_counts[i] = daily_dict[d_str]
 
-        # 8. Demographics: Gender
-        gender_raw = db.session.query(
-            EyeDonationPledge.donor_gender,
-            func.count(EyeDonationPledge.id)
-        ).filter_by(is_active=True).group_by(EyeDonationPledge.donor_gender).all()
-        
-        gender_labels = [r[0] for r in gender_raw if r[0]]
-        gender_data = [r[1] for r in gender_raw if r[0]]
 
-        # 9. Demographics: Age Groups
-        # Using simple Python aggregation for predefined buckets is safer/easier cross-SQL-dialects than complex Case statements if scale is small
-        # But let's use a SQL Case based approach for efficiency
-        from sqlalchemy import case
-        
-        age_buckets = db.session.query(
-            case(
-                (EyeDonationPledge.donor_age < 20, '< 20'),
-                ((EyeDonationPledge.donor_age >= 20) & (EyeDonationPledge.donor_age < 40), '20-40'),
-                ((EyeDonationPledge.donor_age >= 40) & (EyeDonationPledge.donor_age < 60), '40-60'),
-                (EyeDonationPledge.donor_age >= 60, '60+'),
-                else_='Unknown'
-            ).label('age_group'),
-            func.count(EyeDonationPledge.id)
-        ).filter_by(is_active=True).group_by('age_group').all()
-        
-        # Sort reasonably: <20, 20-40, 40-60, 60+
-        age_order = {'< 20': 1, '20-40': 2, '40-60': 3, '60+': 4, 'Unknown': 5}
-        age_buckets.sort(key=lambda x: age_order.get(x[0], 99))
-        
-        age_labels = [r[0] for r in age_buckets]
-        age_data = [r[1] for r in age_buckets]
 
         return render_template('stats.html', 
                              active_page='stats',
@@ -478,10 +448,6 @@ def create_app(config_name='development'):
                              yearly_data=yearly_data,
                              last_7_dates=last_7_dates,
                              last_7_counts=last_7_counts,
-                             gender_labels=gender_labels,
-                             gender_data=gender_data,
-                             age_labels=age_labels,
-                             age_data=age_data,
                              current_year=current_year)
 
     @app.route("/pledge", methods=["GET", "POST"])

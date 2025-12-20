@@ -1,0 +1,740 @@
+{% extends "base.html" %}
+
+{% block title %}Live Statistics - Eye Donation Pledge{% endblock %}
+
+{% block extra_css %}
+<style>
+    :root {
+        --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        --success-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        --info-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        --warning-gradient: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+        --card-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        --card-hover-shadow: 0 15px 50px rgba(0, 0, 0, 0.15);
+    }
+
+    body {
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        min-height: 100vh;
+    }
+
+    .stats-hero {
+        background: var(--primary-gradient);
+        color: white;
+        padding: 4rem 0 3rem;
+        margin-bottom: 3rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .stats-hero::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -10%;
+        width: 500px;
+        height: 500px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+        animation: float 6s ease-in-out infinite;
+    }
+
+    @keyframes float {
+
+        0%,
+        100% {
+            transform: translateY(0px);
+        }
+
+        50% {
+            transform: translateY(-20px);
+        }
+    }
+
+    .stats-hero h1 {
+        font-size: 3rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    .stats-hero p {
+        font-size: 1.2rem;
+        opacity: 0.95;
+    }
+
+    .stat-card {
+        background: white;
+        border-radius: 20px;
+        padding: 2rem;
+        box-shadow: var(--card-shadow);
+        transition: all 0.3s ease;
+        margin-bottom: 2rem;
+        border: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    .stat-card:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--card-hover-shadow);
+    }
+
+    .stat-card-compact {
+        background: white;
+        border-radius: 15px;
+        padding: 1.5rem;
+        box-shadow: var(--card-shadow);
+        transition: all 0.3s ease;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .stat-card-compact::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        background: var(--primary-gradient);
+    }
+
+    .stat-card-compact:hover {
+        transform: translateY(-3px);
+        box-shadow: var(--card-hover-shadow);
+    }
+
+    .stat-number {
+        font-size: 3rem;
+        font-weight: 700;
+        background: var(--primary-gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 0.5rem;
+    }
+
+    .stat-label {
+        color: #6c757d;
+        font-size: 1rem;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .chart-container {
+        position: relative;
+        height: 350px;
+        margin-top: 1.5rem;
+    }
+
+    .chart-container-small {
+        position: relative;
+        height: 300px;
+        margin-top: 1.5rem;
+    }
+
+    .section-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #2d3748;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .section-title i {
+        background: var(--primary-gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .top-states-list {
+        list-style: none;
+        padding: 0;
+        margin-top: 1.5rem;
+    }
+
+    .top-states-list li {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem;
+        margin-bottom: 0.8rem;
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        border-radius: 10px;
+        transition: all 0.3s ease;
+    }
+
+    .top-states-list li:hover {
+        transform: translateX(5px);
+        background: linear-gradient(135deg, #e9ecef 0%, #dee2e6 100%);
+    }
+
+    .state-name {
+        font-weight: 600;
+        color: #2d3748;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .state-count {
+        font-weight: 700;
+        font-size: 1.3rem;
+        background: var(--primary-gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .recent-pledges-feed {
+        max-height: 500px;
+        overflow-y: auto;
+        padding-right: 10px;
+    }
+
+    .recent-pledges-feed::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .recent-pledges-feed::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 10px;
+    }
+
+    .recent-pledges-feed::-webkit-scrollbar-thumb {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 10px;
+    }
+
+    .pledge-item {
+        display: flex;
+        align-items: center;
+        padding: 1rem;
+        margin-bottom: 0.8rem;
+        background: white;
+        border-radius: 10px;
+        border-left: 4px solid #667eea;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        transition: all 0.3s ease;
+        animation: slideIn 0.5s ease;
+    }
+
+    @keyframes slideIn {
+        from {
+            opacity: 0;
+            transform: translateX(-20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    .pledge-item:hover {
+        transform: translateX(5px);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .pledge-avatar {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background: var(--primary-gradient);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 1.2rem;
+        margin-right: 1rem;
+        flex-shrink: 0;
+    }
+
+    .pledge-info {
+        flex: 1;
+    }
+
+    .pledge-name {
+        font-weight: 600;
+        color: #2d3748;
+        margin-bottom: 0.2rem;
+    }
+
+    .pledge-location {
+        font-size: 0.85rem;
+        color: #6c757d;
+    }
+
+    .pledge-time {
+        font-size: 0.8rem;
+        color: #667eea;
+        font-weight: 500;
+        white-space: nowrap;
+    }
+
+    .badge-today {
+        background: var(--success-gradient);
+        color: white;
+        padding: 0.3rem 0.8rem;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .badge-count {
+        background: var(--info-gradient);
+        color: white;
+        padding: 0.2rem 0.6rem;
+        border-radius: 15px;
+        font-size: 0.7rem;
+        font-weight: 600;
+        margin-left: 5px;
+    }
+
+    .live-indicator {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        background: rgba(255, 255, 255, 0.2);
+        padding: 0.3rem 0.8rem;
+        border-radius: 20px;
+        font-size: 0.85rem;
+    }
+
+    .live-indicator::before {
+        content: '';
+        width: 8px;
+        height: 8px;
+        background: #4ade80;
+        border-radius: 50%;
+        animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+
+        0%,
+        100% {
+            opacity: 1;
+        }
+
+        50% {
+            opacity: 0.5;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .stats-hero h1 {
+            font-size: 2rem;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+        }
+
+        .chart-container {
+            height: 250px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<div class="stats-hero">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <h1><i class="fas fa-chart-line"></i> {{ _('Live Statistics') }}</h1>
+                <p>{{ _('Real-time insights into eye donation pledges across India') }}</p>
+            </div>
+            <div class="col-md-4 text-end">
+                <span class="live-indicator">
+                    {{ _('Live Updates') }}
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Main Statistics -->
+<div class="container mb-5">
+    <!-- Summary Cards -->
+    <div class="row mb-4">
+        <div class="col-md-6 col-lg-3 mb-3">
+            <div class="stat-card-compact">
+                <div class="stat-number">{{ total_pledges }}</div>
+                <div class="stat-label">{{ _('Total Pledges') }}</div>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-3 mb-3">
+            <div class="stat-card-compact">
+                <div class="stat-number">{{ today_pledges }}</div>
+                <div class="stat-label">{{ _('Today') }} <span class="badge-today">{{ _('New') }}</span></div>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-3 mb-3">
+            <div class="stat-card-compact">
+                <div class="stat-number">{{ top_states|length }}</div>
+                <div class="stat-label">{{ _('Active States') }}</div>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-3 mb-3">
+            <div class="stat-card-compact">
+                <div class="stat-number">{{ current_year }}</div>
+                <div class="stat-label">{{ _('Current Year') }}</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts Row 1 -->
+    <div class="row">
+        <!-- Current Year Monthly Trend -->
+        <div class="col-lg-8 mb-4">
+            <div class="stat-card">
+                <div class="section-title">
+                    <i class="fas fa-chart-bar"></i>
+                    {{ _('Monthly Pledges') }} - {{ current_year }}
+                </div>
+                <div class="chart-container">
+                    <canvas id="monthlyChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Last 7 Days -->
+        <div class="col-lg-4 mb-4">
+            <div class="stat-card">
+                <div class="section-title">
+                    <i class="fas fa-calendar-week"></i>
+                    {{ _('Last 7 Days') }}
+                </div>
+                <div class="chart-container-small">
+                    <canvas id="weeklyChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts Row 2 -->
+    <div class="row">
+        <!-- Yearly Trend -->
+        <div class="col-lg-8 mb-4">
+            <div class="stat-card">
+                <div class="section-title">
+                    <i class="fas fa-chart-line"></i>
+                    {{ _('Yearly Growth Trend') }}
+                </div>
+                <div class="chart-container">
+                    <canvas id="yearlyChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Top States -->
+        <div class="col-lg-4 mb-4">
+            <div class="stat-card">
+                <div class="section-title">
+                    <i class="fas fa-map-marker-alt"></i>
+                    {{ _('Top 5 States') }}
+                </div>
+                <ul class="top-states-list">
+                    {% for state, count in top_states %}
+                    <li>
+                        <span class="state-name">
+                            <i class="fas fa-trophy"
+                                style="color: {% if loop.index == 1 %}#FFD700{% elif loop.index == 2 %}#C0C0C0{% elif loop.index == 3 %}#CD7F32{% else %}#667eea{% endif %};"></i>
+                            {{ state }}
+                        </span>
+                        <span class="state-count">{{ count }}</span>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script>
+    // Chart.js Global Configuration
+    Chart.defaults.font.family = "'Inter', sans-serif";
+    Chart.defaults.color = '#6c757d';
+
+    // Color Palettes
+    const gradientPurple = {
+        start: 'rgba(102, 126, 234, 0.8)',
+        end: 'rgba(118, 75, 162, 0.8)',
+        border: 'rgba(102, 126, 234, 1)'
+    };
+
+    const gradientBlue = {
+        start: 'rgba(79, 172, 254, 0.8)',
+        end: 'rgba(0, 242, 254, 0.8)',
+        border: 'rgba(79, 172, 254, 1)'
+    };
+
+    const gradientPink = {
+        start: 'rgba(240, 147, 251, 0.8)',
+        end: 'rgba(245, 87, 108, 0.8)',
+        border: 'rgba(240, 147, 251, 1)'
+    };
+
+    // Helper function to create gradient
+    function createGradient(ctx, colorScheme) {
+        const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+        gradient.addColorStop(0, colorScheme.start);
+        gradient.addColorStop(1, colorScheme.end);
+        return gradient;
+    }
+
+    // 1. Monthly Chart (Current Year)
+    const monthlyCtx = document.getElementById('monthlyChart').getContext('2d');
+    const monthlyChart = new Chart(monthlyCtx, {
+        type: 'bar',
+        data: {
+            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+            datasets: [{
+                label: 'Pledges in {{ current_year }}',
+                data: {{ monthly_data | tojson }},
+                backgroundColor: createGradient(monthlyCtx, gradientPurple),
+                borderColor: gradientPurple.border,
+                borderWidth: 2,
+                borderRadius: 10,
+                barThickness: 'flex',
+        maxBarThickness: 50
+            }]
+        },
+    options: {
+        responsive: true,
+            maintainAspectRatio: false,
+                plugins: {
+            legend: {
+                display: false
+            },
+            tooltip: {
+                backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                    padding: 12,
+                        titleFont: {
+                    size: 14,
+                        weight: 'bold'
+                },
+                bodyFont: {
+                    size: 13
+                },
+                borderColor: 'rgba(102, 126, 234, 0.5)',
+                    borderWidth: 1,
+                        displayColors: false,
+                            callbacks: {
+                    label: function(context) {
+                        return 'Pledges: ' + context.parsed.y;
+                    }
+                }
+            }
+        },
+        scales: {
+            y: {
+                beginAtZero: true,
+                    ticks: {
+                    precision: 0,
+                        font: {
+                        size: 11
+                    }
+                },
+                grid: {
+                    color: 'rgba(0, 0, 0, 0.05)',
+                        drawBorder: false
+                }
+            },
+            x: {
+                grid: {
+                    display: false
+                },
+                ticks: {
+                    font: {
+                        size: 11
+                    }
+                }
+            }
+        },
+        animation: {
+            duration: 1500,
+                easing: 'easeInOutQuart'
+        }
+    }
+    });
+
+    // 2. Last 7 Days Chart
+    const weeklyCtx = document.getElementById('weeklyChart').getContext('2d');
+    const weeklyChart = new Chart(weeklyCtx, {
+        type: 'line',
+        data: {
+            labels: {{ last_7_dates | tojson }},
+    datasets: [{
+        label: 'Daily Pledges',
+        data: {{ last_7_counts | tojson }},
+        backgroundColor: createGradient(weeklyCtx, gradientBlue),
+        borderColor: gradientBlue.border,
+        borderWidth: 3,
+        fill: true,
+        tension: 0.4,
+        pointBackgroundColor: gradientBlue.border,
+        pointBorderColor: '#fff',
+        pointBorderWidth: 2,
+        pointRadius: 5,
+        pointHoverRadius: 7
+            }]
+        },
+    options: {
+        responsive: true,
+            maintainAspectRatio: false,
+                plugins: {
+            legend: {
+                display: false
+            },
+            tooltip: {
+                backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                    padding: 12,
+                        titleFont: {
+                    size: 13,
+                        weight: 'bold'
+                },
+                bodyFont: {
+                    size: 12
+                },
+                borderColor: 'rgba(79, 172, 254, 0.5)',
+                    borderWidth: 1,
+                        displayColors: false,
+                            callbacks: {
+                    label: function(context) {
+                        return 'Pledges: ' + context.parsed.y;
+                    }
+                }
+            }
+        },
+        scales: {
+            y: {
+                beginAtZero: true,
+                    ticks: {
+                    precision: 0,
+                        font: {
+                        size: 10
+                    }
+                },
+                grid: {
+                    color: 'rgba(0, 0, 0, 0.05)',
+                        drawBorder: false
+                }
+            },
+            x: {
+                grid: {
+                    display: false
+                },
+                ticks: {
+                    font: {
+                        size: 10
+                    }
+                }
+            }
+        },
+        animation: {
+            duration: 1500,
+                easing: 'easeInOutQuart'
+        }
+    }
+    });
+
+    // 3. Yearly Trend Chart
+    const yearlyCtx = document.getElementById('yearlyChart').getContext('2d');
+    const yearlyChart = new Chart(yearlyCtx, {
+        type: 'line',
+        data: {
+            labels: {{ yearly_labels | tojson }},
+    datasets: [{
+        label: 'Annual Pledges',
+        data: {{ yearly_data | tojson }},
+        backgroundColor: createGradient(yearlyCtx, gradientPink),
+        borderColor: gradientPink.border,
+        borderWidth: 3,
+        fill: true,
+        tension: 0.3,
+        pointBackgroundColor: gradientPink.border,
+        pointBorderColor: '#fff',
+        pointBorderWidth: 2,
+        pointRadius: 6,
+        pointHoverRadius: 8
+            }]
+        },
+    options: {
+        responsive: true,
+            maintainAspectRatio: false,
+                plugins: {
+            legend: {
+                display: false
+            },
+            tooltip: {
+                backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                    padding: 12,
+                        titleFont: {
+                    size: 14,
+                        weight: 'bold'
+                },
+                bodyFont: {
+                    size: 13
+                },
+                borderColor: 'rgba(240, 147, 251, 0.5)',
+                    borderWidth: 1,
+                        displayColors: false,
+                            callbacks: {
+                    label: function(context) {
+                        return 'Total: ' + context.parsed.y + ' pledges';
+                    }
+                }
+            }
+        },
+        scales: {
+            y: {
+                beginAtZero: true,
+                    ticks: {
+                    precision: 0,
+                        font: {
+                        size: 11
+                    }
+                },
+                grid: {
+                    color: 'rgba(0, 0, 0, 0.05)',
+                        drawBorder: false
+                }
+            },
+            x: {
+                grid: {
+                    display: false
+                },
+                ticks: {
+                    font: {
+                        size: 11
+                    }
+                }
+            }
+        },
+        animation: {
+            duration: 1500,
+                easing: 'easeInOutQuart'
+        }
+    }
+    });
+
+    // Auto-refresh every 30 seconds
+    setInterval(function () {
+        location.reload();
+    }, 30000);
+</script>
+{% endblock %}

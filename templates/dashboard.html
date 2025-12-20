@@ -1,0 +1,893 @@
+{% extends "base.html" %}
+
+{% block title %}Analytics Dashboard - Eye Donation Pledge{% endblock %}
+
+{% block extra_css %}
+<style>
+    :root {
+        --primary: #667eea;
+        --secondary: #764ba2;
+        --success: #48bb78;
+        --warning: #ed8936;
+        --danger: #f56565;
+        --info: #4299e1;
+
+        --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        --gradient-success: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%);
+        --gradient-warning: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+        --gradient-info: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+
+        --card-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+        --card-hover-shadow: 0 15px 50px rgba(0, 0, 0, 0.12);
+    }
+
+    body {
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        min-height: 100vh;
+    }
+
+    /* Dashboard Header */
+    .dashboard-header {
+        background: var(--gradient-primary);
+        color: white;
+        padding: 2rem 0;
+        margin-bottom: 2rem;
+        box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
+    }
+
+    .dashboard-title {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+    }
+
+    .dashboard-subtitle {
+        opacity: 0.9;
+        font-size: 1.1rem;
+    }
+
+    /* Filter Controls */
+    .filter-card {
+        background: white;
+        border-radius: 15px;
+        padding: 1.5rem;
+        box-shadow: var(--card-shadow);
+        margin-bottom: 2rem;
+    }
+
+    .filter-label {
+        font-weight: 600;
+        color: #2d3748;
+        margin-bottom: 0.5rem;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .filter-select {
+        border: 2px solid #e2e8f0;
+        border-radius: 10px;
+        padding: 0.6rem 1rem;
+        font-size: 0.95rem;
+        transition: all 0.3s ease;
+    }
+
+    .filter-select:focus {
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+
+    /* Summary Cards */
+    .summary-card {
+        background: white;
+        border-radius: 20px;
+        padding: 1.8rem;
+        box-shadow: var(--card-shadow);
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        border-left: 5px solid transparent;
+    }
+
+    .summary-card:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--card-hover-shadow);
+    }
+
+    .summary-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 150px;
+        height: 150px;
+        background: radial-gradient(circle, rgba(102, 126, 234, 0.1) 0%, transparent 70%);
+        border-radius: 50%;
+        transform: translate(50%, -50%);
+    }
+
+    .summary-card.card-primary {
+        border-left-color: var(--primary);
+    }
+
+    .summary-card.card-success {
+        border-left-color: var(--success);
+    }
+
+    .summary-card.card-warning {
+        border-left-color: var(--warning);
+    }
+
+    .summary-card.card-info {
+        border-left-color: var(--info);
+    }
+
+    .card-icon {
+        width: 60px;
+        height: 60px;
+        border-radius: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.8rem;
+        margin-bottom: 1rem;
+        position: relative;
+        z-index: 1;
+    }
+
+    .card-icon.icon-primary {
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.2), rgba(118, 75, 162, 0.2));
+        color: var(--primary);
+    }
+
+    .card-icon.icon-success {
+        background: linear-gradient(135deg, rgba(72, 187, 120, 0.2), rgba(132, 250, 176, 0.2));
+        color: var(--success);
+    }
+
+    .card-icon.icon-warning {
+        background: linear-gradient(135deg, rgba(237, 137, 54, 0.2), rgba(250, 112, 154, 0.2));
+        color: var(--warning);
+    }
+
+    .card-icon.icon-info {
+        background: linear-gradient(135deg, rgba(66, 153, 225, 0.2), rgba(79, 172, 254, 0.2));
+        color: var(--info);
+    }
+
+    .card-value {
+        font-size: 2.5rem;
+        font-weight: 800;
+        color: #2d3748;
+        margin-bottom: 0.3rem;
+        position: relative;
+        z-index: 1;
+    }
+
+    .card-label {
+        color: #718096;
+        font-size: 0.95rem;
+        font-weight: 500;
+        margin-bottom: 0.8rem;
+        position: relative;
+        z-index: 1;
+    }
+
+    .card-change {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.3rem 0.8rem;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        position: relative;
+        z-index: 1;
+    }
+
+    .card-change.positive {
+        background: rgba(72, 187, 120, 0.15);
+        color: var(--success);
+    }
+
+    .card-change.negative {
+        background: rgba(245, 101, 101, 0.15);
+        color: var(--danger);
+    }
+
+    .card-change i {
+        margin-right: 0.3rem;
+    }
+
+    /* Chart Cards */
+    .chart-card {
+        background: white;
+        border-radius: 20px;
+        padding: 2rem;
+        box-shadow: var(--card-shadow);
+        margin-bottom: 2rem;
+        transition: all 0.3s ease;
+    }
+
+    .chart-card:hover {
+        box-shadow: var(--card-hover-shadow);
+    }
+
+    .chart-title {
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: #2d3748;
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .chart-title i {
+        background: var(--gradient-primary);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .chart-container {
+        position: relative;
+        height: 350px;
+    }
+
+    .chart-container-small {
+        position: relative;
+        height: 280px;
+    }
+
+    .chart-container-large {
+        position: relative;
+        height: 450px;
+    }
+
+    /* Top List Styling */
+    .top-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .top-list-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem;
+        margin-bottom: 0.8rem;
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        border-radius: 12px;
+        transition: all 0.3s ease;
+        border-left: 4px solid transparent;
+    }
+
+    .top-list-item:hover {
+        transform: translateX(5px);
+        border-left-color: var(--primary);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    }
+
+    .top-list-rank {
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        background: var(--gradient-primary);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 0.9rem;
+        margin-right: 1rem;
+    }
+
+    .top-list-name {
+        flex: 1;
+        font-weight: 600;
+        color: #2d3748;
+    }
+
+    .top-list-value {
+        font-size: 1.3rem;
+        font-weight: 700;
+        background: var(--gradient-primary);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    /* Loading State */
+    .loading-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(255, 255, 255, 0.9);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 20px;
+        z-index: 10;
+    }
+
+    .spinner {
+        width: 50px;
+        height: 50px;
+        border: 4px solid #e2e8f0;
+        border-top-color: var(--primary);
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+        to {
+            transform: rotate(360deg);
+        }
+    }
+
+    /* Heatmap Custom */
+    .heatmap-cell {
+        display: inline-block;
+        width: 30px;
+        height: 30px;
+        margin: 2px;
+        border-radius: 4px;
+        transition: all 0.2s ease;
+    }
+
+    .heatmap-cell:hover {
+        transform: scale(1.1);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    @media (max-width: 768px) {
+        .dashboard-title {
+            font-size: 1.5rem;
+        }
+
+        .card-value {
+            font-size: 2rem;
+        }
+
+        .chart-container,
+        .chart-container-small {
+            height: 250px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Dashboard Header -->
+<div class="dashboard-header">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <h1 class="dashboard-title">
+                    <i class="fas fa-chart-line"></i> Analytics Dashboard
+                </h1>
+                <p class="dashboard-subtitle">Comprehensive insights and statistics</p>
+            </div>
+            <div class="col-md-4 text-end">
+                <button class="btn btn-light" onclick="window.location.reload()">
+                    <i class="fas fa-sync-alt"></i> Refresh
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container mb-5">
+    <!-- Filters -->
+    <div class="filter-card">
+        <form method="GET" action="/dashboard" id="filterForm">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="filter-label">Date Range</div>
+                    <select name="range" class="form-select filter-select"
+                        onchange="document.getElementById('filterForm').submit()">
+                        <option value="7" {% if selected_range=='7' %}selected{% endif %}>Last 7 Days</option>
+                        <option value="30" {% if selected_range=='30' %}selected{% endif %}>Last 30 Days</option>
+                        <option value="90" {% if selected_range=='90' %}selected{% endif %}>Last 90 Days</option>
+                        <option value="365" {% if selected_range=='365' %}selected{% endif %}>Last Year</option>
+                        <option value="all" {% if selected_range=='all' %}selected{% endif %}>All Time</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <div class="filter-label">State</div>
+                    <select name="state" class="form-select filter-select"
+                        onchange="document.getElementById('filterForm').submit()">
+                        <option value="">All States</option>
+                        {% for state in states_list %}
+                        <option value="{{ state }}" {% if selected_state==state %}selected{% endif %}>{{ state }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-4 d-flex align-items-end">
+                    <button type="button" class="btn btn-outline-primary w-100"
+                        onclick="window.location.href='/dashboard'">
+                        <i class="fas fa-redo"></i> Reset Filters
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- Summary Cards -->
+    <div class="row mb-4">
+        <div class="col-md-6 col-lg-3 mb-3">
+            <div class="summary-card card-primary">
+                <div class="card-icon icon-primary">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="card-value" id="total-pledges">{{ summary.total_pledges }}</div>
+                <div class="card-label">Total Pledges</div>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-3 mb-3">
+            <div class="summary-card card-success">
+                <div class="card-icon icon-success">
+                    <i class="fas fa-calendar-day"></i>
+                </div>
+                <div class="card-value" id="today-pledges">{{ summary.today_pledges }}</div>
+                <div class="card-label">Today</div>
+                {% if summary.today_change_pct != 0 %}
+                <div class="card-change {% if summary.today_change_pct > 0 %}positive{% else %}negative{% endif %}">
+                    <i class="fas fa-arrow-{% if summary.today_change_pct > 0 %}up{% else %}down{% endif %}"></i>
+                    {{ summary.today_change_pct|abs }}%
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-3 mb-3">
+            <div class="summary-card card-warning">
+                <div class="card-icon icon-warning">
+                    <i class="fas fa-calendar-alt"></i>
+                </div>
+                <div class="card-value" id="month-pledges">{{ summary.this_month_pledges }}</div>
+                <div class="card-label">This Month</div>
+                {% if summary.month_change_pct != 0 %}
+                <div class="card-change {% if summary.month_change_pct > 0 %}positive{% else %}negative{% endif %}">
+                    <i class="fas fa-arrow-{% if summary.month_change_pct > 0 %}up{% else %}down{% endif %}"></i>
+                    {{ summary.month_change_pct|abs }}%
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-3 mb-3">
+            <div class="summary-card card-info">
+                <div class="card-icon icon-info">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <div class="card-value" id="avg-per-day">{{ summary.avg_per_day }}</div>
+                <div class="card-label">Avg/Day (30d)</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts Row 1: Temporal Trends -->
+    <div class="row">
+        <div class="col-lg-8 mb-4">
+            <div class="chart-card">
+                <div class="chart-title">
+                    <i class="fas fa-chart-bar"></i>
+                    Daily Trend (Last 30 Days)
+                </div>
+                <div class="chart-container">
+                    <canvas id="dailyChart"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 mb-4">
+            <div class="chart-card">
+                <div class="chart-title">
+                    <i class="fas fa-trophy"></i>
+                    Top 5 States
+                </div>
+                <ul class="top-list">
+                    {% for item in geographic.top_states[:5] %}
+                    <li class="top-list-item">
+                        <div class="top-list-rank">{{ loop.index }}</div>
+                        <div class="top-list-name">{{ item.state }}</div>
+                        <div class="top-list-value">{{ item.count }}</div>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts Row 2: Monthly & Demographics -->
+    <div class="row">
+        <div class="col-lg-6 mb-4">
+            <div class="chart-card">
+                <div class="chart-title">
+                    <i class="fas fa-calendar"></i>
+                    Monthly Trend (Last 12 Months)
+                </div>
+                <div class="chart-container">
+                    <canvas id="monthlyChart"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6 mb-4">
+            <div class="chart-card">
+                <div class="chart-title">
+                    <i class="fas fa-users-cog"></i>
+                    Age Distribution
+                </div>
+                <div class="chart-container">
+                    <canvas id="ageChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts Row 3: Activity Patterns -->
+    <div class="row">
+        <div class="col-lg-6 mb-4">
+            <div class="chart-card">
+                <div class="chart-title">
+                    <i class="fas fa-clock"></i>
+                    Activity by Hour of Day
+                </div>
+                <div class="chart-container">
+                    <canvas id="hourlyChart"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6 mb-4">
+            <div class="chart-card">
+                <div class="chart-title">
+                    <i class="fas fa-calendar-week"></i>
+                    Activity by Day of Week
+                </div>
+                <div class="chart-container">
+                    <canvas id="weekdayChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts Row 4: Growth Metrics -->
+    <div class="row">
+        <div class="col-12 mb-4">
+            <div class="chart-card">
+                <div class="chart-title">
+                    <i class="fas fa-chart-area"></i>
+                    Growth Rate (Month-over-Month %)
+                </div>
+                <div class="chart-container-large">
+                    <canvas id="growthChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script>
+    // Chart.js Configuration
+    Chart.defaults.font.family = "'Inter', sans-serif";
+    Chart.defaults.color = '#6c757d';
+
+    // Color Schemes
+    const colors = {
+        primary: 'rgba(102, 126, 234, 0.8)',
+        success: 'rgba(72, 187, 120, 0.8)',
+        warning: 'rgba(237, 137, 54, 0.8)',
+        info: 'rgba(66, 153, 225, 0.8)',
+        danger: 'rgba(245, 101, 101, 0.8)'
+    };
+
+    // Helper: Create Gradient
+    function createGradient(ctx, color1, color2) {
+        const gradient = ctx.createLinearGradient(0, 0, 0, 350);
+        gradient.addColorStop(0, color1);
+        gradient.addColorStop(1, color2);
+        return gradient;
+    }
+
+    // Fetch and render daily chart
+    fetch('/api/dashboard/trends?period=daily&limit=30')
+        .then(res => res.json())
+        .then(data => {
+            const ctx = document.getElementById('dailyChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: data.labels,
+                    datasets: [{
+                        label: 'Daily Pledges',
+                        data: data.data,
+                        backgroundColor: createGradient(ctx, 'rgba(102, 126, 234, 0.3)', 'rgba(118, 75, 162, 0.1)'),
+                        borderColor: colors.primary,
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.4,
+                        pointBackgroundColor: colors.primary,
+                        pointRadius: 4,
+                        pointHoverRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                            padding: 12,
+                            displayColors: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: { precision: 0 },
+                            grid: { color: 'rgba(0, 0, 0, 0.05)' }
+                        },
+                        x: { grid: { display: false } }
+                    }
+                }
+            });
+        });
+
+    // Monthly Chart
+    fetch('/api/dashboard/trends?period=monthly&limit=12')
+        .then(res => res.json())
+        .then(data => {
+            const ctx = document.getElementById('monthlyChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: data.labels,
+                    datasets: [{
+                        label: 'Monthly Pledges',
+                        data: data.data,
+                        backgroundColor: createGradient(ctx, colors.success, 'rgba(132, 250, 176, 0.6)'),
+                        borderColor: colors.success,
+                        borderWidth: 2,
+                        borderRadius: 10
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                            padding: 12,
+                            displayColors: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: { precision: 0 },
+                            grid: { color: 'rgba(0, 0, 0, 0.05)' }
+                        },
+                        x: { grid: { display: false } }
+                    }
+                }
+            });
+        });
+
+    // Age Distribution Chart
+    fetch('/api/dashboard/demographics')
+        .then(res => res.json())
+        .then(data => {
+            const ctx = document.getElementById('ageChart').getContext('2d');
+            const labels = data.age_groups.map(g => g.group);
+            const values = data.age_groups.map(g => g.count);
+
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: values,
+                        backgroundColor: [
+                            colors.primary,
+                            colors.success,
+                            colors.warning,
+                            colors.info,
+                            colors.danger,
+                            'rgba(156, 163, 175, 0.8)'
+                        ],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: { padding: 15 }
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                            padding: 12
+                        }
+                    }
+                }
+            });
+        });
+
+    // Hour of Day Chart
+    fetch('/api/dashboard/activity')
+        .then(res => res.json())
+        .then(data => {
+            const ctx = document.getElementById('hourlyChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: data.hourly.labels,
+                    datasets: [{
+                        label: 'Pledges by Hour',
+                        data: data.hourly.data,
+                        backgroundColor: createGradient(ctx, 'rgba(66, 153, 225, 0.3)', 'rgba(79, 172, 254, 0.1)'),
+                        borderColor: colors.info,
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.4,
+                        pointBackgroundColor: colors.info,
+                        pointRadius: 3
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                            padding: 12,
+                            displayColors: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: { precision: 0 },
+                            grid: { color: 'rgba(0, 0, 0, 0.05)' }
+                        },
+                        x: { grid: { display: false } }
+                    }
+                }
+            });
+
+            // Day of Week Chart
+            const ctx2 = document.getElementById('weekdayChart').getContext('2d');
+            new Chart(ctx2, {
+                type: 'bar',
+                data: {
+                    labels: data.daily.labels,
+                    datasets: [{
+                        label: 'Pledges by Day',
+                        data: data.daily.data,
+                        backgroundColor: createGradient(ctx2, colors.warning, 'rgba(254, 225, 64, 0.6)'),
+                        borderColor: colors.warning,
+                        borderWidth: 2,
+                        borderRadius: 10
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                            padding: 12,
+                            displayColors: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: { precision: 0 },
+                            grid: { color: 'rgba(0, 0, 0, 0.05)' }
+                        },
+                        x: { grid: { display: false } }
+                    }
+                }
+            });
+        });
+
+    // Growth Rate Chart
+    fetch('/api/dashboard/growth')
+        .then(res => res.json())
+        .then(data => {
+            const ctx = document.getElementById('growthChart').getContext('2d');
+            const labels = data.growth_rates.map(g => g.month);
+            const rates = data.growth_rates.map(g => g.rate);
+
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Growth Rate (%)',
+                        data: rates,
+                        backgroundColor: createGradient(ctx, 'rgba(240, 147, 251, 0.3)', 'rgba(245, 87, 108, 0.1)'),
+                        borderColor: 'rgba(240, 147, 251, 1)',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.4,
+                        pointBackgroundColor: 'rgba(240, 147, 251, 1)',
+                        pointRadius: 5,
+                        pointHoverRadius: 7
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                            padding: 12,
+                            displayColors: false,
+                            callbacks: {
+                                label: function (context) {
+                                    return 'Growth: ' + context.parsed.y.toFixed(1) + '%';
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            ticks: {
+                                callback: function (value) {
+                                    return value + '%';
+                                }
+                            },
+                            grid: { color: 'rgba(0, 0, 0, 0.05)' }
+                        },
+                        x: { grid: { display: false } }
+                    }
+                }
+            });
+        });
+
+    // Animate counters
+    function animateValue(id, start, end, duration) {
+        const element = document.getElementById(id);
+        if (!element) return;
+
+        const range = end - start;
+        const increment = end > start ? 1 : -1;
+        const stepTime = Math.abs(Math.floor(duration / range));
+        let current = start;
+
+        const timer = setInterval(function () {
+            current += increment;
+            element.textContent = current;
+            if (current == (end) {
+                clearInterval(timer);
+            }
+        }, stepTime);
+    }
+
+    // Trigger counter animations on page load
+    window.addEventListener('load', function () {
+        const totalPledges = {{ summary.total_pledges }
+    };
+    const todayPledges = {{ summary.today_pledges }};
+    const monthPledges = {{ summary.this_month_pledges }};
+
+    animateValue('total-pledges', 0, totalPledges, 1500);
+    animateValue('today-pledges', 0, todayPledges, 1200);
+    animateValue('month-pledges', 0, monthPledges, 1500);
+    });
+</script>
+{% endblock %}

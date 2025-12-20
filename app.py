@@ -948,6 +948,142 @@ def create_app(config_name='development'):
             
         return redirect(url_for('admin_logs'))
 
+    # ========================
+    # DASHBOARD ROUTES
+    # ========================
+    from dashboard_analytics import DashboardAnalytics
+    
+    @app.route("/dashboard")
+    @login_required
+    def admin_dashboard_modern():
+        """Modern comprehensive dashboard"""
+        # Get filter parameters
+        date_range = request.args.get('range', '30')  # days
+        state_filter = request.args.get('state', None)
+        
+        # Calculate date range
+        if date_range == 'all':
+            start_date = None
+            end_date = None
+        else:
+            days = int(date_range)
+            end_date = datetime.now()
+            start_date = end_date - timedelta(days=days)
+        
+        # Get analytics data
+        analytics = DashboardAnalytics()
+        summary = analytics.get_summary_stats(start_date, end_date, state_filter)
+        geographic = analytics.get_geographic_distribution(top_n=10)
+        demographics = analytics.get_demographic_insights()
+        
+        # Get all states for filter dropdown
+        all_states = db.session.query(EyeDonationPledge.state).filter_by(
+            is_active=True
+        ).distinct().order_by(EyeDonationPledge.state).all()
+        states_list = [s[0] for s in all_states if s[0]]
+        
+        return safe_render('dashboard.html',
+                         summary=summary,
+                         geographic=geographic,
+                         demographics=demographics,
+                         states_list=states_list,
+                         selected_range=date_range,
+                         selected_state=state_filter)
+    
+    @app.route("/api/dashboard/summary")
+    @login_required
+    def api_dashboard_summary():
+        """API endpoint for summary statistics"""
+        from flask import jsonify
+        
+        date_range = request.args.get('range', '30')
+        state_filter = request.args.get('state', None)
+        
+        if date_range == 'all':
+            start_date = None
+            end_date = None
+        else:
+            days = int(date_range)
+            end_date = datetime.now()
+            start_date = end_date - timedelta(days=days)
+        
+        analytics = DashboardAnalytics()
+        summary = analytics.get_summary_stats(start_date, end_date, state_filter)
+        
+        return jsonify(summary)
+    
+    @app.route("/api/dashboard/trends")
+    @login_required
+    def api_dashboard_trends():
+        """API endpoint for trend data"""
+        from flask import jsonify
+        
+        period = request.args.get('period', 'daily')
+        limit = int(request.args.get('limit', 30))
+        state_filter = request.args.get('state', None)
+        
+        analytics = DashboardAnalytics()
+        trends = analytics.get_temporal_trends(period, limit, state_filter)
+        
+        return jsonify(trends)
+    
+    @app.route("/api/dashboard/geography")
+    @login_required
+    def api_dashboard_geography():
+        """API endpoint for geographic data"""
+        from flask import jsonify
+        
+        top_n = int(request.args.get('top', 10))
+        
+        analytics = DashboardAnalytics()
+        geography = analytics.get_geographic_distribution(top_n)
+        
+        return jsonify(geography)
+    
+    @app.route("/api/dashboard/demographics")
+    @login_required
+    def api_dashboard_demographics():
+        """API endpoint for demographic data"""
+        from flask import jsonify
+        
+        analytics = DashboardAnalytics()
+        demographics = analytics.get_demographic_insights()
+        
+        return jsonify(demographics)
+    
+    @app.route("/api/dashboard/growth")
+    @login_required
+    def api_dashboard_growth():
+        """API endpoint for growth metrics"""
+        from flask import jsonify
+        
+        analytics = DashboardAnalytics()
+        growth = analytics.get_growth_metrics()
+        
+        return jsonify(growth)
+    
+    @app.route("/api/dashboard/activity")
+    @login_required
+    def api_dashboard_activity():
+        """API endpoint for peak activity analysis"""
+        from flask import jsonify
+        
+        analytics = DashboardAnalytics()
+        activity = analytics.get_peak_activity_analysis()
+        
+        return jsonify(activity)
+    
+    @app.route("/api/dashboard/language")
+    @login_required
+    def api_dashboard_language():
+        """API endpoint for language preference distribution"""
+        from flask import jsonify
+        
+        analytics = DashboardAnalytics()
+        language = analytics.get_language_preference_distribution()
+        
+        return jsonify(language)
+
 
     return app
 

@@ -688,14 +688,279 @@
                 }
             });
 
-            // Scroll to top of form
+    <!-- DPDP Consent Modal -->
+    <div id="dpdpConsentModal" class="fixed inset-0 z-50 hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+        <!-- Backdrop -->
+        <div class="fixed inset-0 bg-slate-900/60 transition-opacity backdrop-blur-sm"></div>
+
+        <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
+            <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+                
+                <div class="relative transform overflow-hidden rounded-2xl bg-white text-left shadow-2xl transition-all sm:my-8 sm:w-full sm:max-w-4xl border border-slate-200">
+                    
+                    <!-- Header -->
+                    <div class="bg-slate-50 px-6 py-4 border-b border-slate-100 flex items-center justify-between">
+                        <h3 class="text-xl font-bold text-slate-800 flex items-center gap-2" id="modal-title">
+                            <i class="bi bi-shield-check text-brand-600"></i>
+                            {{ _('Terms of Service & Privacy Policy') }}
+                        </h3>
+                        <button type="button" class="btn-close-modal text-slate-400 hover:text-slate-600 transition-colors">
+                            <span class="sr-only">Close</span>
+                            <i class="bi bi-x-lg text-lg"></i>
+                        </button>
+                    </div>
+
+                    <!-- Scrollable Content -->
+                    <div class="px-6 py-6 max-h-[60vh] overflow-y-auto custom-scrollbar text-slate-700 text-sm leading-relaxed space-y-4">
+                        <section id="dpdp-consent-eye-donation" style="font-family: Arial, sans-serif; line-height: 1.4;">
+                            <h3 style="margin: 0 0 8px 0;">Consent for Collection and Use of Personal Data (Voluntary Eye Donation Pledge)</h3>
+                          
+                            <p>
+                              I hereby voluntarily pledge to donate my eyes after death for therapeutic purposes, in accordance with the provisions
+                              of the <strong>Transplantation of Human Organs and Tissues Act (THOTA), 1994 and Rules thereunder</strong>, and I provide my
+                              consent for the collection and use of my personal data as described below.
+                            </p>
+                          
+                            <h4 style="margin: 12px 0 6px 0;">Purpose of Data Collection</h4>
+                            <p>
+                              I understand that the personal information provided by me is collected solely for the purpose of:
+                            </p>
+                            <ul style="margin-top: 6px; list-style-type: disc; padding-left: 20px;">
+                              <li>Registering and maintaining my eye donation pledge</li>
+                              <li>Enabling timely coordination of eye donation by the Eye Bank after my death</li>
+                              <li>Contacting my next of kin or authorised representative, when required</li>
+                              <li>Fulfilling statutory, ethical, and operational requirements under the National Organ &amp; Tissue Transplant Programme</li>
+                            </ul>
+                          
+                            <h4 style="margin: 12px 0 6px 0;">Nature of Data Collected</h4>
+                            <p>I understand that the information collected may include:</p>
+                            <ul style="margin-top: 6px; list-style-type: disc; padding-left: 20px;">
+                              <li>Personal and contact details</li>
+                              <li>Details of next of kin or family contact</li>
+                              <li>Limited medical information relevant to eye donation suitability</li>
+                            </ul>
+                          
+                            <h4 style="margin: 12px 0 6px 0;">Data Access, Confidentiality, and De-identified Use</h4>
+                            <p>I understand and agree that:</p>
+                            <ul style="margin-top: 6px; list-style-type: disc; padding-left: 20px;">
+                              <li>My <strong>identifiable personal data shall be kept strictly confidential</strong>.</li>
+                              <li>Access to my identifiable data shall be <strong>restricted only to authorised personnel of the Eye Bank</strong> for purposes related to eye donation.</li>
+                              <li>My identifiable personal data <strong>shall not be disclosed</strong> to any other individual or organisation, except as required under law.</li>
+                            </ul>
+                          
+                            <p>I further understand that:</p>
+                            <ul style="margin-top: 6px; list-style-type: disc; padding-left: 20px;">
+                              <li>
+                                <strong>De-identified or anonymised data</strong>, from which all personally identifiable information has been removed,
+                                may be used by the Eye Bank for <strong>legitimate operational purposes</strong>, including:
+                                <ul style="margin-top: 6px; list-style-type: circle; padding-left: 20px;">
+                                  <li>Eye bank activity reporting</li>
+                                  <li>Quality assurance and audit</li>
+                                  <li>Submission of aggregated statistics to appropriate authorities</li>
+                                </ul>
+                              </li>
+                              <li>
+                                Such de-identified data shall not be used to identify me and shall not be used for commercial or promotional purposes.
+                              </li>
+                            </ul>
+                          
+                            <h4 style="margin: 12px 0 6px 0;">Data Storage and Retention</h4>
+                            <ul style="margin-top: 6px; list-style-type: disc; padding-left: 20px;">
+                              <li>My data will be stored securely in physical and/or electronic records maintained by the Eye Bank.</li>
+                              <li>Reasonable safeguards will be adopted to prevent unauthorised access, misuse, or disclosure.</li>
+                              <li>My identifiable data will be retained only for as long as required for eye donation–related purposes or as mandated by applicable laws.</li>
+                            </ul>
+                          
+                            <h4 style="margin: 12px 0 6px 0;">Rights of the Donor (Data Principal)</h4>
+                            <p>
+                              I am aware that, in accordance with applicable law including the <strong>Digital Personal Data Protection Act, 2023</strong>,
+                              I have the right to:
+                            </p>
+                            <ul style="margin-top: 6px; list-style-type: disc; padding-left: 20px;">
+                              <li>Seek correction or updating of my personal information</li>
+                              <li>Withdraw my eye donation pledge at any time during my lifetime by informing the Eye Bank</li>
+                              <li>Raise concerns or grievances regarding the handling of my personal data</li>
+                            </ul>
+                          
+                            <h4 style="margin: 12px 0 6px 0;">Withdrawal of Consent</h4>
+                            <p>I understand that I may withdraw this pledge and my consent at any time during my lifetime. Upon such withdrawal:</p>
+                            <ul style="margin-top: 6px; list-style-type: disc; padding-left: 20px;">
+                              <li>My identifiable personal data shall no longer be used for eye donation purposes</li>
+                              <li>De-identified data already generated may continue to be used for legitimate operational and reporting purposes</li>
+                              <li>Data may be retained where required under applicable laws</li>
+                            </ul>
+                          
+                            <h4 style="margin: 12px 0 6px 0;">Declaration</h4>
+                            <p>
+                              I confirm that:
+                            </p>
+                            <ul style="margin-top: 6px; list-style-type: disc; padding-left: 20px;">
+                              <li>This pledge is made voluntarily and without any coercion</li>
+                              <li>I have read and understood the above information</li>
+                              <li>
+                                I provide my <strong>free, informed, specific, and unambiguous consent</strong> for the collection, storage, and use of
+                                my personal data by the Eye Bank for purposes related to eye donation, in accordance with applicable laws
+                              </li>
+                            </ul>
+                          
+                            <p style="margin-top: 10px;">
+                              <em>
+                                This pledge is an expression of my wish and shall be honoured to the extent permissible under law and subject to the
+                                consent of my family or next of kin at the time of death.
+                              </em>
+                            </p>
+                          
+                            <hr style="margin: 14px 0;" />
+                          
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+                              <div>
+                                <label for="consent_donor_name"><strong>Name of Donor:</strong></label><br />
+                                <input id="consent_donor_name" type="text" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;" readonly />
+                              </div>
+                          
+                              <div>
+                                <label for="consent_date_display"><strong>Date:</strong></label><br />
+                                <input id="consent_date_display" type="date" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;" readonly />
+                              </div>
+                          
+                              <div>
+                                <label for="donor_signature"><strong>Signature / Thumb Impression:</strong></label><br />
+                                <input id="donor_signature" type="text" placeholder="Type name to sign" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;" />
+                              </div>
+                          
+                              <div>
+                                <label for="eye_bank_name_display"><strong>Name and Address of Eye Bank:</strong></label><br />
+                                <input id="eye_bank_name_display" type="text" value="AIIMS Eye Bank, New Delhi" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;" readonly />
+                              </div>
+                            </div>
+                        </section>
+                    </div>
+
+                    <!-- Footer -->
+                    <div class="bg-gray-50 px-6 py-4 border-t border-slate-100 flex flex-col-reverse sm:flex-row sm:justify-end gap-3 rounded-b-2xl">
+                        <button type="button" class="btn-close-modal w-full sm:w-auto px-5 py-2.5 rounded-xl border border-slate-300 text-slate-700 font-semibold hover:bg-slate-50 transition-colors">
+                            {{ _('Cancel') }}
+                        </button>
+                        <button type="button" id="btn-agree-consent" class="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-brand-600 text-white font-bold hover:bg-brand-700 shadow-lg shadow-brand-500/20 transition-all flex items-center justify-center gap-2">
+                            <i class="bi bi-check-lg"></i>
+                            {{ _('I Agree & Accept') }}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--Script for styling scrollbar-- >
+    <style>
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 8px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // ... existing code ...
+            
+            // --- DPDP Consent Modal Logic ---
+            const dpdpCheckbox = document.getElementById('dpdp_consent');
+            const consentModal = document.getElementById('dpdpConsentModal');
+            const btnAgree = document.getElementById('btn-agree-consent');
+            const closeButtons = document.querySelectorAll('.btn-close-modal');
+            
+            // Inputs inside the modal to auto-fill
+            const consentDonorName = document.getElementById('consent_donor_name');
+            const consentDateDisplay = document.getElementById('consent_date_display');
+            const mainDonorNameInput = document.getElementById('donor_name');
+
+            function showModal() {
+                consentModal.classList.remove('hidden');
+                // Auto-fill details from the main form
+                if (mainDonorNameInput && consentDonorName) {
+                    consentDonorName.value = mainDonorNameInput.value;
+                }
+                if (consentDateDisplay) {
+                    consentDateDisplay.value = new Date().toISOString().split('T')[0];
+                }
+                // Lock body scroll
+                document.body.style.overflow = 'hidden';
+            }
+
+            function hideModal() {
+                consentModal.classList.add('hidden');
+                // Unlock body scroll
+                document.body.style.overflow = '';
+            }
+
+            // 1. Intercept Checkbox Click
+            if (dpdpCheckbox) {
+                dpdpCheckbox.addEventListener('click', function(e) {
+                    if (this.checked) {
+                        e.preventDefault(); // Stop it from checking immediately
+                        showModal();
+                    } else {
+                        // If unchecking, just let it uncheck. 
+                        // Or if you want to confirm unchecking, you can add logic here.
+                    }
+                });
+            }
+
+            // 2. Handle "I Agree"
+            if (btnAgree) {
+                btnAgree.addEventListener('click', function() {
+                    if (dpdpCheckbox) {
+                        dpdpCheckbox.checked = true;
+                        // Trigger change event if needed for validation
+                        const event = new Event('change');
+                        dpdpCheckbox.dispatchEvent(event);
+                    }
+                    hideModal();
+                });
+            }
+
+            // 3. Handle Cancel / Close
+            closeButtons.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // Checkbox remains unchecked (or user unchecks it if it was somehow checked)
+                    if (dpdpCheckbox) {
+                        dpdpCheckbox.checked = false;
+                    }
+                    hideModal();
+                });
+            });
+
+            // Close on click outside (Backdrop)
+            if (consentModal) {
+                 // The modal container is the fixed inset-0 div with z-50.
+                 // The backdrop is the first child.
+                 // We can listen on the modal wrapper. If e.target === consentModal's scroll wrapper?
+                 // Actually easier:
+                 consentModal.querySelector('.fixed.inset-0.bg-slate-900\\/60').addEventListener('click', function() {
+                     // Checkbox remains unchecked
+                     if (dpdpCheckbox) {
+                        dpdpCheckbox.checked = false;
+                     }
+                     hideModal();
+                 });
+            }
+            // -------------------------------
+
             const formContainer = document.querySelector('.max-w-4xl');
             if (formContainer) {
                 const y = formContainer.getBoundingClientRect().top + window.scrollY - 100;
                 window.scrollTo({ top: y, behavior: 'smooth' });
             }
-        }
-
+        
     });
 </script>
 {% endblock %}

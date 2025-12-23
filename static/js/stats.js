@@ -49,7 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 1. Load Summary Stats (Cards)
     async function loadSummaryStats() {
-        const data = await fetchData('/api/stats/summary');
+        const data = await fetchData('/neb/api/stats/summary');
         if (data) {
             const totalEl = document.getElementById('totalPledges');
             const todayEl = document.getElementById('todayPledges');
@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 2. Load Monthly Chart
     async function loadMonthlyChart() {
-        const data = await fetchData('/api/stats/monthly');
+        const data = await fetchData('/neb/api/stats/monthly');
         const element = document.getElementById('monthlyChart');
         if (data && element) {
             const ctx = element.getContext('2d');
@@ -94,7 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 3. Load Weekly Chart
     async function loadWeeklyChart() {
-        const data = await fetchData('/api/stats/weekly');
+        const data = await fetchData('/neb/api/stats/weekly');
         const element = document.getElementById('weeklyChart');
         if (data && element) {
             const ctx = element.getContext('2d');
@@ -127,7 +127,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 4. Load Yearly Chart
     async function loadYearlyChart() {
-        const data = await fetchData('/api/stats/yearly');
+        const data = await fetchData('/neb/api/stats/yearly');
         const element = document.getElementById('yearlyChart');
         if (data && element) {
             const ctx = element.getContext('2d');
@@ -160,7 +160,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 5. Load Top States
     async function loadTopStates() {
-        const data = await fetchData('/api/stats/states');
+        const data = await fetchData('/neb/api/stats/states');
         const container = document.getElementById('topStatesList');
         if (data && container) {
             container.innerHTML = ''; // Clear loading state
@@ -211,7 +211,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 6. Demographics
     async function loadDemographics() {
-        const data = await fetchData('/api/stats/demographics');
+        const data = await fetchData('/neb/api/stats/demographics');
 
         // Age Chart
         const ageEl = document.getElementById('ageChart');
@@ -271,7 +271,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 7. Hourly Activity
     async function loadHourlyChart() {
-        const data = await fetchData('/api/stats/hourly');
+        const data = await fetchData('/neb/api/stats/hourly');
         const element = document.getElementById('hourlyChart');
         if (data && element) {
             new Chart(element.getContext('2d'), {
@@ -306,7 +306,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 8. Historical Comparison
     async function loadHistoricalChart() {
-        const data = await fetchData('/api/stats/historical');
+        const data = await fetchData('/neb/api/stats/historical');
         const element = document.getElementById('historicalChart');
         if (data && element) {
             const ctx = element.getContext('2d');
@@ -339,7 +339,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 9. Comparative Metrics (MoM, YoY)
     async function loadComparativeMetrics() {
-        const data = await fetchData('/api/stats/comparative');
+        const data = await fetchData('/neb/api/stats/comparative');
         if (data) {
             // MoM
             const momVal = document.getElementById('momGrowthValue');
@@ -363,7 +363,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 10. Source Distribution
     async function loadSourceChart() {
-        const data = await fetchData('/api/stats/sources');
+        const data = await fetchData('/neb/api/stats/sources');
         const element = document.getElementById('sourceChart');
         if (data && element) {
             new Chart(element.getContext('2d'), {
@@ -387,7 +387,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 11. Consent Types
     async function loadConsentChart() {
-        const data = await fetchData('/api/stats/consent');
+        const data = await fetchData('/neb/api/stats/consent');
         const element = document.getElementById('consentChart');
         if (data && element) {
             new Chart(element.getContext('2d'), {
@@ -419,7 +419,7 @@ document.addEventListener('DOMContentLoaded', () => {
     loadWeeklyChart();
     loadYearlyChart();
     loadDemographics();
-    loadHourlyChart();
+    // loadHourlyChart();
     loadHistoricalChart(); // New
     loadComparativeMetrics(); // New
     loadSourceChart(); // New

@@ -66,7 +66,8 @@ migrate = Migrate()
 
 def create_app(config_name='development'):
     """Application factory function"""
-    app = Flask(__name__)
+    app = Flask(__name__,    static_url_path='/neb/static',
+    static_folder='static')
     
     # Load configuration
     if config_name == 'development':
@@ -306,7 +307,7 @@ def create_app(config_name='development'):
     # ========================
     # PUBLIC ROUTES
     # ========================
-    @app.route("/")
+    @app.route("/neb/")
     def index():
         """Home page"""
         pledge_count = EyeDonationPledge.query.filter_by(is_active=True).count()
@@ -319,13 +320,13 @@ def create_app(config_name='development'):
 
 
 
-    @app.route("/favicon.ico")
+    @app.route("/neb/favicon.ico")
     def favicon():
         """Favicon"""
         return send_from_directory(os.path.join(app.root_path, 'static', 'image'),
                                  'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
-    @app.route("/set-language/<lang>")
+    @app.route("/neb/set-language/<lang>")
     def set_language(lang):
         """Set the language preference in session"""
         if lang in ['English', 'Hindi']:
@@ -334,12 +335,12 @@ def create_app(config_name='development'):
         # Redirect back to the page the user came from, or home
         return redirect(request.referrer or url_for('index'))
 
-    @app.route('/guide')
+    @app.route('/neb/guide')
     def guide():
         """Render the educational guide page"""
         return render_template('guide.html', active_page='guide')
 
-    @app.route('/stats')
+    @app.route('/neb/stats')
     def stats():
         """Public Live Dashboard"""
         from sqlalchemy import func, extract
@@ -454,7 +455,7 @@ def create_app(config_name='development'):
                              last_7_counts=last_7_counts,
                              current_year=current_year)
 
-    @app.route("/pledge", methods=["GET", "POST"])
+    @app.route("/neb/pledge", methods=["GET", "POST"])
     def pledge_form():
         """Pledge form - display and submit"""
         app_logger.info(f"Pledge route accessed via {request.method}")
@@ -556,7 +557,7 @@ def create_app(config_name='development'):
                 
                 active_page='pledge', current_year=datetime.now().year, form_data={})
 
-    @app.route("/success/<ref_num>")
+    @app.route("/neb/success/<ref_num>")
     def success(ref_num):
         """Success page after pledge submission"""
         pledge = EyeDonationPledge.query.filter_by(reference_number=ref_num).first()
@@ -564,7 +565,7 @@ def create_app(config_name='development'):
                 
                 active_page='pledge', current_year=datetime.now().year,  pledge=pledge, ref_num=ref_num)
 
-    @app.route("/pledge/<ref_num>/view")
+    @app.route("/neb/pledge/<ref_num>/view")
     def view_pledge(ref_num):
         """View submitted pledge (public)"""
         pledge = EyeDonationPledge.query.filter_by(reference_number=ref_num).first_or_404()
@@ -572,7 +573,7 @@ def create_app(config_name='development'):
                 
                 active_page='pledge', current_year=datetime.now().year,  pledge=pledge)
 
-    @app.route("/pledge/<ref_num>/pdf")
+    @app.route("/neb/pledge/<ref_num>/pdf")
     def pledge_pdf(ref_num):
         """Download pledge PDF"""
         pdf_path = f"static/image/temp/eye_donor_card_{ref_num}.pdf"
@@ -651,7 +652,7 @@ def create_app(config_name='development'):
     # ========================
     # ADMIN ROUTES
     # ========================
-    @app.route("/admin/login", methods=["GET", "POST"])
+    @app.route("/neb/admin/login", methods=["GET", "POST"])
     def admin_login():
         """Admin login"""
         if request.method == "POST":
@@ -678,15 +679,15 @@ def create_app(config_name='development'):
                 
                 active_page='admin', current_year=datetime.now().year)
 
-    @app.route("/admin/logout")
+    @app.route("/neb/admin/logout")
     def admin_logout():
         """Admin logout"""
         session.clear()
         flash('Logged out successfully', 'info')
         return redirect(url_for('index'))
 
-    @app.route("/admin")
-    @app.route("/admin/dashboard")
+    @app.route("/neb/admin")
+    @app.route("/neb/admin/dashboard")
     @login_required
     def admin_dashboard():
         """Admin dashboard with statistics"""
@@ -709,11 +710,14 @@ def create_app(config_name='development'):
         ).group_by('month').all()
         
         return safe_render('admin/dashboard.html',
-                             total_pledges=total_pledges,
-                             pledges_by_state=pledges_by_state,
-                             monthly_stats=monthly_stats)
+                        address = app.config.get('INSTITUTION_ADDRESS', 'Eye Bank'),
+                        active_page='admin', 
+                        current_year=datetime.now().year,
+                        total_pledges=total_pledges,
+                        pledges_by_state=pledges_by_state,
+                        monthly_stats=monthly_stats)
 
-    @app.route("/admin/pledges", methods=["GET"])
+    @app.route("/neb/admin/pledges", methods=["GET"])
     @login_required
     def admin_pledges():
         """Admin pledges list with search and filter"""
@@ -743,12 +747,15 @@ def create_app(config_name='development'):
         )
         
         return safe_render('admin/pledges_list.html',
+                        address = app.config.get('INSTITUTION_ADDRESS', 'Eye Bank'),
+                        active_page='admin', 
+                        current_year=datetime.now().year,
                      pledges=pledges,
                      pagination=pledges,
                      search=search,
                      state=state)
 
-    @app.route("/admin/pledge/<int:pledge_id>")
+    @app.route("/neb/admin/pledge/<int:pledge_id>")
     @login_required
     def admin_pledge_detail(pledge_id):
         """Admin pledge detail view"""
@@ -756,13 +763,17 @@ def create_app(config_name='development'):
         audit_logs = AuditLog.query.filter_by(pledge_id=pledge_id).order_by(
             AuditLog.created_at.desc()
         ).all()
-        return safe_render('admin/pledge_detail.html', pledge=pledge, audit_logs=audit_logs)
+        return safe_render('admin/pledge_detail.html',
+                        address = app.config.get('INSTITUTION_ADDRESS', 'Eye Bank'),
+                        active_page='admin', 
+                        current_year=datetime.now().year,
+                        pledge=pledge, audit_logs=audit_logs)
 
 
 
 
 
-    @app.route("/admin/export", methods=["GET"])
+    @app.route("/neb/admin/export", methods=["GET"])
     @login_required
     def admin_export():
         """Export pledges as CSV"""
@@ -812,12 +823,15 @@ def create_app(config_name='development'):
             }
         )
 
-    @app.route("/admin/pledge/<int:pledge_id>/print")
+    @app.route("/neb/admin/pledge/<int:pledge_id>/print")
     @login_required
     def admin_print_pledge(pledge_id):
         """Print/PDF view of pledge"""
         pledge = EyeDonationPledge.query.get_or_404(pledge_id)
-        return safe_render('admin/pledge_print.html', pledge=pledge)
+        return safe_render('admin/pledge_print.html', address = app.config.get('INSTITUTION_ADDRESS', 'Eye Bank'),
+                        active_page='admin', 
+                        current_year=datetime.now().year,
+                        pledge=pledge)
 
     # ========================
     # CLI Commands
@@ -871,7 +885,7 @@ def create_app(config_name='development'):
     # ========================
     # LOG ROUTES
     # ========================
-    @app.route("/admin/logs")
+    @app.route("/neb/admin/logs")
     @login_required
     def admin_logs():
         """Superadmin log viewer"""
@@ -922,7 +936,7 @@ def create_app(config_name='development'):
         
         return safe_render('admin/logs.html', 
                           logs=logs, 
-                          active_page='logs',
+                          active_page='admin',
                           users=users,
                           log_type=log_type, 
                           level=level, 
@@ -931,7 +945,7 @@ def create_app(config_name='development'):
                           start_date=start_date_str,
                           end_date=end_date_str)
 
-    @app.route("/admin/logs/clear", methods=["POST"])
+    @app.route("/neb/admin/logs/clear", methods=["POST"])
     @login_required
     def admin_clear_logs():
         """Clear all system logs"""
@@ -957,7 +971,7 @@ def create_app(config_name='development'):
     # ========================
     from dashboard_analytics import DashboardAnalytics
     
-    @app.route("/dashboard")
+    @app.route("/neb/dashboard")
     @login_required
     def admin_dashboard_modern():
         """Modern comprehensive dashboard"""
@@ -987,6 +1001,9 @@ def create_app(config_name='development'):
         states_list = [s[0] for s in all_states if s[0]]
         
         return safe_render('dashboard.html',
+                        address = app.config.get('INSTITUTION_ADDRESS', 'Eye Bank'),
+                        active_page='admin', 
+                        current_year=datetime.now().year,
                          summary=summary,
                          geographic=geographic,
                          demographics=demographics,
@@ -994,7 +1011,7 @@ def create_app(config_name='development'):
                          selected_range=date_range,
                          selected_state=state_filter)
     
-    @app.route("/api/dashboard/summary")
+    @app.route("/neb/api/dashboard/summary")
     @login_required
     def api_dashboard_summary():
         """API endpoint for summary statistics"""
@@ -1016,7 +1033,7 @@ def create_app(config_name='development'):
         
         return jsonify(summary)
     
-    @app.route("/api/dashboard/trends")
+    @app.route("/neb/api/dashboard/trends")
     @login_required
     def api_dashboard_trends():
         """API endpoint for trend data"""
@@ -1031,7 +1048,7 @@ def create_app(config_name='development'):
         
         return jsonify(trends)
     
-    @app.route("/api/dashboard/geography")
+    @app.route("/neb/api/dashboard/geography")
     @login_required
     def api_dashboard_geography():
         """API endpoint for geographic data"""
@@ -1044,7 +1061,7 @@ def create_app(config_name='development'):
         
         return jsonify(geography)
     
-    @app.route("/api/dashboard/demographics")
+    @app.route("/neb/api/dashboard/demographics")
     @login_required
     def api_dashboard_demographics():
         """API endpoint for demographic data"""
@@ -1055,7 +1072,7 @@ def create_app(config_name='development'):
         
         return jsonify(demographics)
     
-    @app.route("/api/dashboard/growth")
+    @app.route("/neb/api/dashboard/growth")
     @login_required
     def api_dashboard_growth():
         """API endpoint for growth metrics"""
@@ -1066,7 +1083,7 @@ def create_app(config_name='development'):
         
         return jsonify(growth)
     
-    @app.route("/api/dashboard/activity")
+    @app.route("/neb/api/dashboard/activity")
     @login_required
     def api_dashboard_activity():
         """API endpoint for peak activity analysis"""
@@ -1077,7 +1094,7 @@ def create_app(config_name='development'):
         
         return jsonify(activity)
     
-    @app.route("/api/dashboard/language")
+    @app.route("/neb/api/dashboard/language")
     @login_required
     def api_dashboard_language():
         """API endpoint for language preference distribution"""
@@ -1094,4 +1111,4 @@ def create_app(config_name='development'):
 
 if __name__ == "__main__":
     app = create_app()
-    app.run(debug=True)
+    app.run("0.0.0.0", port=5400, debug=True)

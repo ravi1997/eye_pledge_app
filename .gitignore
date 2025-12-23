@@ -14,4 +14,6 @@ node_modules/
 /playwright/.cache/
 /playwright/.auth/
 
-logs/
+/logs/
+
+/static/image/temp/

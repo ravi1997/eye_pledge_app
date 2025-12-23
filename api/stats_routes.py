@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify
 from dashboard_analytics import DashboardAnalytics
 
-stats_bp = Blueprint('stats', __name__, url_prefix='/api/stats')
+stats_bp = Blueprint('stats', __name__, url_prefix='/neb/api/stats')
 
 @stats_bp.route('/summary')
 def get_summary():

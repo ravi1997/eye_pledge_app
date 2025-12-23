@@ -1,0 +1,19 @@
+{
+    "name": "EyePledge – National Eye Bank",
+    "short_name": "EyePledge",
+    "description": "Pledge your eyes with the National Eye Bank. One pledge can restore sight to two people.",
+    "start_url": "/",
+    "scope": "/",
+    "display": "standalone",
+    "orientation": "portrait-primary",
+    "background_color": "#ffffff",
+    "theme_color": "#0f766e",
+    "lang": "en-IN",
+    "dir": "ltr",
+    "categories": [
+        "health",
+        "medical",
+        "education",
+        "government"
+    ]
+}

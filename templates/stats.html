@@ -145,6 +145,40 @@
 
     <!-- Charts Row 1: Historical & Trends -->
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
+        <!-- Weekly Trend -->
+        <div class="glass-panel p-6 md:p-8 animate-enter delay-500">
+            <div class="flex items-center justify-between mb-6">
+                <div>
+                    <h3 class="text-xl font-bold text-slate-900">{{ _('Recent Activity') }}</h3>
+                    <p class="text-sm text-slate-500">{{ _('Daily pledges (Last 7 Days)') }}</p>
+                </div>
+                <div class="p-2 bg-blue-50 rounded-lg text-blue-600">
+                    <i class="bi bi-activity text-lg"></i>
+                </div>
+            </div>
+            <div class="relative h-60 lg:h-80 w-full">
+                <canvas id="weeklyChart"></canvas>
+            </div>
+        </div>
+        <!-- Organs Consent -->
+        <div class="glass-panel p-6 md:p-8 animate-enter delay-600">
+            <div class="flex items-center justify-between mb-6">
+                <div>
+                    <h3 class="text-lg font-bold text-slate-900">{{ _('Consent Types') }}</h3>
+                    <p class="text-sm text-slate-500">{{ _('Scope of donation pledged') }}</p>
+                </div>
+                <div class="p-2 bg-rose-50 rounded-lg text-rose-600">
+                    <i class="bi bi-heart-pulse text-lg"></i>
+                </div>
+            </div>
+            <div class="relative h-64 w-full">
+                <canvas id="consentChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts Row 2: Deep Dive Insights -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
         <!-- Historical Multi-Year Trend -->
         <div class="hidden lg:col-span-2 glass-panel p-6 md:p-8 animate-enter delay-500">
             <div class="flex items-center justify-between mb-6">
@@ -161,25 +195,6 @@
             </div>
         </div>
 
-        <!-- Weekly Trend -->
-        <div class="glass-panel p-6 md:p-8 animate-enter delay-500">
-            <div class="flex items-center justify-between mb-6">
-                <div>
-                    <h3 class="text-xl font-bold text-slate-900">{{ _('Recent Activity') }}</h3>
-                    <p class="text-sm text-slate-500">{{ _('Daily pledges (Last 7 Days)') }}</p>
-                </div>
-                <div class="p-2 bg-blue-50 rounded-lg text-blue-600">
-                    <i class="bi bi-activity text-lg"></i>
-                </div>
-            </div>
-            <div class="relative h-60 lg:h-80 w-full">
-                <canvas id="weeklyChart"></canvas>
-            </div>
-        </div>
-    </div>
-
-    <!-- Charts Row 2: Deep Dive Insights -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
         <!-- Source Analysis -->
         <div class="hidden glass-panel p-6 md:p-8 animate-enter delay-600">
             <div class="flex items-center justify-between mb-6">
@@ -196,21 +211,7 @@
             </div>
         </div>
 
-        <!-- Organs Consent -->
-        <div class="glass-panel p-6 md:p-8 animate-enter delay-600">
-            <div class="flex items-center justify-between mb-6">
-                <div>
-                    <h3 class="text-lg font-bold text-slate-900">{{ _('Consent Types') }}</h3>
-                    <p class="text-sm text-slate-500">{{ _('Scope of donation pledged') }}</p>
-                </div>
-                <div class="p-2 bg-rose-50 rounded-lg text-rose-600">
-                    <i class="bi bi-heart-pulse text-lg"></i>
-                </div>
-            </div>
-            <div class="relative h-64 w-full">
-                <canvas id="consentChart"></canvas>
-            </div>
-        </div>
+
     </div>
 
     <!-- Charts Row 3: Monthly & Yearly Growth (Legacy) -->
@@ -311,15 +312,15 @@
         <div class="glass-panel p-6 md:p-8">
             <div class="flex items-center justify-between mb-6">
                 <div>
-                    <h3 class="text-lg font-bold text-slate-900">{{ _('Hourly Activity') }}</h3>
-                    <p class="text-xs text-slate-500">{{ _('Pledges by time of day') }}</p>
+                    <h3 class="text-lg font-bold text-slate-900">{{ _('Demographics: Gender') }}</h3>
+                    <p class="text-xs text-slate-500">{{ _('Distribution by gender') }}</p>
                 </div>
-                <div class="p-2 bg-teal-50 rounded-lg text-teal-600">
-                    <i class="bi bi-clock-fill"></i>
+                <div class="p-2 bg-pink-50 rounded-lg text-pink-600">
+                    <i class="bi bi-gender-ambiguous"></i>
                 </div>
             </div>
             <div class="relative h-64 w-full">
-                <canvas id="hourlyChart"></canvas>
+                <canvas id="genderChart"></canvas>
             </div>
         </div>
     </div>

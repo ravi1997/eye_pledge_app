@@ -4,9 +4,13 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- SEO -->
     <meta name="description"
         content="Pledge your eyes with the National Eye Bank. Your decision can restore sight to two people. Join thousands of donors today." />
     <meta name="keywords" content="eye donation, organ donation, AIIMS, National Eye Bank, pledge eyes, donate eyes" />
+    <meta name="author" content="National Eye Bank, AIIMS New Delhi" />
+    <meta name="robots" content="index, follow" />
+
     <title>{% block title %}{{ _('EyePledge') }}{% endblock %}</title>
 
     <!-- Bootstrap Icons (Keeping for icon consistency, strictly optional) -->
@@ -15,6 +19,16 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/output.css') }}" media="print"
         onload="this.media='all'">
 
+    <link rel="icon" type="image/x-icon" href="{{ url_for('favicon' ) }}">
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="EyePledge – National Eye Bank" />
+    <meta property="og:description"
+        content="One pledge can restore sight to two people. Join the National Eye Bank today." />
+    <meta property="og:url" content="{{ request.url }}" />
+    <meta property="og:image" content="{{ url_for('favicon') }}" />
+
+    <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
 
     {% block extra_css %}{% endblock %}
     {% block extra_head %}{% endblock %}

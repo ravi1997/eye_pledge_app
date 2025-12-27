@@ -79,7 +79,12 @@ def create_app(config_name='development'):
     migrate.init_app(app, db)
     
     # Register Blueprints
+    # Register Blueprints
     app.register_blueprint(stats_bp)
+    
+    # Register CLI Commands
+    import commands
+    app.cli.add_command(commands.create_admin_command)
 
     # Import models from external file if exists, otherwise define here
     
